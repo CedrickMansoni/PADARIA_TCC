@@ -1,0 +1,109 @@
+-- Criação das tabelas para o sistema de padaria
+
+-- Tabela de Categoria
+CREATE TABLE t_01_categoria (
+    id SERIAL PRIMARY KEY,
+    descricao VARCHAR(100) NOT NULL UNIQUE
+);
+-- Inserir categorias de funcionários
+INSERT INTO t_01_categoria (descricao) VALUES ('Administrador'),('Gerente'),('Atendente'),('Padeiro'),('Caixa'),('Supervisor');
+
+-- Tabela de Funcionário
+CREATE TABLE t_02_funcionario (
+    id SERIAL PRIMARY KEY,
+    id_categoria INTEGER REFERENCES t_01_categoria(id),
+    nome_completo VARCHAR(100) NOT NULL,
+    senha TEXT NOT NULL,
+    avatar VARCHAR(255),
+    estado VARCHAR(30) NOT NULL DEFAULT 'Offline'
+);
+
+-- Tabela de Cliente
+CREATE TABLE t_03_cliente (
+    id SERIAL PRIMARY KEY,
+    id_categoria INTEGER REFERENCES t_01_categoria(id),
+    nome VARCHAR(100) NOT NULL,
+    senha TEXT NOT NULL,
+    nif VARCHAR(20) UNIQUE,
+    estado VARCHAR(20) NOT NULL DEFAULT 'Offline'
+);
+
+-- Tabela de Telefone
+CREATE TABLE t_04_telefone (
+    id SERIAL PRIMARY KEY,
+    id_funcionario INTEGER REFERENCES t_02_funcionario(id),
+    id_cliente INTEGER REFERENCES t_03_cliente(id),
+    telefone VARCHAR(20) NOT NULL UNIQUE,
+    CONSTRAINT chk_telefone_owner CHECK ((id_funcionario IS NOT NULL AND id_cliente IS NULL) OR (id_funcionario IS NULL AND id_cliente IS NOT NULL))
+);
+
+-- Tabela de Categoria Produto
+CREATE TABLE t_05_categoria_produto (
+    id SERIAL PRIMARY KEY,
+    descricao VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Tabela de Produto
+CREATE TABLE t_06_produto (
+    id SERIAL PRIMARY KEY,
+    id_categoria INTEGER REFERENCES t_05_categoria_produto(id),
+    id_funcionario INTEGER REFERENCES t_02_funcionario(id),
+    nome VARCHAR(100) NOT NULL,
+    unidade INTEGER NOT NULL DEFAULT 1,
+    preco DECIMAL(10, 2) NOT NULL,
+    descricao TEXT,
+    imagem VARCHAR NOT NULL DEFAULT 'produto'
+);
+
+-- Tabela de Caixa
+CREATE TABLE t_07_caixa (
+    id SERIAL PRIMARY KEY,
+    id_funcionario INTEGER REFERENCES t_02_funcionario(id),
+    data_abertura TIMESTAMP NOT NULL,
+    valor_inicial DECIMAL(10, 2) NOT NULL,
+    valor_final DECIMAL(10, 2),
+    data_fecho TIMESTAMP
+);
+
+-- Tabela de Fatura
+CREATE TABLE t_08_factura (
+    numero_factura VARCHAR(20) PRIMARY KEY,
+    id_cliente INTEGER REFERENCES t_03_cliente(id),
+    valor_total DECIMAL(10, 2) NOT NULL,
+    estado VARCHAR(20) NOT NULL,
+    comprovativo VARCHAR NOT NULL
+);
+
+-- Tabela de Encomenda
+CREATE TABLE t_09_encomenda (
+    id SERIAL PRIMARY KEY,
+    id_produto INTEGER REFERENCES t_06_produto(id),
+    numero_factura VARCHAR(20) REFERENCES t_08_factura(numero_factura),
+    data_encomenda TIMESTAMP NOT NULL,
+    quantidade INTEGER NOT NULL,
+    preco_total DECIMAL(10, 2) NOT NULL,
+    estado_encomenda VARCHAR(20) NOT NULL DEFAULT 'Pendente'
+);
+
+-- Tabela de Venda
+CREATE TABLE t_10_venda (
+    numero_factura VARCHAR(20) REFERENCES t_08_factura(numero_factura) PRIMARY KEY,
+    id_caixa INTEGER REFERENCES t_07_caixa(id),
+    data_venda TIMESTAMP NOT NULL,
+    tipo_venda VARCHAR(20) NOT NULL DEFAULT 'Local',
+    estado VARCHAR(20) NOT NULL DEFAULT 'Finalizada',
+    forma_pagamento VARCHAR(50) DEFAULT 'Cash'
+);
+
+-- Adicionar índices para otimização de consultas
+CREATE INDEX idx_funcionario_categoria ON t_02_funcionario(id_categoria);
+CREATE INDEX idx_cliente_categoria ON t_03_cliente(id_categoria);
+CREATE INDEX idx_telefone_funcionario ON t_04_telefone(id_funcionario);
+CREATE INDEX idx_telefone_cliente ON t_04_telefone(id_cliente);
+CREATE INDEX idx_produto_categoria ON t_06_produto(id_categoria);
+CREATE INDEX idx_produto_funcionario ON t_06_produto(id_funcionario);
+CREATE INDEX idx_caixa_funcionario ON t_07_caixa(id_funcionario);
+CREATE INDEX idx_factura_cliente ON t_08_factura(id_cliente);
+CREATE INDEX idx_encomenda_produto ON t_09_encomenda(id_produto);
+CREATE INDEX idx_encomenda_factura ON t_09_encomenda(numero_factura);
+CREATE INDEX idx_venda_caixa ON t_10_venda(id_caixa);
