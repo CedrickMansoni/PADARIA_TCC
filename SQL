@@ -6,7 +6,7 @@ CREATE TABLE t_01_categoria (
     descricao VARCHAR(100) NOT NULL UNIQUE
 );
 -- Inserir categorias de funcionários
-INSERT INTO t_01_categoria (descricao) VALUES ('Administrador'),('Gerente'),('Atendente'),('Padeiro'),('Caixa'),('Supervisor');
+INSERT INTO t_01_categoria (descricao) VALUES ('Administrador'),('Gerente'),('Padeiro'),('Caixa');
 
 -- Tabela de Funcionário
 CREATE TABLE t_02_funcionario (
@@ -14,7 +14,7 @@ CREATE TABLE t_02_funcionario (
     id_categoria INTEGER REFERENCES t_01_categoria(id),
     nome_completo VARCHAR(100) NOT NULL,
     senha TEXT NOT NULL,
-    avatar VARCHAR(255),
+    avatar VARCHAR NOT NULL DEFAULT 'user',
     estado VARCHAR(30) NOT NULL DEFAULT 'Offline'
 );
 
@@ -70,19 +70,22 @@ CREATE TABLE t_08_factura (
     numero_factura VARCHAR(20) PRIMARY KEY,
     id_cliente INTEGER REFERENCES t_03_cliente(id),
     valor_total DECIMAL(10, 2) NOT NULL,
-    estado VARCHAR(20) NOT NULL,
+    pagamento_cash DECIMAL(10, 2) NOT NULL DEFAULT 0,
+    pagamento_cartao DECIMAL(10, 2) NOT NULL DEFAULT 0,
+    pagamento_transferencia DECIMAL(10, 2) NOT NULL DEFAULT 0,
+    estado VARCHAR(20) NOT NULL DEFAULT 'Pendente', -- Processando, Cancelado, Fechada
     comprovativo VARCHAR NOT NULL
 );
 
--- Tabela de Encomenda
-CREATE TABLE t_09_encomenda (
+-- Tabela de Encomenda 
+CREATE TABLE t_09_pedido (
     id SERIAL PRIMARY KEY,
     id_produto INTEGER REFERENCES t_06_produto(id),
     numero_factura VARCHAR(20) REFERENCES t_08_factura(numero_factura),
     data_encomenda TIMESTAMP NOT NULL,
     quantidade INTEGER NOT NULL,
     preco_total DECIMAL(10, 2) NOT NULL,
-    estado_encomenda VARCHAR(20) NOT NULL DEFAULT 'Pendente'
+    previsa_conclusao TIMESTAMP 
 );
 
 -- Tabela de Venda
@@ -90,9 +93,9 @@ CREATE TABLE t_10_venda (
     numero_factura VARCHAR(20) REFERENCES t_08_factura(numero_factura) PRIMARY KEY,
     id_caixa INTEGER REFERENCES t_07_caixa(id),
     data_venda TIMESTAMP NOT NULL,
-    tipo_venda VARCHAR(20) NOT NULL DEFAULT 'Local',
-    estado VARCHAR(20) NOT NULL DEFAULT 'Finalizada',
-    forma_pagamento VARCHAR(50) DEFAULT 'Cash'
+    tipo_venda VARCHAR(20) NOT NULL DEFAULT 'Normal', -- Encomenda
+    estado VARCHAR(20) NOT NULL DEFAULT 'Finalizada', -- Cancelada
+    forma_pagamento VARCHAR(50) DEFAULT 'Cash' -- Cartão/Transferência/Misto   
 );
 
 -- Adicionar índices para otimização de consultas
@@ -104,6 +107,6 @@ CREATE INDEX idx_produto_categoria ON t_06_produto(id_categoria);
 CREATE INDEX idx_produto_funcionario ON t_06_produto(id_funcionario);
 CREATE INDEX idx_caixa_funcionario ON t_07_caixa(id_funcionario);
 CREATE INDEX idx_factura_cliente ON t_08_factura(id_cliente);
-CREATE INDEX idx_encomenda_produto ON t_09_encomenda(id_produto);
-CREATE INDEX idx_encomenda_factura ON t_09_encomenda(numero_factura);
+CREATE INDEX idx_encomenda_produto ON t_09_pedido(id_produto);
+CREATE INDEX idx_encomenda_factura ON t_09_pedido(numero_factura);
 CREATE INDEX idx_venda_caixa ON t_10_venda(id_caixa);

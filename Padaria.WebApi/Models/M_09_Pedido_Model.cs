@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Padaria.WebApi.Models;
 
-[Table("t_09_encomenda")]
+ [Table("t_09_pedido")]
 public class EncomendaModel
 {
     [Column("id")]

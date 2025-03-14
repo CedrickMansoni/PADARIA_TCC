@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Padaria.WebApi.Models;
@@ -6,6 +7,7 @@ namespace Padaria.WebApi.Models;
 [Table("t_10_venda")]
 public class VendaModel
 {
+    [Key]
     [Column("numero_factura")]
     public string NumeroFactura { get; set; } = string.Empty;
 
@@ -20,4 +22,7 @@ public class VendaModel
 
     [Column("estado")]
     public string Estado { get; set; } = string.Empty;
+
+    [Column("forma_pagamento")]
+    public string FormaPagamento { get; set; } = string.Empty;
 }
