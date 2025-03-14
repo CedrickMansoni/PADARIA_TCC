@@ -10,4 +10,11 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data/" />
+    <Folder Include="Models/" />
+    <Folder Include="Repository/" />
+    <Folder Include="Service/" />
+  </ItemGroup>
+
 </Project>
