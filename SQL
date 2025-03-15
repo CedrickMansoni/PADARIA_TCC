@@ -6,7 +6,7 @@ CREATE TABLE t_01_categoria (
     descricao VARCHAR(100) NOT NULL UNIQUE
 );
 -- Inserir categorias de funcionários
-INSERT INTO t_01_categoria (descricao) VALUES ('Administrador'),('Gerente'),('Padeiro'),('Caixa');
+INSERT INTO t_01_categoria (descricao) VALUES ('Administrador'),('Gerente'),('Padeiro'),('Caixa'),('Pessoa Juridica'),('Pessoa Física');
 
 -- Tabela de Funcionário
 CREATE TABLE t_02_funcionario (
@@ -27,6 +27,8 @@ CREATE TABLE t_03_cliente (
     nif VARCHAR(20) UNIQUE,
     estado VARCHAR(20) NOT NULL DEFAULT 'Offline'
 );
+INSERT INTO t_03_cliente (id_categoria, nome, senha, nif, estado)
+VALUES (6, 'Consumidor Final', 'senha123', '000000000', 'Inactivo');
 
 -- Tabela de Telefone
 CREATE TABLE t_04_telefone (

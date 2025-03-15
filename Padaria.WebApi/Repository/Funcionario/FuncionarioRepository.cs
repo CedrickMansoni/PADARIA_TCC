@@ -127,9 +127,6 @@ public class FuncionarioRepository(AppDataContext context) : IFuncionarioReposit
             {
                 IdCategoria = f.IdCategoria,
                 NomeCompleto = f.NomeFuncionario,
-                Senha = f.SenhaFuncionario,
-                Avatar = f.AvatarFuncionario,
-                Estado = f.EstadoFuncionario
 
             };
             // Actualizar funcionário
@@ -194,15 +191,15 @@ public class FuncionarioRepository(AppDataContext context) : IFuncionarioReposit
         return await _context.SaveChangesAsync() > 0;
     }
 
-    public async Task<bool> AtualizarAvatarFuncionarioAsync(int id, string novoAvatar)
+    public async Task<string> AtualizarAvatarFuncionarioAsync(int id, string novoAvatar)
     {
         var funcionario = await _context.TabelaFuncionarioModel.FindAsync(id);
         if (funcionario == null)
-            return false;
+            return "Não existe nenhum funcionário com este id";
 
         funcionario.Avatar = novoAvatar;
         _context.TabelaFuncionarioModel.Update(funcionario);
-        return await _context.SaveChangesAsync() > 0;
+        return await _context.SaveChangesAsync() > 0 ? "Foto de perfil editada com sucesso" : "Erro: Não conseguimos editar a sua foto de perfil";
     }
 
     // Login
@@ -230,4 +227,10 @@ public class FuncionarioRepository(AppDataContext context) : IFuncionarioReposit
         return await _context.TabelaFuncionarioModel.CountAsync();
     }
 
+    public async Task<string> ObterCategoriaPorIdAsync(int id)
+    {
+        var categoria = await _context.TabelaCategoriaFuncionarioModel.FirstOrDefaultAsync(x => x.Id == id);
+        if(categoria is null) return string.Empty;
+        return categoria.Descricao;
+    }
 }

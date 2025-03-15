@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Padaria.Share.Hash_Password;
 using Padaria.WebApi.Data;
+using Padaria.WebApi.Repository.Funcionario;
+using Padaria.WebApi.Service.Funcionario;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +14,13 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddTransient<IFuncionarioRepository, FuncionarioRepository>();
+builder.Services.AddTransient<IFuncionarioService, FuncionarioService>();
+
+builder.Services.AddTransient<IHash_PWD, Hash_PWD>();
 string conexao = string.Empty;
-# if DEBUG
-    conexao = builder.Configuration.GetConnectionString("LocalConnection")!;
+#if DEBUG
+conexao = builder.Configuration.GetConnectionString("LocalConnection")!;
 #else 
     conexao = builder.Configuration.GetConnectionString("ProdutionConnection")!;
 #endif
@@ -38,11 +45,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json","PADARIA_APP"));
+    app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "PADARIA_APP"));
 }
 
 string storagePath = app.Environment.IsDevelopment() ?
-"/home/ckm/Storage/Padaria" : 
+"/home/ckm/Storage/Padaria" :
 "/home/GSA_PROJECT/Storage/Padaria";
 
 // Configurar middleware para servir arquivos de um diretório externo
