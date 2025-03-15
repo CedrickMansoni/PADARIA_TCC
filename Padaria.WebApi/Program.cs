@@ -5,6 +5,7 @@ using Padaria.Share.Hash_Password;
 using Padaria.WebApi.Data;
 using Padaria.WebApi.Repository.Funcionario;
 using Padaria.WebApi.Service.Funcionario;
+using Padaria.WebApi.SMS_Service.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,8 @@ builder.Services.AddTransient<IFuncionarioRepository, FuncionarioRepository>();
 builder.Services.AddTransient<IFuncionarioService, FuncionarioService>();
 
 builder.Services.AddTransient<IHash_PWD, Hash_PWD>();
+builder.Services.AddTransient<ISMS_enviar, SMS_enviar>();
+
 string conexao = string.Empty;
 #if DEBUG
 conexao = builder.Configuration.GetConnectionString("LocalConnection")!;

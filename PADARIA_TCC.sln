@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Padaria.Share", "Padaria.Sh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Padaria.WebApi", "Padaria.WebApi\Padaria.WebApi.csproj", "{39CAF37E-6E82-4616-AA0B-AC3D5A10092A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Padaria.Mobile.Cliente", "Padaria.Mobile.Cliente\Padaria.Mobile.Cliente.csproj", "{1AC08208-29DF-446F-9449-CAF29D18EEA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{39CAF37E-6E82-4616-AA0B-AC3D5A10092A}.Release|x64.Build.0 = Release|Any CPU
 		{39CAF37E-6E82-4616-AA0B-AC3D5A10092A}.Release|x86.ActiveCfg = Release|Any CPU
 		{39CAF37E-6E82-4616-AA0B-AC3D5A10092A}.Release|x86.Build.0 = Release|Any CPU
+		{1AC08208-29DF-446F-9449-CAF29D18EEA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AC08208-29DF-446F-9449-CAF29D18EEA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AC08208-29DF-446F-9449-CAF29D18EEA8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1AC08208-29DF-446F-9449-CAF29D18EEA8}.Debug|x64.Build.0 = Debug|Any CPU
+		{1AC08208-29DF-446F-9449-CAF29D18EEA8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1AC08208-29DF-446F-9449-CAF29D18EEA8}.Debug|x86.Build.0 = Debug|Any CPU
+		{1AC08208-29DF-446F-9449-CAF29D18EEA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AC08208-29DF-446F-9449-CAF29D18EEA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AC08208-29DF-446F-9449-CAF29D18EEA8}.Release|x64.ActiveCfg = Release|Any CPU
+		{1AC08208-29DF-446F-9449-CAF29D18EEA8}.Release|x64.Build.0 = Release|Any CPU
+		{1AC08208-29DF-446F-9449-CAF29D18EEA8}.Release|x86.ActiveCfg = Release|Any CPU
+		{1AC08208-29DF-446F-9449-CAF29D18EEA8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
