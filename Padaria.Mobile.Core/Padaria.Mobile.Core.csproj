@@ -22,7 +22,7 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>Padaria.Mobile.Core</ApplicationTitle>
+		<ApplicationTitle>Manuel e Filhos</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.padaria.mobile.core</ApplicationId>
@@ -47,7 +47,7 @@
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#fff5e1" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -69,6 +69,12 @@
 	  <ProjectReference Include="../Padaria.Mobile.View/Padaria.Mobile.View.csproj" />
 	  <ProjectReference Include="../Padaria.Mobile.ViewModel/Padaria.Mobile.ViewModel.csproj" />
 	  <ProjectReference Include="../Padaria.Share/Padaria.Share.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="AppShell.xaml.cs">
+	    <DependentUpon>AppShell.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 </Project>

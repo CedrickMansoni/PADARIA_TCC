@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Padaria.Mobile.View.FuncionarioViews.Views.Login_Pin_Page"
+             BackgroundColor="#fff5e1"
+             Shell.NavBarHasShadow="True"
+             Shell.BackgroundColor="#d6b06a"
+             Shell.TitleColor="#fff"
+             Shell.ForegroundColor="#fff"
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.FuncionarioViewModels;assembly=Padaria.Mobile.ViewModel"
+             x:DataType="vm:Login_Pin_ViewModel"
+             Title="Login | Digite o seu pin">
+
+        <ContentPage.BindingContext>
+                <vm:Login_Pin_ViewModel/>
+        </ContentPage.BindingContext>
+
+        <ContentPage.Resources>
+                <Style TargetType="Button">
+                        <Setter Property="FontSize"
+                                Value="30"/>
+                        <Setter Property="FontFamily"
+                                Value="MontserratBold"/>
+                        <Setter Property="HeightRequest"
+                                Value="70"/>
+                        <Setter Property="WidthRequest"
+                                Value="70"/>
+                        <Setter Property="CornerRadius"
+                                Value="60"/>
+                        <Setter Property="BackgroundColor"
+                                Value="#d6b06a"/>
+                </Style>
+                <Style TargetType="Border">
+                        <Setter Property="StrokeShape"
+                                Value="RoundRectangle 30"/>
+                        <Setter Property="HeightRequest"
+                                Value="30"/>
+                        <Setter Property="WidthRequest"
+                                Value="30"/>
+                </Style>
+        </ContentPage.Resources>
+
+        <Grid>
+                <Grid RowDefinitions="*,Auto,Auto,Auto,Auto,*"
+                      ColumnDefinitions="*,Auto,Auto,Auto,*"
+                      RowSpacing="10"
+                      ColumnSpacing="10"
+                      IsEnabled="{Binding EnablePage}">
+                        <Grid ColumnDefinitions="*,*,*,*,*,*"
+                              HorizontalOptions="Center"
+                              Grid.Row="0"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="5"
+                              ColumnSpacing="8">
+                                <Border Grid.Column="0"
+                                        BackgroundColor="{Binding NBorder0}"/>
+                                <Border Grid.Column="1"
+                                        BackgroundColor="{Binding NBorder1}"/>
+                                <Border Grid.Column="2"
+                                        BackgroundColor="{Binding NBorder2}"/>
+                                <Border Grid.Column="3"
+                                        BackgroundColor="{Binding NBorder3}"/>
+                                <Border Grid.Column="4"
+                                        BackgroundColor="{Binding NBorder4}"/>
+                                <Border Grid.Column="5"
+                                        BackgroundColor="{Binding NBorder5}"/>
+                        </Grid>
+
+                        <!--! ****************************************** -->
+                        <Button Text="1"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Command="{Binding AddPinCommand}"
+                                CommandParameter="1"/>
+                        <Button Text="2"
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Command="{Binding AddPinCommand}"
+                                CommandParameter="2"/>
+                        <Button Text="3"
+                                Grid.Row="1"
+                                Grid.Column="3"
+                                Command="{Binding AddPinCommand}"
+                                CommandParameter="3"/>
+                        <!--! ****************************************** -->
+                        <!--! ****************************************** -->
+                        <Button Text="4"
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Command="{Binding AddPinCommand}"
+                                CommandParameter="4"/>
+                        <Button Text="5"
+                                Grid.Row="2"
+                                Grid.Column="2"
+                                Command="{Binding AddPinCommand}"
+                                CommandParameter="5"/>
+                        <Button Text="6"
+                                Grid.Row="2"
+                                Grid.Column="3"
+                                Command="{Binding AddPinCommand}"
+                                CommandParameter="6"/>
+                        <!--! ****************************************** -->
+                        <!--! ****************************************** -->
+                        <Button Text="7"
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Command="{Binding AddPinCommand}"
+                                CommandParameter="7"/>
+                        <Button Text="8"
+                                Grid.Row="3"
+                                Grid.Column="2"
+                                Command="{Binding AddPinCommand}"
+                                CommandParameter="8"/>
+                        <Button Text="9"
+                                Grid.Row="3"
+                                Grid.Column="3"
+                                Command="{Binding AddPinCommand}"
+                                CommandParameter="9"/>
+                        <!--! ****************************************** -->
+                        <!--! ****************************************** -->
+                        <Button Text="Del"
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                Command="{Binding DeletePinCommand}"/>
+                        <Button Text="0"
+                                Grid.Row="4"
+                                Grid.Column="2"
+                                Command="{Binding AddPinCommand}"
+                                CommandParameter="0"/>
+                        <!--! ****************************************** -->
+                </Grid>
+                <StackLayout BackgroundColor="#454545"
+                             Opacity="0.8"
+                             IsVisible="{Binding Activity}"
+                             VerticalOptions="Fill"
+                             HorizontalOptions="Fill"/>
+
+                <ActivityIndicator IsRunning="{Binding Activity}"
+                                   IsVisible="{Binding Activity}"
+                                   HeightRequest="150"
+                                   Color="#FFF"/>
+        </Grid>
+</ContentPage>

@@ -3,13 +3,25 @@
     x:Class="Padaria.Mobile.Core.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Padaria.Mobile.Core"
-    Shell.FlyoutBehavior="Flyout"
-    Title="Padaria.Mobile.Core">
+    xmlns:local="clr-namespace:Padaria.Mobile.View.FuncionarioViews.Views;assembly=Padaria.Mobile.View"
+    Shell.FlyoutBehavior="Disabled">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        ContentTemplate="{DataTemplate local:Start_Page}"
+        Route="Start_Page"/>
 
+    <ShellContent
+        ContentTemplate="{DataTemplate local:Admin_MainPage}"
+        Route="Admin_MainPage"/>
+
+     <ShellContent
+        ContentTemplate="{DataTemplate local:Gerente_MainPage}"
+        Route="Gerente_MainPage"/>
+
+    <ShellContent
+        ContentTemplate="{DataTemplate local:Caixa_MainPage}"
+        Route="Caixa_MainPage"/>
+
+
+    
 </Shell>

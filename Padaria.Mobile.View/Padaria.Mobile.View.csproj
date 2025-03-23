@@ -27,4 +27,22 @@
 	  <ProjectReference Include="../Padaria.Mobile.ViewModel/Padaria.Mobile.ViewModel.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="FuncionarioViews/Views/Login_Numero_Telefone_Page.xaml.cs">
+	    <DependentUpon>Login_Numero_Telefone_Page.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="FuncionarioViews/Views/Criar_Conta_Page.xaml.cs">
+	    <DependentUpon>Criar_Conta_Page.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="FuncionarioViews/Views/Start_Page.xaml.cs">
+	    <DependentUpon>Start_Page.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="FuncionarioViews/Views/Login_Pin_Page.xaml.cs">
+	    <DependentUpon>Login_Pin_Page.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="FuncionarioViews/Views/Categoria_Func_Page.xaml.cs">
+	    <DependentUpon>Categoria_Func_Page.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
 </Project>

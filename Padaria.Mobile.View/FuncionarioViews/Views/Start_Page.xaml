@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Padaria.Mobile.View.FuncionarioViews.Views.Start_Page"
+             Shell.NavBarIsVisible="False"
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.FuncionarioViewModels;assembly=Padaria.Mobile.ViewModel"
+             x:DataType="vm:Start_Page_ViewModel"
+             BackgroundColor="#fff5e1">
+
+    <ContentPage.BindingContext>
+        <vm:Start_Page_ViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <Grid ColumnDefinitions="*"
+              RowSpacing="15"
+              RowDefinitions="3*,Auto,Auto,*"
+              IsEnabled="{Binding EnablePage}">
+            <Border StrokeThickness="0"
+                    Grid.Row="0"
+                    Grid.RowSpan="4">
+                <Image Source="bg_image"
+                       Aspect="Fill"/>
+            </Border>
+
+            <Border Grid.Column="1"
+                    VerticalOptions="Start"
+                    HorizontalOptions="Start"
+                    Margin="30"
+                    StrokeShape="RoundRectangle 100"
+                    StrokeThickness="5"
+                    HeightRequest="210"
+                    WidthRequest="210">
+                <Image Source="logo_mf"
+                       Aspect="Fill"/>
+            </Border>
+
+            <Border Grid.Column="1"
+                    Grid.Row="1"
+                    StrokeShape="RoundRectangle 60"
+                    StrokeThickness="3"
+                    BackgroundColor="#442b22"
+                    Padding="0"
+                    HeightRequest="65"
+                    MaximumWidthRequest="500">
+                <Button Text="Entrar"
+                        BackgroundColor="Transparent"
+                        FontSize="25"
+                        FontFamily="MontserratRegular"
+                        Command="{Binding GotoLoginPageCommand}"/>
+            </Border>
+
+            <Border Grid.Column="1"
+                    Grid.Row="2"
+                    StrokeShape="RoundRectangle 60"
+                    StrokeThickness="3"
+                    BackgroundColor="#442b22"
+                    Padding="0"
+                    HeightRequest="65"
+                    MaximumWidthRequest="500">
+                <Button Text="Criar Conta"
+                        BackgroundColor="Transparent"
+                        FontSize="25"
+                        FontFamily="MontserratRegular"
+                        Command="{Binding GotoContaPageCommand}"/>
+            </Border>
+        </Grid>
+        <StackLayout BackgroundColor="#454545"
+                     Opacity="0.8"
+                     IsVisible="{Binding Activity}"
+                     VerticalOptions="Fill"
+                     HorizontalOptions="Fill"/>
+
+        <ActivityIndicator IsRunning="{Binding Activity}"
+                           IsVisible="{Binding Activity}"
+                           HeightRequest="150"
+                           Color="#FFF"/>
+
+    </Grid>
+</ContentPage>

@@ -233,4 +233,9 @@ public class FuncionarioRepository(AppDataContext context) : IFuncionarioReposit
         if(categoria is null) return string.Empty;
         return categoria.Descricao;
     }
+
+    public async Task<IEnumerable<CategoriaFuncionarioModel>> ObterCategoriasAsync()
+    {
+        return await _context.TabelaCategoriaFuncionarioModel.Where(x => x.Id <= 4).ToListAsync();        
+    }
 }

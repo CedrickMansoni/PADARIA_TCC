@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Padaria.Mobile.View.FuncionarioViews.Views.Login_Numero_Telefone_Page"
+             BackgroundColor="#fff5e1"
+             Shell.NavBarHasShadow="True"
+             Shell.BackgroundColor="#d6b06a"
+             Shell.TitleColor="#fff"
+             Shell.ForegroundColor="#fff"
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.FuncionarioViewModels;assembly=Padaria.Mobile.ViewModel"
+             x:DataType="vm:Login_Telefone_ViewModel"
+             Title="Login | Insira o seu número de telefone">
+
+    <ContentPage.BindingContext>
+        <vm:Login_Telefone_ViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <Grid RowDefinitions="*,Auto,*"
+              Padding="10"
+              MaximumWidthRequest="500"
+              IsEnabled="{Binding EnablePage}">
+            <Border Grid.Row="1"
+                    Padding="0, -15"
+                    StrokeShape="RoundRectangle 60"
+                    BackgroundColor="#fff"
+                    StrokeThickness="0">
+                <Grid>
+                    <Entry Placeholder="Telefone"
+                           FontSize="25"
+                           Keyboard="Numeric"
+                           MaxLength="9"
+                           TextChanged="Entry_TextChanged"
+                           FontFamily="MontserratRegular"
+                           HeightRequest="85"
+                           Margin="20,0,0,0"
+                           HorizontalOptions="Fill"
+                           Text="{Binding Telefone}"/>
+                    <Border StrokeShape="RoundRectangle 90"
+                            HorizontalOptions="End"
+                            WidthRequest="100"
+                            HeightRequest="55"
+                            BackgroundColor="#d6b06a"
+                            Margin="10,0,0,0"
+                            StrokeThickness="0"
+                            IsVisible="{Binding EstadoBotao}">
+                        <Grid>
+                            <Image Source="next"
+                                   HeightRequest="50"
+                                   WidthRequest="40"
+                                   Aspect="Fill"/>
+                            <Button WidthRequest="180"
+                                    BackgroundColor="Transparent"
+                                    Command="{Binding GotoLoginPinPageCommand}"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+        <StackLayout BackgroundColor="#454545"
+                     Opacity="0.8"
+                     IsVisible="{Binding Activity}"
+                     VerticalOptions="Fill"
+                     HorizontalOptions="Fill"/>
+
+        <ActivityIndicator IsRunning="{Binding Activity}"
+                           IsVisible="{Binding Activity}"
+                           HeightRequest="150"
+                           Color="#FFF"/>
+    </Grid>
+</ContentPage>

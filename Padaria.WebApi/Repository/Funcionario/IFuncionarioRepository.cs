@@ -16,6 +16,7 @@ public interface IFuncionarioRepository
     Task<IEnumerable<Get_Func_DTO>> ObterFuncionariosPorCategoriaAsync(int idCategoria);
     Task<bool> FuncionarioExisteAsync(int id);
     Task<string> ObterCategoriaPorIdAsync(int id);
+    Task<IEnumerable<CategoriaFuncionarioModel>> ObterCategoriasAsync();
 
     // Update
     Task<string> AtualizarFuncionarioAsync(Post_Func_DTO funcionario);

@@ -15,7 +15,7 @@ namespace Padaria.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AdicionarFuncionario([FromBody] Post_Func_DTO funcionario)
-        {
+        {            
             try
             {
                 var resultado = await _service.AdicionarFuncionarioAsync(funcionario);
@@ -141,6 +141,11 @@ namespace Padaria.WebApi.Controllers
                     return Unauthorized("Credenciais inválidas");
                 }
 
+                if (!"Activo".Equals(funcionario.EstadoFuncionario))
+                {
+                    return Unauthorized("Funcionário sem permissão para entrar no sistema. Por favor contacte um dos gerentes.");
+                }
+
                 return Ok(funcionario);
             }
             catch
@@ -182,6 +187,19 @@ namespace Padaria.WebApi.Controllers
             }
         }
 
-
+        [HttpGet, Route("/listar/categorias")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> ObterCategoriasAsync()
+        {
+            try
+            {
+                var categorias = await _service.ObterCategoriasAsync();
+                return Ok(categorias);
+            }
+            catch
+            {
+                return StatusCode(500, $"Erro interno");
+            }
+        }
     }
 }

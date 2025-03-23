@@ -1,5 +1,6 @@
 using System;
 using Padaria.Share.Funcionario.DTO;
+using Padaria.WebApi.Models;
 
 namespace Padaria.WebApi.Service.Funcionario;
 
@@ -11,6 +12,7 @@ public interface IFuncionarioService
     // Read
     Task<IEnumerable<Get_Func_DTO>> ObterTodosFuncionariosAsync();
     Task<IEnumerable<Get_Func_DTO>> ObterFuncionariosPorCategoriaAsync(int idCategoria);
+    Task<IEnumerable<Get_Categ_Func_DTO>> ObterCategoriasAsync();
 
     // Update
     Task<string> AtualizarFuncionarioAsync(Post_Func_DTO funcionario);

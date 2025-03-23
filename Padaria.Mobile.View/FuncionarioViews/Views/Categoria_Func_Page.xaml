@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Padaria.Mobile.View.FuncionarioViews.Views.Categoria_Func_Page"
+             BackgroundColor="#fff5e1"
+             Shell.NavBarHasShadow="True"
+             Shell.BackgroundColor="#d6b06a"
+             Shell.TitleColor="#fff"
+             Shell.ForegroundColor="#fff"
+             NavigationPage.HasNavigationBar="True"
+             Shell.NavBarIsVisible="True"
+             Title="Categorias">
+
+    <ContentPage.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="#fff5e1"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="*,Auto,*">
+        <CollectionView x:Name="colecao"
+                        Grid.Row="1"
+                        ItemsSource="{Binding Categorias}"
+                        SelectionMode="Single"
+                        Margin="0, 30"
+                        MaximumWidthRequest="500">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="8">
+                        <Border Padding="0,-15"
+                                StrokeShape="RoundRectangle 30"
+                                BackgroundColor="#fff">
+                            <Grid  HeightRequest="80">
+                                <Border StrokeShape="RoundRectangle 60"
+                                        BackgroundColor="#d6b06a"
+                                        WidthRequest="55"
+                                        HeightRequest="55"
+                                        HorizontalOptions="Start">
+                                    <Label Text="{Binding Id}"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="Center"
+                                           FontFamily="MontserratBold"
+                                           TextColor="#333"
+                                           FontSize="25"/>
+                                </Border>
+                                <Label Text="{Binding Categoria}"
+                                       Margin="75,0"
+                                       VerticalOptions="Center"
+                                       FontFamily="MontserratRegular"
+                                       TextColor="#333"
+                                       FontSize="25"/>
+                            </Grid>
+                        </Border>
+                        <Button Command="{Binding BindingContext.SelecionarCategoria, Source={x:Reference Name = colecao}}"
+                                CommandParameter="{Binding .}"
+                                BackgroundColor="Transparent"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

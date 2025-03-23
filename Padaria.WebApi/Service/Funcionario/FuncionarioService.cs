@@ -2,6 +2,7 @@ using System;
 using Padaria.Share.DNS_App;
 using Padaria.Share.Funcionario.DTO;
 using Padaria.Share.Hash_Password;
+using Padaria.WebApi.Models;
 using Padaria.WebApi.Repository.Funcionario;
 using Padaria.WebApi.SMS_Service.Model_SMS;
 using Padaria.WebApi.SMS_Service.Service;
@@ -17,8 +18,8 @@ public class FuncionarioService(IFuncionarioRepository repository, IHash_PWD pwd
     public async Task<string> AdicionarFuncionarioAsync(Post_Func_DTO funcionario)
     {
         int total_func = await repository.ContarFuncionarios();
-        if (total_func < 1) funcionario.IdCategoria = 1;
-        if (total_func >= 1) return "Informe a categoria do funcionário";
+        if (total_func == 0 && funcionario.IdCategoria != 1) return "O primeiro funcionário da plataforma deve ser obrigatóriamente um adminstrador.\nSelecione a categoria de Administrador," ;
+        if (total_func >= 1 && funcionario.IdCategoria == 0) return "Informe a categoria do funcionário";
         if (string.IsNullOrEmpty(funcionario.NomeFuncionario)) return "Informe o nome do funcionário";
         if (string.IsNullOrEmpty(funcionario.TelefoneFuncionario)) return "Informe o telefone do funcionário";
         if (string.IsNullOrEmpty(funcionario.AvatarFuncionario)) funcionario.AvatarFuncionario = "user";
@@ -95,7 +96,18 @@ public class FuncionarioService(IFuncionarioRepository repository, IHash_PWD pwd
 
     public async Task<Get_Func_DTO?> AutenticarFuncionarioAsync(Login_Func_DTO login)
     {
+        login.SenhaFuncionario = hash_PWD.HashSenha(login.SenhaFuncionario);
         return await repository.AutenticarFuncionarioAsync(login);
+    }
+
+    public async Task<IEnumerable<Get_Categ_Func_DTO>> ObterCategoriasAsync()
+    {
+        var categ = await repository.ObterCategoriasAsync();
+        return categ.Select(x => new Get_Categ_Func_DTO
+        {
+            Id = x.Id,
+            Categoria = x.Descricao
+        }) ;
     }
 
     public async Task<IEnumerable<Get_Func_DTO>> ObterFuncionariosPorCategoriaAsync(int idCategoria)
