@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Padaria.Mobile.View.FuncionarioViews.Views.Listar_Func_Page"
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.FuncionarioViewModels;assembly=Padaria.Mobile.ViewModel"
+             xmlns:dto="clr-namespace:Padaria.Share.Funcionario.DTO;assembly=Padaria.Share"
+             x:DataType="vm:Listar_Func_ViewModel"
+             BackgroundColor="#fff5e1"
+             Shell.NavBarHasShadow="True"
+             Shell.BackgroundColor="#d6b06a"
+             Shell.TitleColor="#fff"
+             Shell.ForegroundColor="#fff"
+             NavigationPage.HasNavigationBar="True"
+             Shell.NavBarIsVisible="True"
+             Title="Funcionários">
+
+    <ContentPage.BindingContext>
+        <vm:Listar_Func_ViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="TextColor"
+                    Value="#fff5e1"/>
+            <Setter Property="FontSize"
+                    Value="25"/>
+            <Setter Property="FontFamily"
+                    Value="MontserratRegular"/>
+        </Style>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid Padding="45"
+              IsEnabled="{Binding EnablePage}">
+            <CollectionView x:Name="colecao"
+                            ItemsSource="{Binding Funcionarios}"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dto:Get_Func_DTO">
+                        <Border BackgroundColor="#d6b06a"
+                                Stroke="#fff5e1"
+                                StrokeShape="RoundRectangle 10"
+                                Margin="5"
+                                Padding="10"
+                                HeightRequest="220"
+                                WidthRequest="600">
+                            <Grid VerticalOptions="Center"
+                                  HorizontalOptions="Fill"
+                                  ColumnDefinitions="*,2*,Auto"
+                                  RowDefinitions="*,Auto,Auto,Auto,*">
+                                <Border StrokeShape="RoundRectangle 90"
+                                        HeightRequest="170"
+                                        WidthRequest="170"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="5"
+                                        HorizontalOptions="Start"
+                                        StrokeThickness="3"
+                                        Stroke="#fff5e1">
+                                    <Image Source="{Binding AvatarFuncionario}"
+                                           Aspect="Fill"
+                                           HorizontalOptions="Start"/>
+                                </Border>
+                                <Label Text="{Binding NomeFuncionario}"
+                                       Grid.Column="1"
+                                       Grid.Row="1"/>
+                                <Label Text="{Binding Categoria}"
+                                       Grid.Column="1"
+                                       Grid.Row="2"/>
+                                <Label Text="{Binding TelefoneFuncionario}"
+                                       Grid.Column="1"
+                                       Grid.Row="3"/>
+
+                                <Switch Grid.Column="2"
+                                        IsToggled="{Binding Estado}"
+                                        Toggled="Switch_Toggled"
+                                        Grid.Row="0"
+                                        VerticalOptions="Start"
+                                        OnColor="#64a868"
+                                        ThumbColor="#fff5e1"/>
+                                <Grid Grid.Column="2"
+                                      Grid.Row="3"
+                                      HeightRequest="60"
+                                      WidthRequest="60"
+                                      Grid.RowSpan="2">
+                                    <Image Source="alterar"/>
+                                    <Button CornerRadius="90"
+                                            BackgroundColor="Transparent"
+                                            Command="{Binding BindingContext.RedefinirSenha, Source={x:Reference Name = colecao}}"
+                                            CommandParameter="{Binding .}"/>
+                                </Grid>
+
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <Grid RowDefinitions="*,Auto,*"
+                          ColumnDefinitions="*,Auto,*">
+                        <Label Grid.Row="1"
+                               Grid.Column="1"
+                               FontFamily="MontserratRegular"
+                               FontSize="30"
+                               Text="Lista vazia"/>
+                    </Grid>
+                </CollectionView.EmptyView>
+            </CollectionView>
+            <Grid HeightRequest="70"
+                  WidthRequest="70"
+                  HorizontalOptions="End"
+                  VerticalOptions="End">
+
+                <Image Source="add"/>
+                <Button BackgroundColor="Transparent" Command="{Binding GotoContaPageCommand}"/>
+            </Grid>
+        </Grid>
+        <StackLayout BackgroundColor="#454545"
+                     Opacity="0.8"
+                     IsVisible="{Binding Activity}"
+                     VerticalOptions="Fill"
+                     HorizontalOptions="Fill"/>
+
+        <ActivityIndicator IsRunning="{Binding Activity}"
+                           IsVisible="{Binding Activity}"
+                           HeightRequest="150"
+                           Color="#FFF"/>
+
+    </Grid>
+</ContentPage>

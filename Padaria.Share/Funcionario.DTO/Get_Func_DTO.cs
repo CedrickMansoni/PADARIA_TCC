@@ -10,5 +10,6 @@ public class Get_Func_DTO
     public string TelefoneFuncionario { get; set; } = string.Empty;
     public string AvatarFuncionario { get; set; } = string.Empty;
     public string EstadoFuncionario { get; set; } = string.Empty;
+    public bool Estado {get;set;}
     public string Mensagem { get; set; } = string.Empty;
 }

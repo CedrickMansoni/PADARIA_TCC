@@ -118,6 +118,7 @@ public class Login_Pin_ViewModel : BindableObject
                         break;
                 }
                 ActivityCommand.Execute(null);
+                await SecureStorage.Default.SetAsync("IdUsuario", funcionario.Id.ToString());
             }
             else
             {

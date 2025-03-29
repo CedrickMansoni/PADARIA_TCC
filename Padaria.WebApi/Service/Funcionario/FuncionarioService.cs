@@ -18,7 +18,7 @@ public class FuncionarioService(IFuncionarioRepository repository, IHash_PWD pwd
     public async Task<string> AdicionarFuncionarioAsync(Post_Func_DTO funcionario)
     {
         int total_func = await repository.ContarFuncionarios();
-        if (total_func == 0 && funcionario.IdCategoria != 1) return "O primeiro funcionário da plataforma deve ser obrigatóriamente um adminstrador.\nSelecione a categoria de Administrador," ;
+        if (total_func == 0 && funcionario.IdCategoria != 1) return "O primeiro funcionário da plataforma deve ser obrigatóriamente um adminstrador.\nSelecione a categoria de Administrador,";
         if (total_func >= 1 && funcionario.IdCategoria == 0) return "Informe a categoria do funcionário";
         if (string.IsNullOrEmpty(funcionario.NomeFuncionario)) return "Informe o nome do funcionário";
         if (string.IsNullOrEmpty(funcionario.TelefoneFuncionario)) return "Informe o telefone do funcionário";
@@ -88,10 +88,41 @@ public class FuncionarioService(IFuncionarioRepository repository, IHash_PWD pwd
         return await repository.AtualizarFuncionarioAsync(funcionario);
     }
 
-    public async Task<bool> AtualizarSenhaFuncionarioAsync(int id, string novaSenha)
+    public async Task<bool> AtualizarSenhaFuncionarioAsync(int id, string novaSenha = "")
     {
-        string senhaHash = hash_PWD.HashSenha(novaSenha);
-        return await repository.AtualizarSenhaFuncionarioAsync(id, senhaHash);
+        string senha = string.Empty;
+        string senhaHash = string.Empty;
+
+        if(string.IsNullOrEmpty(novaSenha))
+        {
+            senha = new Random().Next(100000, 999999).ToString();
+            senhaHash = hash_PWD.HashSenha(senha);
+        } else
+        {
+            senhaHash = novaSenha;
+        }
+
+        senhaHash = hash_PWD.HashSenha(senhaHash);
+        var response = await repository.AtualizarSenhaFuncionarioAsync(id, senhaHash);
+        var funcionario = await repository.ObterFuncionarioPorIdAsync(id);
+        var mensagem = new Mensagem
+        {
+            Destinatario = funcionario!.TelefoneFuncionario,
+            DescricaoSms = $"Olá, {funcionario.NomeFuncionario}! 🎉\n\n" +
+            $"A sua senha foi redefinida na plataforma da Padaria Manuel & Filhos.\n\n" +
+            $"Acesse com as credenciais:\n" +
+            $"👤 Usuário: {funcionario.TelefoneFuncionario}\n" +
+            $"🔑 Senha: {senha}\n\n" +
+            $"Altere sua senha apos acesso."
+        };
+
+        var sms = new EnviarMensagem
+        {
+            Mensagem = mensagem
+        };
+
+        await enviarSMS.EnviarSMS(sms);
+        return response;
     }
 
     public async Task<Get_Func_DTO?> AutenticarFuncionarioAsync(Login_Func_DTO login)
@@ -107,7 +138,7 @@ public class FuncionarioService(IFuncionarioRepository repository, IHash_PWD pwd
         {
             Id = x.Id,
             Categoria = x.Descricao
-        }) ;
+        });
     }
 
     public async Task<IEnumerable<Get_Func_DTO>> ObterFuncionariosPorCategoriaAsync(int idCategoria)

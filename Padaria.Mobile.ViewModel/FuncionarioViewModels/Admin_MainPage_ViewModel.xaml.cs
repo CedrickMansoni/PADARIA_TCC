@@ -46,4 +46,17 @@ public class Admin_MainPage_ViewModel : BindableObject
 		await Shell.Current.GoToAsync("//Start_Page");
 
 	});
+
+
+	public ICommand GotoFuncPageCommand => new Command(async ()=> 
+	{
+		await Shell.Current.GoToAsync("Listar_Func");
+	});
+
+	//
+	public ICommand GotoProdutoPageCommand => new Command(async ()=> 
+	{
+		await Shell.Current.GoToAsync("Produto_MainPage");
+	});
+
 }

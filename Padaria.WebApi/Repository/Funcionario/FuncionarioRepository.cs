@@ -86,6 +86,7 @@ public class FuncionarioRepository(AppDataContext context) : IFuncionarioReposit
                         TelefoneFuncionario = telefone.NumeroTelefone,
                         Categoria = categoria.Descricao,
                         EstadoFuncionario = funcionario.Estado,
+                        Estado = funcionario.Estado == "Activo",
                         AvatarFuncionario = funcionario.Avatar,
                         Mensagem = "Sucesso"
                     };
@@ -217,7 +218,7 @@ public class FuncionarioRepository(AppDataContext context) : IFuncionarioReposit
                         Categoria = categoria.Descricao,
                         EstadoFuncionario = funcionario.Estado,
                         AvatarFuncionario = funcionario.Avatar,
-                        Mensagem = "Sucesso"
+                        Mensagem = $"Sucesso -> {funcionario.Estado == "Activo"}"
                     };
         return await query.FirstOrDefaultAsync();
     }

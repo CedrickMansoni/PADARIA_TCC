@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Padaria.Mobile.View.ProdutoView.Produto_PostView"
+             BackgroundColor="#fff5e1"
+             Shell.BackgroundColor="#d6b06a"
+             Shell.TitleColor="#fff"
+             Shell.ForegroundColor="#fff"
+             Shell.NavBarIsVisible="True"
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.ProdutoViewModels;assembly=Padaria.Mobile.ViewModel"
+             x:DataType="vm:Produto_PostViewModel"
+             Title="Cadastrar produto">
+
+    <Grid>
+        <Grid ColumnDefinitions="*,*"
+              RowSpacing="20"
+              IsEnabled="{Binding EnablePage}"
+              RowDefinitions="*,Auto, Auto, Auto, Auto,Auto,Auto,*">
+            <Image Source="logo_mf"
+                   Aspect="Fill"
+                   Grid.Row="0"
+                   Grid.RowSpan="8"/>
+
+            <Border Grid.Row="1"
+                    Grid.Column="1"
+                    StrokeThickness="0"
+                    BackgroundColor="#fff"
+                    Padding="15, -15"
+                    MaximumWidthRequest="500"
+                    StrokeShape="RoundRectangle 60">
+                <Grid>
+                    <Entry Placeholder="Categoria do produto"
+                           Text="{Binding Categoria}"
+                           HeightRequest="75"
+                           FontSize="22"
+                           FontFamily="MontserratRegular"
+                           MaximumWidthRequest="500"
+                           TextChanged="Entry_TextChanged"/>
+                    <Image Source="search"
+                           HeightRequest="30"
+                           HorizontalOptions="End"/>
+                    <Button HeightRequest="50"
+                            WidthRequest="500"
+                            BackgroundColor="Transparent"
+                            Command="{Binding SelecionarCategoriaCommand}"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="2"
+                    Grid.Column="1"
+                    StrokeThickness="0"
+                    BackgroundColor="#fff"
+                    Padding="15, -15"
+                    MaximumWidthRequest="500"
+                    StrokeShape="RoundRectangle 60">
+                <Entry Placeholder="Nome do produto"
+                       HeightRequest="75"
+                       FontSize="22"
+                       FontFamily="MontserratRegular"
+                       MaximumWidthRequest="500"
+                       TextChanged="Entry_TextChanged"
+                       Text="{Binding Produto.Nome}"/>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*"
+                  Grid.Row="3"
+                  Grid.Column="1"
+                  ColumnSpacing="10"
+                  MaximumWidthRequest="500">
+                <Border Grid.Column="0"
+                        StrokeThickness="0"
+                        BackgroundColor="#fff"
+                        Padding="15, -15"
+                        StrokeShape="RoundRectangle 60">
+                    <Entry Placeholder="Unidade de venda"
+                           HeightRequest="75"
+                           FontSize="22"
+                           Keyboard="Numeric"
+                           FontFamily="MontserratRegular"
+                           TextChanged="Entry_TextChanged"
+                           Text="{Binding Produto.Unidade}"/>
+                </Border>
+                <Border Grid.Column="1"
+                        StrokeThickness="0"
+                        BackgroundColor="#fff"
+                        Padding="15, -15"
+                        StrokeShape="RoundRectangle 60">
+                    <Entry Placeholder="Preço do produto"
+                           HeightRequest="75"
+                           FontSize="22"
+                           Keyboard="Numeric"
+                           FontFamily="MontserratRegular"
+                           TextChanged="Entry_TextChanged"
+                           Text="{Binding Produto.Preco}"/>
+                </Border>
+            </Grid>
+            <Border Grid.Row="4"
+                    Grid.Column="1"
+                    StrokeThickness="0"
+                    BackgroundColor="#fff"
+                    Padding="15, -25"
+                    Grid.RowSpan="3"
+                    MaximumWidthRequest="500"
+                    HeightRequest="200"
+                    StrokeShape="RoundRectangle 10">
+                <Editor Placeholder="Descrição do produto"
+                        FontSize="22"
+                        HeightRequest="195"
+                        FontFamily="MontserratRegular"
+                        MaximumWidthRequest="500"
+                        TextChanged="Entry_TextChanged"
+                        Text="{Binding Produto.Descricao}"/>
+            </Border>
+            <Grid ColumnDefinitions="*,*"
+                  Grid.Column="1"
+                  Grid.Row="7"
+                  ColumnSpacing="10"
+                  MaximumWidthRequest="500">
+                <Border Grid.Column="0"
+                        StrokeShape="RoundRectangle 60"
+                        StrokeThickness="0"
+                        BackgroundColor="#4c5e6a"
+                        Padding="0"
+                        HeightRequest="55"
+                        MaximumWidthRequest="500">
+                    <Button Text="Imagem"
+                            BackgroundColor="Transparent"
+                            FontSize="25"
+                            FontFamily="MontserratRegular"
+                            Command="{Binding AbrirCameraCommand}"/>
+                </Border>
+                <Border Grid.Column="1"
+                        StrokeShape="RoundRectangle 60"
+                        StrokeThickness="0"
+                        BackgroundColor="#442b22"
+                        Padding="0"
+                        HeightRequest="55"
+                        MaximumWidthRequest="500">
+                    <Button Text="Salvar"
+                            BackgroundColor="Transparent"
+                            FontSize="25"
+                            FontFamily="MontserratRegular"
+                            Command="{Binding CadastrarProdutoCommand}"
+                            IsEnabled="{Binding EstadoBotao}"/>
+                </Border>
+            </Grid>
+        </Grid>
+        <StackLayout BackgroundColor="#454545"
+                     Opacity="0.8"
+                     IsVisible="{Binding Activity}"
+                     VerticalOptions="Fill"
+                     HorizontalOptions="Fill"/>
+        <ActivityIndicator IsRunning="{Binding Activity}"
+                           IsVisible="{Binding Activity}"
+                           HeightRequest="150"
+                           WidthRequest="150"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"/>
+    </Grid>
+</ContentPage>

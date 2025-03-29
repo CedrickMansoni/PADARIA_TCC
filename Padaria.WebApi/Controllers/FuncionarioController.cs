@@ -80,14 +80,14 @@ namespace Padaria.WebApi.Controllers
         }
 
 
-        [HttpPut("/editar/estado/funcionario/{id}")]
+        [HttpPut("/editar/estado/funcionario")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AtualizarEstadoFuncionario(int id, [FromBody] string novoEstado)
+        public async Task<IActionResult> AtualizarEstadoFuncionario([FromBody] Put_UserState_DTO estado)
         {
             try
             {
-                var resultado = await _service.AtualizarEstadoFuncionarioAsync(id, novoEstado);
+                var resultado = await _service.AtualizarEstadoFuncionarioAsync(estado.UserId, estado.EstadoFuncionario);
 
                 if (!resultado)
                 {
@@ -103,21 +103,21 @@ namespace Padaria.WebApi.Controllers
         }
 
 
-        [HttpPut("/editar/senha/funcionario/{id}")]
+        [HttpPut("/editar/senha/funcionario")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AtualizarSenhaFuncionario(int id, [FromBody] string novaSenha)
+        public async Task<IActionResult> AtualizarSenhaFuncionario([FromBody] Put_Password_DTO password)
         {
             try
             {
-                var resultado = await _service.AtualizarSenhaFuncionarioAsync(id, novaSenha);
+                var resultado = await _service.AtualizarSenhaFuncionarioAsync(password.UserId, password.NewPassword);
 
                 if (!resultado)
                 {
                     return NotFound("Funcionário não encontrado");
                 }
 
-                return Ok("Senha atualizada com sucesso");
+                return Ok("Senha actualizada com sucesso");
             }
             catch (Exception ex)
             {

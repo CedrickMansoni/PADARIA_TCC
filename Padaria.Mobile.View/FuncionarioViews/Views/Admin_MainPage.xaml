@@ -70,7 +70,8 @@
                                                  Text="Funcionários"
                                                  Style="{StaticResource lblButon}"/>
                                           <Button Grid.RowSpan="2"
-                                                  BackgroundColor="Transparent"/>
+                                                  BackgroundColor="Transparent"
+                                                  Command="{Binding GotoFuncPageCommand}"/>
                                    </Grid>
                             </Border>
                             <!-- ************************************************************ -->
@@ -85,7 +86,8 @@
                                                  Text="Produtos"
                                                  Style="{StaticResource lblButon}"/>
                                           <Button Grid.RowSpan="2"
-                                                  BackgroundColor="Transparent"/>
+                                                  BackgroundColor="Transparent"
+                                                  Command="{Binding GotoProdutoPageCommand}"/>
                                    </Grid>
                             </Border>
                             <!-- ************************************************************ -->

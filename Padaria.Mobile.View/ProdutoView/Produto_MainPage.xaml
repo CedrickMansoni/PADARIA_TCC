@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Padaria.Mobile.View.ProdutoView.Produto_MainPage"
+             BackgroundColor="#fff5e1"
+             Shell.BackgroundColor="#d6b06a"
+             Shell.TitleColor="#fff"
+             Shell.ForegroundColor="#fff"
+             Shell.NavBarIsVisible="True"
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.ProdutoViewModels;assembly=Padaria.Mobile.ViewModel"
+             xmlns:local="clr-namespace:Padaria.Share.Produto.DTO;assembly=Padaria.Share"
+             x:DataType="vm:Produto_MainPageViewModel"
+             Title="Produtos">
+
+<ContentPage.BindingContext>
+    <vm:Produto_MainPageViewModel/>
+</ContentPage.BindingContext>
+
+    <Grid>
+        <Grid RowDefinitions="*"
+              IsEnabled="{Binding Enabled}">
+
+            <CollectionView x:Name="colecao"
+                            SelectionMode="Single"
+                            ItemsSource="{Binding Produtos}"
+                            Margin="10,0,10,0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="local:Get_Produto_DTO">
+                        <Border Padding="10"
+                                Margin="5"
+                                BackgroundColor="#fff">
+                            <StackLayout Orientation="Vertical">
+                                <Label Text="{Binding Nome}"
+                                       FontSize="20"
+                                       TextColor="#d6b06a"/>
+                                <Label Text="{Binding Preco}"
+                                       FontSize="15"
+                                       TextColor="#d6b06a"/>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Grid VerticalOptions="Center"
+                          HorizontalOptions="Center">
+                        <Label Text="Nenhum produto encontrado"
+                               FontSize="40"
+                               FontFamily="MontserratExtraLight"
+                               TextColor="#454545"/>
+                    </Grid>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </Grid>
+        <Border HeightRequest="90"
+                WidthRequest="90"
+                VerticalOptions="End"
+                HorizontalOptions="End"
+                Margin="0,0,20,20"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 45">
+            <Grid>
+                <Image Source="add"
+                       Aspect="Fill"/>
+                <Button BackgroundColor="Transparent"
+                    Command="{Binding GotoCadastrarProdutoCommand}"/>
+
+            </Grid>
+        </Border>
+        <StackLayout BackgroundColor="#454545"
+                     Opacity="0.8"
+                     IsVisible="{Binding Activity}"
+                     VerticalOptions="Fill"
+                     HorizontalOptions="Fill"/>
+
+        <ActivityIndicator IsRunning="{Binding Activity}"
+                           IsVisible="{Binding Activity}"
+                           HeightRequest="150"
+                           Color="#FFF"/>
+
+
+    </Grid>
+</ContentPage>

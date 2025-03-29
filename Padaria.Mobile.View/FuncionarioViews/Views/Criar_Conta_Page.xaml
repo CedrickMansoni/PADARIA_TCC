@@ -72,6 +72,7 @@
             <Entry Placeholder="Telefone"
                    HeightRequest="75"
                    FontSize="22"
+                   Keyboard="Numeric"
                    FontFamily="MontserratRegular"
                    MaximumWidthRequest="500"
                    TextChanged="Entry_TextChanged"
