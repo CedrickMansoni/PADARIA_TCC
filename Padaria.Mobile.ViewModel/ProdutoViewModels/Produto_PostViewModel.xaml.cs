@@ -91,17 +91,20 @@ public class Produto_PostViewModel : BindableObject
 	public ICommand CadastrarProdutoCommand => new Command(async () =>
 	{
 		ActivityCommand.Execute(null);
+		Produto.IdFuncionario = Convert.ToInt32(await SecureStorage.Default.GetAsync("IdUsuario"));
 		if (string.IsNullOrEmpty(Produto.Nome) || Produto.IdCategoria == 0 || Produto.IdFuncionario == 0 || Produto.Preco == 0 || Produto.Unidade == 0)
 		{
+			ActivityCommand.Execute(null);
 			await Shell.Current.DisplayAlert("Erro", "Preencha todos os campos!", "OK");
 			return;
 		}
 		if (string.IsNullOrEmpty(CaminhoImagem))
 		{
+			ActivityCommand.Execute(null);
 			await Shell.Current.DisplayAlert("Erro", "Selecione uma imagem!", "OK");
 			return;
 		}
-		Produto.IdFuncionario = Convert.ToInt32(await SecureStorage.Default.GetAsync("IdUsuario"));
+		
 		var formData = new MultipartFormDataContent
 		{
 			{ new StringContent(Produto.IdCategoria.ToString()), "idCategoria" },
@@ -119,6 +122,7 @@ public class Produto_PostViewModel : BindableObject
 		{
 			ActivityCommand.Execute(null);
 			await Shell.Current.DisplayAlert("Sucesso", "Produto cadastrado com sucesso!", "OK");
+			
 			await Shell.Current.GoToAsync("..");
 		}
 		else

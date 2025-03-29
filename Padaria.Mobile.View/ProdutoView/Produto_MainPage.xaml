@@ -12,31 +12,87 @@
              x:DataType="vm:Produto_MainPageViewModel"
              Title="Produtos">
 
-<ContentPage.BindingContext>
-    <vm:Produto_MainPageViewModel/>
-</ContentPage.BindingContext>
+    <ContentPage.BindingContext>
+        <vm:Produto_MainPageViewModel/>
+    </ContentPage.BindingContext>
 
     <Grid>
         <Grid RowDefinitions="*"
               IsEnabled="{Binding Enabled}">
 
             <CollectionView x:Name="colecao"
-                            SelectionMode="Single"
+                            SelectionMode="None"
                             ItemsSource="{Binding Produtos}"
                             Margin="10,0,10,0">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="local:Get_Produto_DTO">
-                        <Border Padding="10"
-                                Margin="5"
+                        <Border Margin="5"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 20 20 0 0"
+                                MaximumWidthRequest="400"
                                 BackgroundColor="#fff">
-                            <StackLayout Orientation="Vertical">
+                            <Grid RowDefinitions="*, Auto, Auto,Auto"
+                                  ColumnDefinitions="*, *">
+                                <Image Source="{Binding Imagem}"
+                                       Aspect="Fill"
+                                       Grid.ColumnSpan="2"
+                                       Grid.Row="0"
+                                       Grid.Column="0"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"/>
+                                <Label Text="Produto"
+                                       Grid.Row="1"
+                                       Grid.Column="0"
+                                       FontSize="25"
+                                       FontFamily="MontserratExtraLight"
+                                       TextColor="#000"
+                                       Margin="10, 0"/>
                                 <Label Text="{Binding Nome}"
-                                       FontSize="20"
-                                       TextColor="#d6b06a"/>
+                                       Grid.Row="1"
+                                       Grid.Column="1"
+                                       FontSize="25"
+                                       FontFamily="MontserratExtraBlack"
+                                       HorizontalTextAlignment="End"
+                                       TextColor="#d6b06a"
+                                       Margin="10, 0"/>
+                                <Label Text="Unidade"
+                                       Grid.Row="2"
+                                       Grid.Column="0"
+                                       FontSize="25"
+                                       FontFamily="MontserratExtraLight"
+                                       TextColor="#000"
+                                       Margin="10, 0"/>
+                                <Label Text="{Binding Unidade}"
+                                       Grid.Row="2"
+                                       Grid.Column="1"
+                                       FontSize="25"
+                                       FontFamily="MontserratExtraBlack"
+                                       HorizontalTextAlignment="End"
+                                       TextColor="#d6b06a"
+                                       Margin="10, 0"/>
+
+                                <Label Text="Preço"
+                                       Grid.Row="3"
+                                       Grid.Column="0"
+                                       FontSize="25"
+                                       FontFamily="MontserratExtraLight"
+                                       TextColor="#000"
+                                       Margin="10, 0"/>
                                 <Label Text="{Binding Preco}"
-                                       FontSize="15"
-                                       TextColor="#d6b06a"/>
-                            </StackLayout>
+                                       Grid.Row="3"
+                                       Grid.Column="1"
+                                       FontSize="25"
+                                       FontFamily="MontserratExtraBlack"
+                                       HorizontalTextAlignment="End"
+                                       TextColor="#d6b06a"
+                                       Margin="10, 0"/>
+                                <Border Grid.Row="1"
+                                        Grid.RowSpan="3"
+                                        Grid.ColumnSpan="2"
+                                        BackgroundColor="#d6b06a"
+                                        Opacity="0.4"
+                                        StrokeThickness="0"/>
+                            </Grid>
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -62,7 +118,7 @@
                 <Image Source="add"
                        Aspect="Fill"/>
                 <Button BackgroundColor="Transparent"
-                    Command="{Binding GotoCadastrarProdutoCommand}"/>
+                        Command="{Binding GotoCadastrarProdutoCommand}"/>
 
             </Grid>
         </Border>

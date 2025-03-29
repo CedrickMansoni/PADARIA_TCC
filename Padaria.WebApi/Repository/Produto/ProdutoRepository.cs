@@ -44,7 +44,8 @@ public class ProdutoRepository(AppDataContext context) : IProdutoRepository
                 Descricao = produto.Descricao,
                 IdCategoria = produto.IdCategoria,
                 Imagem = produto.Imagem.FileName,
-                IdFuncionario = produto.IdFuncionario
+                IdFuncionario = produto.IdFuncionario,
+                Unidade = produto.Unidade,
             };
             await _context.TabelaProdutoModel.AddAsync(novoProduto);
             return await _context.SaveChangesAsync() > 0 ? "Produto cadastrado com sucesso" : "Erro ao cadastrar produto";
@@ -96,6 +97,7 @@ public class ProdutoRepository(AppDataContext context) : IProdutoRepository
                         Preco = produto.Preco,
                         Descricao = produto.Descricao,
                         Categoria = categoria.Descricao,
+                        Unidade = produto.Unidade,
                         Imagem = $"{My_DNS.App_DNS}images/produtos/{produto.Imagem}"
                     };
         return await query.FirstOrDefaultAsync();
@@ -112,6 +114,7 @@ public class ProdutoRepository(AppDataContext context) : IProdutoRepository
                         Preco = produto.Preco,
                         Descricao = produto.Descricao,
                         Categoria = categoria.Descricao,
+                        Unidade = produto.Unidade,
                         Imagem = $"{My_DNS.App_DNS}images/produtos/{produto.Imagem}"
                     };
         return await query.ToListAsync();

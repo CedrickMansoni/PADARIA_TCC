@@ -7,6 +7,8 @@
              Shell.TitleColor="#fff"
              Shell.ForegroundColor="#fff"
              Shell.NavBarIsVisible="True"
+             xmlns:local="clr-namespace:Padaria.Mobile.ViewModel.ProdutoViewModels;assembly=Padaria.Mobile.ViewModel"
+             xmlns:data="clr-namespace:Padaria.Share.Produto.DTO;assembly=Padaria.Share"
              Title="Categoria dos produtos">
 
     <ContentPage.Resources>
@@ -37,7 +39,7 @@
                             MaximumWidthRequest="500">
 
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="data:Get_Categ_Produto_DTO">
                         <Grid Padding="8">
                             <Border Padding="0,-15"
                                     StrokeShape="RoundRectangle 30"

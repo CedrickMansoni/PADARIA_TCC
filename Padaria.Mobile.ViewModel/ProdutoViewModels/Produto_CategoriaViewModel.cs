@@ -91,7 +91,7 @@ public class Produto_CategoriaViewModel : BindableObject
         }
     });
 
-    public ICommand SelecionarCategoriaCommand => new Command<Post_Categ_Produto_DTO>(async categ =>
+    public ICommand SelecionarCategoriaCommand => new Command<Get_Categ_Produto_DTO>(async categ =>
     {
         t.Categoria = categ.Categoria;
         t.IdCategoria = categ.Id;
