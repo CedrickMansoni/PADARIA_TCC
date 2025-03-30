@@ -43,10 +43,11 @@ public class Admin_MainPage_ViewModel : BindableObject
 
 		if (!sair) return;
 
-		await Shell.Current.GoToAsync("//Start_Page");
+		SecureStorage.Default.RemoveAll();
+
+		await Shell.Current.GoToAsync("//Login_Telefone");
 
 	});
-
 
 	public ICommand GotoFuncPageCommand => new Command(async ()=> 
 	{

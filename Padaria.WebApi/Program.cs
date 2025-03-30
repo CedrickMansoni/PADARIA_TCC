@@ -4,9 +4,11 @@ using Microsoft.Extensions.FileProviders;
 using Padaria.Share.Hash_Password;
 using Padaria.WebApi.Data;
 using Padaria.WebApi.Repository.Funcionario;
+using Padaria.WebApi.Repository.Producao;
 using Padaria.WebApi.Repository.Produto;
 using Padaria.WebApi.SalvarArquivos;
 using Padaria.WebApi.Service.Funcionario;
+using Padaria.WebApi.Service.Producao;
 using Padaria.WebApi.Service.Produto;
 using Padaria.WebApi.SMS_Service.Service;
 
@@ -26,6 +28,10 @@ builder.Services.AddTransient<ICategoriaService, CategoriaService>();
 
 builder.Services.AddTransient<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddTransient<IProdutoService, ProdutoService>();
+
+builder.Services.AddTransient<IProducaoRepository, ProducaoRepository>();
+builder.Services.AddTransient<IProducaoService, ProducaoService>();
+
 
 builder.Services.AddScoped<IArquivoService, ArquivoService>();
 

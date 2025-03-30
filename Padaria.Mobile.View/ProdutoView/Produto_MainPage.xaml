@@ -23,16 +23,16 @@
             <CollectionView x:Name="colecao"
                             SelectionMode="None"
                             ItemsSource="{Binding Produtos}"
-                            Margin="10,0,10,0">
+                            Margin="10,0,10,15">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="local:Get_Produto_DTO">
                         <Border Margin="5"
                                 StrokeThickness="0"
-                                StrokeShape="RoundRectangle 20 20 0 0"
-                                MaximumWidthRequest="400"
+                                StrokeShape="RoundRectangle 10 10 0 0"
+                                MaximumWidthRequest="420"
                                 BackgroundColor="#fff">
                             <Grid RowDefinitions="*, Auto, Auto,Auto"
-                                  ColumnDefinitions="*, *">
+                                  ColumnDefinitions="*, 2*">
                                 <Image Source="{Binding Imagem}"
                                        Aspect="Fill"
                                        Grid.ColumnSpan="2"

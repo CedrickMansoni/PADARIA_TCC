@@ -16,4 +16,6 @@ public class AppDataContext(DbContextOptions<AppDataContext> options) : DbContex
         public DbSet<FacturaModel> TabelaFacturaModel { get; set; }
         public DbSet<EncomendaModel> TabelaEncomendaModel { get; set; }
         public DbSet<VendaModel> TabelaVendaModel { get; set; }
+        public DbSet<ProducaoModel> TabelaProducaoModel { get; set; }
+        public DbSet<PrateleiraModel> TabelaPrateleiraModel { get; set; }
 }

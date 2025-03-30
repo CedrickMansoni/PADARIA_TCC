@@ -100,6 +100,25 @@ CREATE TABLE t_10_venda (
     forma_pagamento VARCHAR(50) DEFAULT 'Cash' -- Cartão/Transferência/Misto   
 );
 
+-- Tabela de Produção
+CREATE TABLE t_11_producao (
+    id SERIAL PRIMARY KEY,
+	id_produto INT NOT NULL,
+	quantidade INT NOT NULL CHECK (quantidade > 0),
+    data_producao TIMESTAMP NOT NULL,
+	id_padeiro INT NOT NULL,
+    status VARCHAR(20) NOT NULL CHECK (status IN ('Em andamento', 'Concluído', 'Cancelado')),   
+	FOREIGN KEY (id_padeiro) REFERENCES t_02_funcionario(id)
+);
+
+-- Tabela de Estante ou prateleira
+CREATE TABLE t_12_prateleira (
+    id SERIAL PRIMARY KEY,
+    id_produto INT NOT NULL,
+    quantidade INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (id_produto) REFERENCES t_06_produto(id)
+);
+
 -- Adicionar índices para otimização de consultas
 CREATE INDEX idx_funcionario_categoria ON t_02_funcionario(id_categoria);
 CREATE INDEX idx_cliente_categoria ON t_03_cliente(id_categoria);
