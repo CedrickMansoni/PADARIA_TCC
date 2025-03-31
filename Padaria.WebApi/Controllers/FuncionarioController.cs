@@ -27,9 +27,9 @@ namespace Padaria.WebApi.Controllers
 
                 return StatusCode(201, resultado);
             }
-            catch
+            catch(System.Exception ex)
             {
-                return StatusCode(500, $"Erro interno");
+                return StatusCode(500, $"Erro interno:\n{ex}");
             }
         }
 

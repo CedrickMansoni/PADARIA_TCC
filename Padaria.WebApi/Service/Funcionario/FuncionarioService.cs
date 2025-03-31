@@ -17,8 +17,9 @@ public class FuncionarioService(IFuncionarioRepository repository, IHash_PWD pwd
 
     public async Task<string> AdicionarFuncionarioAsync(Post_Func_DTO funcionario)
     {
+        var m = new MensagemResponse();
         int total_func = await repository.ContarFuncionarios();
-        if (total_func == 0 && funcionario.IdCategoria != 1) return "O primeiro funcionário da plataforma deve ser obrigatóriamente um adminstrador.\nSelecione a categoria de Administrador,";
+        if (total_func == 0 && funcionario.IdCategoria != 1) return "O primeiro funcionário da plataforma deve ser obrigatóriamente um adminstrador.\nSelecione a categoria de Administrador";
         if (total_func >= 1 && funcionario.IdCategoria == 0) return "Informe a categoria do funcionário";
         if (string.IsNullOrEmpty(funcionario.NomeFuncionario)) return "Informe o nome do funcionário";
         if (string.IsNullOrEmpty(funcionario.TelefoneFuncionario)) return "Informe o telefone do funcionário";
@@ -31,8 +32,8 @@ public class FuncionarioService(IFuncionarioRepository repository, IHash_PWD pwd
             funcionario.SenhaFuncionario = hash_PWD.HashSenha(senhaHash);
             var mensagem = new Mensagem
             {
-                Destinatario = funcionario.TelefoneFuncionario,
-                DescricaoSms = $"Olá, {funcionario.NomeFuncionario}! 🎉\n\n" +
+                PhoneNumber = funcionario.TelefoneFuncionario,
+                MessageBody = $"Olá, {funcionario.NomeFuncionario}! 🎉\n\n" +
                 $"Você foi cadastrado como {await repository.ObterCategoriaPorIdAsync(funcionario.IdCategoria)} na plataforma da Padaria Manuel & Filhos.\n\n" +
                 $"Acesse com as credenciais:\n" +
                 $"👤 Usuário: {funcionario.TelefoneFuncionario}\n" +
@@ -46,6 +47,7 @@ public class FuncionarioService(IFuncionarioRepository repository, IHash_PWD pwd
             };
 
             await enviarSMS.EnviarSMS(sms);
+    
         }
         return await repository.AdicionarFuncionarioAsync(funcionario);
     }
@@ -107,8 +109,8 @@ public class FuncionarioService(IFuncionarioRepository repository, IHash_PWD pwd
         var funcionario = await repository.ObterFuncionarioPorIdAsync(id);
         var mensagem = new Mensagem
         {
-            Destinatario = funcionario!.TelefoneFuncionario,
-            DescricaoSms = $"Olá, {funcionario.NomeFuncionario}! 🎉\n\n" +
+            PhoneNumber = funcionario!.TelefoneFuncionario,
+            MessageBody = $"Olá, {funcionario.NomeFuncionario}! 🎉\n\n" +
             $"A sua senha foi redefinida na plataforma da Padaria Manuel & Filhos.\n\n" +
             $"Acesse com as credenciais:\n" +
             $"👤 Usuário: {funcionario.TelefoneFuncionario}\n" +

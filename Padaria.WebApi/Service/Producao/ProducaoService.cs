@@ -9,24 +9,22 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
 {
     private readonly IProducaoRepository _repository = repository;
     public async Task<string> AdicionarAsync(Post_Producao_DTO producao)
-    {
-        
+    {        
         if (producao == null) return "Producao não pode ser nula";
         if (producao.Produto == 0) return "Selecione o Produto que está sendo produzido";
         if (producao.Quantidade <= 0) return "Quantidade deve ser maior que zero";
-        if (producao.DataProducao == default) return "Data não pode ser nula ou vazia";
         if (producao.Padeiro == 0) return "Informe o seu id";
         
         return await _repository.AdicionarAsync(new ProducaoModel{
             IdProduto = producao.Produto,
             Quantidade = producao.Quantidade,
-            DataProducao = DateTime.SpecifyKind(producao.DataProducao, DateTimeKind.Utc),
-            EstadoProducao = producao.Estado,
+            DataProducao = DateTime.SpecifyKind(DateTime.Now.Date, DateTimeKind.Utc),
+            EstadoProducao = "Em andamento",
             IdPadeiro = producao.Padeiro
         });
     }
 
-    public async Task<string> AtualizarAsync(Post_Producao_DTO producao)
+    public async Task<string> AtualizarAsync(Put_Producao_DTO producao)
     {
         if (producao == null) return "Producao não pode ser nula";
         if (producao.Produto == 0) return "Selecione o Produto que está sendo actualizado";

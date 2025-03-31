@@ -46,10 +46,10 @@ public class FuncionarioRepository(AppDataContext context) : IFuncionarioReposit
 
             return $"Funcionário {dados.NomeFuncionario}, foi cadastrado com sucesso";
         }
-        catch
+        catch(System.Exception ex)
         {
             await transacao.RollbackAsync();
-            return $"Erro: Não foi possível cadastrar o funcionário: {dados.NomeFuncionario}";
+            return $"Erro: Não foi possível cadastrar o funcionário: {dados.NomeFuncionario}\n{ex}";
         }
     }
 

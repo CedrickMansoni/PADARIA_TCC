@@ -5,6 +5,6 @@ namespace Padaria.WebApi.SMS_Service.Model_SMS;
 
 public class EnviarMensagem
 {
-    [JsonPropertyName("mensagem")]
+    [JsonPropertyName("message")]
     public required Mensagem Mensagem { get; set; }
 }

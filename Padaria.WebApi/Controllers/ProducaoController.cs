@@ -21,7 +21,7 @@ namespace Padaria.WebApi.Controllers
         }
 
         [HttpPut, Route("/editar/producao")]
-        public async Task<IActionResult> EditarProducao(Post_Producao_DTO producao)
+        public async Task<IActionResult> EditarProducao(Put_Producao_DTO producao)
         {
             var response = await service.AtualizarAsync(producao);
             if (!response.Contains("sucesso", StringComparison.CurrentCultureIgnoreCase)) return BadRequest(response);

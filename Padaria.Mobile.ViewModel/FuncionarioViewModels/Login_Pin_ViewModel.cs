@@ -114,6 +114,9 @@ public class Login_Pin_ViewModel : BindableObject
                     case "Caixa":
                         await Shell.Current.GoToAsync($"//Caixa_MainPage?funcLogado={Uri.EscapeDataString(jsonFuncionario)}");
                         break;
+                     case "Padeiro":
+                        await Shell.Current.GoToAsync($"//Padeiro_MainPage?funcLogado={Uri.EscapeDataString(jsonFuncionario)}");
+                        break;
                     default:
                         break;
                 }

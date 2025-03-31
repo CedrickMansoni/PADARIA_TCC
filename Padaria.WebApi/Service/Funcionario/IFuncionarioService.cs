@@ -1,6 +1,7 @@
 using System;
 using Padaria.Share.Funcionario.DTO;
 using Padaria.WebApi.Models;
+using Padaria.WebApi.SMS_Service.Model_SMS;
 
 namespace Padaria.WebApi.Service.Funcionario;
 

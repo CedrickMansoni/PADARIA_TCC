@@ -9,9 +9,9 @@ public class SMS_enviar : ISMS_enviar
 {
     HttpClient client;
     JsonSerializerOptions option;
-    public SMS_enviar( )
+    public SMS_enviar()
     {
-        client = new HttpClient{BaseAddress = new Uri("https://netsms.co.ao/")};
+        client = new HttpClient {BaseAddress = new Uri("https://www.telcosms.co.ao/") };
         option = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
     }
 
@@ -19,15 +19,15 @@ public class SMS_enviar : ISMS_enviar
     {
         string json = JsonSerializer.Serialize<EnviarMensagem>(mensagem, option);
         StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await client.PostAsync("app/appi/",content);
+        var response = await client.PostAsync("api/v2/send_message", content);
 
         MensagemResponse smsResponse = new();
         if (response.IsSuccessStatusCode)
         {
-            using(var responseStream = await response.Content.ReadAsStreamAsync())
+            using (var responseStream = await response.Content.ReadAsStreamAsync())
             {
-                return await JsonSerializer.DeserializeAsync<MensagemResponse>(responseStream, option);              
-            }            
+                return await JsonSerializer.DeserializeAsync<MensagemResponse>(responseStream, option);
+            }
         }
         return null;
     }

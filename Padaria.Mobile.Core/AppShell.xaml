@@ -14,7 +14,7 @@
         ContentTemplate="{DataTemplate local:Admin_MainPage}"
         Route="Admin_MainPage"/>
 
-     <ShellContent
+    <ShellContent
         ContentTemplate="{DataTemplate local:Gerente_MainPage}"
         Route="Gerente_MainPage"/>
 
@@ -22,6 +22,10 @@
         ContentTemplate="{DataTemplate local:Caixa_MainPage}"
         Route="Caixa_MainPage"/>
 
+    <ShellContent
+        ContentTemplate="{DataTemplate local:Padeiro_MainPage}"
+        Route="Padeiro_MainPage"/>
 
-    
+
+
 </Shell>
