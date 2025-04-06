@@ -2,11 +2,81 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Padaria.Mobile.View.FuncionarioViews.Views.Caixa_MainPage"
-             Title="Caixa_MainPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             BackgroundColor="#fff5e1"
+             Shell.NavBarHasShadow="True"
+             Shell.BackgroundColor="#d6b06a"
+             Shell.TitleColor="#fff"
+             Shell.ForegroundColor="#fff"
+             Title="Caixa">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="sair"/>
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+
+        <Grid RowDefinitions="*,Auto, *"
+              ColumnDefinitions="*, *, *"
+              ColumnSpacing="20"
+              Padding="10">
+
+            <Border Grid.Row="1"
+                    Grid.Column="0"
+                    HeightRequest="200"
+                    StrokeShape="RoundRectangle 20"
+                    StrokeThickness="0"
+                    BackgroundColor="#d6b06a">
+                <Grid>
+                    <Image Source="forno"
+                            VerticalOptions="Center"/>
+                    <Label Text="Produção"
+                           FontSize="32"
+                           FontFamily="MontserratExtraLight"
+                           HorizontalOptions="Center"
+                           VerticalOptions="End"
+                           TextColor="#fff"/>
+                    <Button BackgroundColor="Transparent"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1"
+                    Grid.Column="1"
+                    HeightRequest="200"
+                    StrokeShape="RoundRectangle 20"
+                    StrokeThickness="0"
+                    BackgroundColor="#d6b06a">
+                <Grid>
+                    <Image Source="caixa"
+                            VerticalOptions="Center"/>
+                    <Label Text="Caixa"
+                           FontSize="32"
+                           FontFamily="MontserratExtraLight"
+                           HorizontalOptions="Center"
+                           VerticalOptions="End"
+                           TextColor="#fff"/>
+                    <Button BackgroundColor="Transparent"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1"
+                    Grid.Column="2"
+                    HeightRequest="200"
+                    StrokeShape="RoundRectangle 20"
+                    StrokeThickness="0"
+                    BackgroundColor="#d6b06a">
+                <Grid>
+                    <Image Source="relatorio"
+                            VerticalOptions="Center"/>
+                    <Label Text="Relatório"
+                           FontSize="32"
+                           FontFamily="MontserratExtraLight"
+                           HorizontalOptions="Center"
+                           VerticalOptions="End"
+                           TextColor="#fff"/>
+                    <Button BackgroundColor="Transparent"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+
 </ContentPage>

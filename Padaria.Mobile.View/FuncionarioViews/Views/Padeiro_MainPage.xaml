@@ -7,9 +7,55 @@
              Shell.BackgroundColor="#d6b06a"
              Shell.TitleColor="#fff"
              Shell.ForegroundColor="#fff"
-             Title="Padeiro">
-    
+             Title="Padeiro - Mauro Pereira">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="sair"/>
+    </ContentPage.ToolbarItems>
+
     <Grid>
-        
+        <Grid RowDefinitions="Auto, Auto, *"
+              ColumnSpacing="20"
+              ColumnDefinitions="*,Auto,*">
+
+            <Grid Grid.Row="0"
+                  Grid.Column="0"
+                  ColumnDefinitions="*, Auto">
+                <Label Text="Pedidos internos"
+                       FontSize="30"
+                       FontFamily="MontserratBold"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="#000"/>
+                <Label Text="(12)"
+                       FontSize="30"
+                       FontFamily="MontserratBold"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="#000"
+                       Grid.Column="1"/>
+            </Grid>
+            <Border Grid.Column="1"
+                    Grid.RowSpan="3"/>
+            <Grid Grid.Row="0"
+                  Grid.Column="2"
+                  ColumnDefinitions="*, Auto">
+                <Label Text="Pedidos externos"
+                       FontSize="30"
+                       FontFamily="MontserratBold"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="#000"/>
+                <Label Text="(20)"
+                       FontSize="30"
+                       FontFamily="MontserratBold"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="#000"
+                       Grid.Column="1"/>
+            </Grid>
+             <Border Grid.Column="0"
+                    Grid.ColumnSpan="3"/>
+        </Grid>
     </Grid>
 </ContentPage>
