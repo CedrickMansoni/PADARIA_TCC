@@ -5,9 +5,10 @@ namespace Padaria.Share.Producao.DTO;
 public class Post_Producao_DTO
 {
     public int Produto { get; set; }
-
+    public string Nome { get; set; } = string.Empty;
+    public string Imagem { get; set; } = string.Empty;
     public int Quantidade { get; set; }
 
-    public int Padeiro { get; set; }
+    public int Funcionario { get; set; }
 
 }

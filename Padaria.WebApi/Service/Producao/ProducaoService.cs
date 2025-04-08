@@ -13,14 +13,14 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
         if (producao == null) return "Producao não pode ser nula";
         if (producao.Produto == 0) return "Selecione o Produto que está sendo produzido";
         if (producao.Quantidade <= 0) return "Quantidade deve ser maior que zero";
-        if (producao.Padeiro == 0) return "Informe o seu id";
+        if (producao.Funcionario == 0) return "Informe o seu id";
         
         return await _repository.AdicionarAsync(new ProducaoModel{
             IdProduto = producao.Produto,
             Quantidade = producao.Quantidade,
             DataProducao = DateTime.SpecifyKind(DateTime.Now.Date, DateTimeKind.Utc),
             EstadoProducao = "Em andamento",
-            IdPadeiro = producao.Padeiro
+            IdFuncionario = producao.Funcionario
         });
     }
 
@@ -36,7 +36,7 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
             Quantidade = producao.Quantidade,
             DataProducao = producao.DataProducao,
             EstadoProducao = producao.Estado,
-            IdPadeiro = producao.Padeiro
+            IdFuncionario = producao.Padeiro
         });
     }
 

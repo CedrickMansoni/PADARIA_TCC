@@ -7,7 +7,12 @@
              Shell.BackgroundColor="#d6b06a"
              Shell.TitleColor="#fff"
              Shell.ForegroundColor="#fff"
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.Caixa_ViewModel;assembly=Padaria.Mobile.ViewModel"
              Title="Caixa">
+
+    <ContentPage.BindingContext>
+        <vm:Caixa_MainPageViewModel/>
+    </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="sair"/>
@@ -35,7 +40,8 @@
                            HorizontalOptions="Center"
                            VerticalOptions="End"
                            TextColor="#fff"/>
-                    <Button BackgroundColor="Transparent"/>
+                    <Button BackgroundColor="Transparent"
+                        Command="{Binding GotoProducaoPageCommand}"/>
                 </Grid>
             </Border>
 
