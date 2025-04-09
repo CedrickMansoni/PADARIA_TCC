@@ -37,8 +37,7 @@ public class FuncionarioService(IFuncionarioRepository repository, IHash_PWD pwd
                 $"Você foi cadastrado como {await repository.ObterCategoriaPorIdAsync(funcionario.IdCategoria)} na plataforma da Padaria Manuel & Filhos.\n\n" +
                 $"Acesse com as credenciais:\n" +
                 $"👤 Usuário: {funcionario.TelefoneFuncionario}\n" +
-                $"🔑 Senha: {senha}\n\n" +
-                $"Altere sua senha no primeiro acesso."
+                $"🔑 Senha: {senha}\n\n"
             };
 
             var sms = new EnviarMensagem
@@ -114,8 +113,7 @@ public class FuncionarioService(IFuncionarioRepository repository, IHash_PWD pwd
             $"A sua senha foi redefinida na plataforma da Padaria Manuel & Filhos.\n\n" +
             $"Acesse com as credenciais:\n" +
             $"👤 Usuário: {funcionario.TelefoneFuncionario}\n" +
-            $"🔑 Senha: {senha}\n\n" +
-            $"Altere sua senha apos acesso."
+            $"🔑 Senha: {senha}\n\n"
         };
 
         var sms = new EnviarMensagem

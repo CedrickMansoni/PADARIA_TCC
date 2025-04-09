@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Text;
 using System.Text.Json;
 using System.Windows.Input;
 using Padaria.Share.DNS_App;
@@ -66,24 +67,35 @@ public class Producao_MainPageViewModel : BindableObject
         }
     });
 
-    public ICommand IncrementQuantidadeCommand => new Command<Post_Producao_DTO>(producao =>
+    public ICommand SalvarProducoesCommand => new Command(async () =>
     {
-        if (producao != null)
+        try
         {
-            producao.Quantidade++;
-            OnPropertyChanged(nameof(Producoes));
+            ActivityCommand.Execute(null);
+            var json = JsonSerializer.Serialize(Producoes, options);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("adicionar/producao", content);
+            if (response.IsSuccessStatusCode)
+            {
+                ActivityCommand.Execute(null);
+                // Handle success response
+                await Shell.Current.DisplayAlert("Mensagem","Produçao solicitada com sucesso!","Ok");
+                Producoes.Clear();
+            }
+            else
+            {
+                ActivityCommand.Execute(null);
+                // Handle error response
+               await Shell.Current.DisplayAlert("Erro",$"Error: {response.StatusCode}","Ok");
+            }
+        }
+        catch (Exception ex)
+        {
+            ActivityCommand.Execute(null);
+            // Handle exceptions
+            Console.WriteLine($"Exception: {ex.Message}");
         }
     });
-
-    public ICommand DecrementQuantidadeCommand => new Command<Post_Producao_DTO>(producao =>
-    {
-        if (producao != null && producao.Quantidade > 1)
-        {
-            producao.Quantidade--;
-            OnPropertyChanged(nameof(Producoes));
-        }
-    });
-
     private Get_Produto_DTO produto = new();
     public Get_Produto_DTO Produto
     {
@@ -126,5 +138,33 @@ public class Producao_MainPageViewModel : BindableObject
             // Handle exceptions
             Console.WriteLine($"Exception: {ex.Message}");
         }
+    });
+
+    private bool activity = false;
+    public bool Activity
+    {
+        get => activity;
+        set
+        {
+            activity = value;
+            OnPropertyChanged(nameof(Activity));
+        }
+    }
+
+    private bool enablePage = true;
+    public bool EnablePage
+    {
+        get => enablePage;
+        set
+        {
+            enablePage = value;
+            OnPropertyChanged(nameof(EnablePage));
+        }
+    }
+
+    public ICommand ActivityCommand => new Command(() =>
+    {
+        EnablePage = !EnablePage;
+        Activity = !Activity;
     });
 }

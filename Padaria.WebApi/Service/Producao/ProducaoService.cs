@@ -8,20 +8,33 @@ namespace Padaria.WebApi.Service.Producao;
 public class ProducaoService(IProducaoRepository repository) : IProducaoService
 {
     private readonly IProducaoRepository _repository = repository;
-    public async Task<string> AdicionarAsync(Post_Producao_DTO producao)
-    {        
-        if (producao == null) return "Producao não pode ser nula";
-        if (producao.Produto == 0) return "Selecione o Produto que está sendo produzido";
-        if (producao.Quantidade <= 0) return "Quantidade deve ser maior que zero";
-        if (producao.Funcionario == 0) return "Informe o seu id";
-        
-        return await _repository.AdicionarAsync(new ProducaoModel{
-            IdProduto = producao.Produto,
-            Quantidade = producao.Quantidade,
-            DataProducao = DateTime.SpecifyKind(DateTime.Now.Date, DateTimeKind.Utc),
-            EstadoProducao = "Em andamento",
-            IdFuncionario = producao.Funcionario
-        });
+    public async Task<string> AdicionarAsync(IEnumerable<Post_Producao_DTO> producao)
+    { 
+        string response  = string.Empty;       
+        if (producao.Count() == 0) return "Producao não pode ser vazia";
+        if (producao.Any(p => p.Produto == 0)) return "Selecione o Produto que está sendo produzido";
+        if (producao.Any(p => p.Quantidade <= 0)) return "Quantidade deve ser maior que zero";
+        if (producao.Any(p => p.Funcionario == 0)) return "Selecione o Padeiro que está produzindo";
+
+        foreach (var item in producao)
+        {
+            response  = await _repository.AdicionarAsync(new ProducaoModel{
+                IdProduto = item.Produto,
+                Quantidade = item.Quantidade,
+                DataProducao = DateTime.SpecifyKind(Convert.ToDateTime(DateTime.Now), DateTimeKind.Utc),
+                EstadoProducao = "Em andamento",
+                IdFuncionario = item.Funcionario
+            });
+            if(!response.Contains("sucesso", StringComparison.CurrentCultureIgnoreCase))
+            {
+                break;
+            } 
+        }
+        if (!response.Contains("sucesso", StringComparison.CurrentCultureIgnoreCase))
+        {
+            return "Solicitacao nao foi enviada na totalidade";
+        }   
+        return response;
     }
 
     public async Task<string> AtualizarAsync(Put_Producao_DTO producao)

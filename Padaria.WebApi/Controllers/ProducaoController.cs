@@ -13,7 +13,7 @@ namespace Padaria.WebApi.Controllers
         private readonly IProducaoService service = service;
 
         [HttpPost, Route("/adicionar/producao")]
-        public async Task<IActionResult> AdicionarProducao(Post_Producao_DTO producao)
+        public async Task<IActionResult> AdicionarProducao(IEnumerable<Post_Producao_DTO> producao)
         {
             var response = await service.AdicionarAsync(producao);
             if (!response.Contains("sucesso", StringComparison.CurrentCultureIgnoreCase)) return BadRequest(response);
