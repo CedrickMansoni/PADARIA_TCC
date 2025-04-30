@@ -96,6 +96,7 @@ app.UseStaticFiles(new StaticFileOptions
     }
 });
 
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 

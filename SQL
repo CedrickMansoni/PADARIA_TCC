@@ -17,6 +17,21 @@ CREATE TABLE t_02_funcionario (
     avatar VARCHAR NOT NULL DEFAULT 'user',
     estado VARCHAR(30) NOT NULL DEFAULT 'Offline'
 );
+insert into t_02_funcionario (
+    id_categoria, 
+    nome_completo, 
+    senha, 
+    avatar, 
+    estado
+  )
+values
+  ( 
+    1, 
+    'Admin', 
+    '8147804FAF4FDD3A65DD005662E2FA1BCC70C52EAA1E5102A90C0500F5D4151C8705D7D545F8E3C28E51DF2221BEC47F171BD79370230A1BFBFCD7A95C22BA09', 
+    'user', 
+    'Activo'
+  );
 
 -- Tabela de Cliente
 CREATE TABLE t_03_cliente (
@@ -116,6 +131,16 @@ CREATE TABLE t_12_prateleira (
     id SERIAL PRIMARY KEY,
     id_produto INT NOT NULL,
     quantidade INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (id_produto) REFERENCES t_06_produto(id)
+);
+
+-- Tabela de previsão de capacidade
+CREATE TABLE t_13_capacidade (
+    id SERIAL PRIMARY KEY,
+    id_produto INT NOT NULL,
+    quantidade INT NOT NULL DEFAULT 0,
+    quantidade_maxima INT NOT NULL DEFAULT 0,
+    data_producao TIMESTAMP NOT NULL,
     FOREIGN KEY (id_produto) REFERENCES t_06_produto(id)
 );
 

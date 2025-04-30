@@ -59,7 +59,7 @@ public class Produto_PostViewModel : BindableObject
 
 	public ICommand SelecionarCategoriaCommand => new Command(async () =>
 	{
-		
+
 		await _service.GotoCategoriaProdutoPage(this);
 	});
 
@@ -104,7 +104,7 @@ public class Produto_PostViewModel : BindableObject
 			await Shell.Current.DisplayAlert("Erro", "Selecione uma imagem!", "OK");
 			return;
 		}
-		
+
 		var formData = new MultipartFormDataContent
 		{
 			{ new StringContent(Produto.IdCategoria.ToString()), "idCategoria" },
@@ -122,7 +122,7 @@ public class Produto_PostViewModel : BindableObject
 		{
 			ActivityCommand.Execute(null);
 			await Shell.Current.DisplayAlert("Sucesso", "Produto cadastrado com sucesso!", "OK");
-			
+
 			await Shell.Current.GoToAsync("..");
 		}
 		else
@@ -162,32 +162,32 @@ public class Produto_PostViewModel : BindableObject
 	}
 
 	private bool activity = false;
-    public bool Activity
-    {
-        get => activity;
-        set
-        {
-            activity = value;
-            OnPropertyChanged(nameof(Activity));
-        }
-    }
+	public bool Activity
+	{
+		get => activity;
+		set
+		{
+			activity = value;
+			OnPropertyChanged(nameof(Activity));
+		}
+	}
 
-    private bool enablePage = true;
-    public bool EnablePage
-    {
-        get => enablePage;
-        set
-        {
-            enablePage = value;
-            OnPropertyChanged(nameof(EnablePage));
-        }
-    }
+	private bool enablePage = true;
+	public bool EnablePage
+	{
+		get => enablePage;
+		set
+		{
+			enablePage = value;
+			OnPropertyChanged(nameof(EnablePage));
+		}
+	}
 
-    public ICommand ActivityCommand => new Command(() =>
-    {
-        EnablePage = !EnablePage;
-        Activity = !Activity;
-    });
+	public ICommand ActivityCommand => new Command(() =>
+	{
+		EnablePage = !EnablePage;
+		Activity = !Activity;
+	});
 
 
 }

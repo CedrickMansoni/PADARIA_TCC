@@ -7,6 +7,6 @@ public static class My_DNS
     public static string App_DNS {get; set;}
     static My_DNS()
     {
-        App_DNS = "http://192.168.1.125:5091/";    
+        App_DNS = "https://f9b5-129-122-151-81.ngrok-free.app/";    
     }
 }

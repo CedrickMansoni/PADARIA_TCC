@@ -18,7 +18,7 @@
     </ContentPage.BindingContext>
 
     <Grid>
-        <Grid ColumnDefinitions="*,Auto,*"
+        <Grid ColumnDefinitions="*,Auto,2*"
               RowSpacing="20"
               RowDefinitions="60,10*,*"
               Margin="0"
@@ -47,18 +47,16 @@
                     Grid.Column="0"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    Padding="10"
+                    Padding="5"
                     StrokeShape="RoundRectangle 10">
                 <CollectionView ItemsSource="{Binding Produtos}"
                                 SelectionMode="None"
-                                WidthRequest="500"
                                 x:Name="colecaoprodutos">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="produtoGet:Get_Produto_DTO">
                             <Grid Margin="10">
                                 <Image Source="{Binding Imagem}"
                                        HeightRequest="280"
-                                       WidthRequest="500"
                                        Aspect="Fill"/>
                                 <StackLayout BackgroundColor="#000"
                                              HeightRequest="60"

@@ -22,7 +22,7 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
                 IdProduto = item.Produto,
                 Quantidade = item.Quantidade,
                 DataProducao = DateTime.SpecifyKind(Convert.ToDateTime(DateTime.Now), DateTimeKind.Utc),
-                EstadoProducao = "Em andamento",
+                EstadoProducao = "Pendente",
                 IdFuncionario = item.Funcionario
             });
             if(!response.Contains("sucesso", StringComparison.CurrentCultureIgnoreCase))
@@ -71,5 +71,45 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
     public async Task<bool> RemoverAsync(int id)
     {
         return await _repository.RemoverAsync(id);
+    }
+
+    public async Task<string> AdicionarCapacidadeProducaoAsync(Post_Capacidade_Producao capacidadeProducao)
+    {
+        if (capacidadeProducao == null) return "Capacidade de produção não pode ser nula";
+        if (capacidadeProducao.Produto == 0) return "Selecione o Produto que está sendo produzido";
+        if (capacidadeProducao.QuantidadeMaxima <= 0) return "Quantidade máxima deve ser maior que zero";
+        if (capacidadeProducao.DataProducao == default) return "Data não pode ser nula ou vazia";
+
+        return await _repository.AdicionarCapacidadeProducaoAsync(new CapacidadeProducaoModel
+        {
+            IdProduto = capacidadeProducao.Produto,
+            QuantidadeMaxima = capacidadeProducao.QuantidadeMaxima,
+            Data = DateTime.SpecifyKind(Convert.ToDateTime(capacidadeProducao.DataProducao), DateTimeKind.Utc)
+        });
+    }
+
+    public async Task<string> AtualizarCapacidadeProducaoAsync(Put_Capacidade_Producao capacidadeProducao)
+    {
+        if (capacidadeProducao == null) return "Capacidade de produção não pode ser nula";
+        if (capacidadeProducao.Produto == 0) return "Selecione o Produto que está sendo actualizado";
+        if (capacidadeProducao.QuantidadeMaxima <= 0) return "Quantidade máxima deve ser maior que zero";
+        if (capacidadeProducao.DataProducao == default) return "Data não pode ser nula ou vazia";
+
+        return await _repository.AtualizarCapacidadeProducaoAsync(new CapacidadeProducaoModel
+        {
+            IdProduto = capacidadeProducao.Produto,
+            QuantidadeMaxima = capacidadeProducao.QuantidadeMaxima,
+            Data = DateTime.SpecifyKind(Convert.ToDateTime(capacidadeProducao.DataProducao), DateTimeKind.Utc)
+        });
+    }
+
+    public async Task<bool> RemoverCapacidadeProducaoAsync(int id)
+    {
+        return await _repository.RemoverCapacidadeProducaoAsync(id);
+    }
+
+    public async Task<IEnumerable<Get_Capacidade_Producao>> ListarCapacidadeProducao(int skip = 0, int take = 30, CancellationToken c = default)
+    {
+        return await _repository.ListarCapacidadeProducao(skip, take, c);
     }
 }

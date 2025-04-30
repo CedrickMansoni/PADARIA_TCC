@@ -44,5 +44,36 @@ namespace Padaria.WebApi.Controllers
         {
             return Ok(await service.ListarProducao(skip, take, c));
         }
+
+        [HttpDelete, Route("/remover/producao/{id}")]
+        public async Task<IActionResult> RemoverProducao(int id)
+        {
+            var response = await service.RemoverAsync(id);
+            if (!response) return BadRequest("Erro ao remover a produção");
+            return Ok("Produção removida com sucesso");
+        }
+
+        [HttpPost, Route("/adicionar/capacidade/producao")]
+        public async Task<IActionResult> AdicionarCapacidadeProducao(Post_Capacidade_Producao capacidadeProducao)
+        {
+            var response = await service.AdicionarCapacidadeProducaoAsync(capacidadeProducao);
+            if (!response.Contains("sucesso", StringComparison.CurrentCultureIgnoreCase)) return BadRequest(response);
+            return StatusCode(201, response);
+        }
+
+        [HttpPut, Route("/editar/capacidade/producao")]
+        public async Task<IActionResult> EditarCapacidadeProducao(Put_Capacidade_Producao capacidadeProducao)
+        {
+            var response = await service.AtualizarCapacidadeProducaoAsync(capacidadeProducao);
+            if (!response.Contains("sucesso", StringComparison.CurrentCultureIgnoreCase)) return BadRequest(response);
+            return StatusCode(201, response);
+        }
+
+        [HttpGet, Route("/listar/capacidade/producao")]
+        public async Task<IActionResult> ListarCapacidadeProducao(int skip = 0, int take = 30, CancellationToken c = default)
+        {
+            return Ok(await service.ListarCapacidadeProducao(skip, take, c));
+        }
+        
     }
 }

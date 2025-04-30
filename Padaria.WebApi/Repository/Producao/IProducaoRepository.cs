@@ -6,6 +6,11 @@ namespace Padaria.WebApi.Repository.Producao;
 
 public interface IProducaoRepository
 {
+    Task<string> AdicionarCapacidadeProducaoAsync(CapacidadeProducaoModel capacidadeProducao);
+    Task<string> AtualizarCapacidadeProducaoAsync(CapacidadeProducaoModel capacidadeProducao);
+    Task<bool> RemoverCapacidadeProducaoAsync(int id);
+    Task<IEnumerable<Get_Capacidade_Producao>> ListarCapacidadeProducao(int skip = 0, int take = 30, CancellationToken c = default);
+    // «««««««««««««««««««««««««««««««««««««««««««««««««««««««««««««««««
     Task<IEnumerable<Get_Producao_DTO>> ListarProducao(int skip = 0, int take = 30, CancellationToken c = default);
     Task<IEnumerable<Get_Producao_DTO>> ListarProducaoDiaria(DateTime data,int skip = 0, int take = 30, CancellationToken c = default);
     Task<IEnumerable<Get_Producao_DTO>> ListarProducaoParametro(DateTime data, DateTime data2,int skip = 0, int take = 30, CancellationToken c = default);

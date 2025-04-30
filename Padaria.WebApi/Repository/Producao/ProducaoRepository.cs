@@ -120,4 +120,54 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
         return true;
     }
 
+    public async Task<string> AdicionarCapacidadeProducaoAsync(CapacidadeProducaoModel capacidadeProducao)
+    {
+        await _context.TabelaCapacidade.AddAsync(capacidadeProducao);
+        return await _context.SaveChangesAsync() > 0 ?
+            "Capacidade de produção adicionada com sucesso!" :
+            "Erro ao adicionar capacidade de produção.";
+    }
+
+    public async Task<string> AtualizarCapacidadeProducaoAsync(CapacidadeProducaoModel capacidadeProducao)
+    {
+        var p = await _context.TabelaCapacidade.FindAsync(capacidadeProducao.Id);
+        if (p == null)
+            return "Capacidade de produção não encontrada.";
+        p.IdProduto = capacidadeProducao.IdProduto;
+        p.QuantidadeMaxima = capacidadeProducao.QuantidadeMaxima;
+        p.Data = capacidadeProducao.Data;
+        _context.TabelaCapacidade.Update(p);
+        return await _context.SaveChangesAsync() > 0 ?
+            "Capacidade de produção actualizada com sucesso!" :
+            "Erro ao actualizar capacidade de produção.";
+    }
+
+    public async Task<bool> RemoverCapacidadeProducaoAsync(int id)
+    {
+        var capacidade = await _context.TabelaCapacidade.FindAsync(id);
+        if (capacidade == null)
+            return false;
+
+        _context.TabelaCapacidade.Remove(capacidade);
+        return true;
+    }
+
+    public async Task<IEnumerable<Get_Capacidade_Producao>> ListarCapacidadeProducao(int skip = 0, int take = 30, CancellationToken c = default)
+    {
+        var dataAtual = DateTime.UtcNow.Date; // ou DateTime.Now.Date dependendo do fuso
+        var hoje = DateTime.SpecifyKind(Convert.ToDateTime(dataAtual), DateTimeKind.Utc);
+        var query = from capacidade in _context.TabelaCapacidade
+                    join produto in _context.TabelaProdutoModel on capacidade.IdProduto equals produto.Id
+                    where
+                    capacidade.Data.Date == hoje
+                    select new Get_Capacidade_Producao
+                    {
+                        Id = capacidade.Id,
+                        IdProduto= produto.Id,
+                        Produto = produto.Nome,
+                        QuantidadeMaxima = capacidade.QuantidadeMaxima,
+                        Data = capacidade.Data
+                    };
+        return await query.Skip(skip).Take(take).ToListAsync(c);
+    }
 }
