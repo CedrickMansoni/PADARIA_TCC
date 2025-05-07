@@ -34,7 +34,8 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
                     join produto in _context.TabelaProdutoModel on producao.IdProduto equals produto.Id
                     join padeiro in _context.TabelaFuncionarioModel on producao.IdFuncionario equals padeiro.Id
                     where
-                    producao.DataProducao.Date == DateTime.SpecifyKind(Convert.ToDateTime(data), DateTimeKind.Utc)
+                    producao.DataProducao.Date == DateTime.SpecifyKind(Convert.ToDateTime(data), DateTimeKind.Utc) &&
+                    producao.EstadoProducao != "Pendente por falta de pagamento"
                     select new Get_Producao_DTO
                     {
                         Id = producao.Id,

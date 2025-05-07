@@ -1,3 +1,4 @@
+using Padaria.Mobile.View.ClienteView;
 using Padaria.Mobile.View.FuncionarioViews.Views;
 using Padaria.Mobile.View.ProducaoView;
 using Padaria.Mobile.View.ProdutoView;
@@ -26,6 +27,7 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute("Produto_PostPage", typeof(Produto_PostView)); 
 		/* -------------------------------------------------------------------- */
 		Routing.RegisterRoute("Producao_MainPage", typeof(Producao_MainPage));
+		Routing.RegisterRoute("Get_Clientes_View", typeof(Get_Clientes_View));
 
 	}
 

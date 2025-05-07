@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Input;
+using Padaria.Share.Cliente.DTO;
 using Padaria.Share.DNS_App;
 using Padaria.Share.Producao.DTO;
 using Padaria.Share.Produto.DTO;
@@ -15,8 +16,8 @@ public class Producao_MainPageViewModel : BindableObject
     JsonSerializerOptions options;
     public Producao_MainPageViewModel()
     {
-        client = new HttpClient(){BaseAddress = new Uri($"{My_DNS.App_DNS}")};
-        options = new JsonSerializerOptions{ PropertyNameCaseInsensitive = true };
+        client = new HttpClient() { BaseAddress = new Uri($"{My_DNS.App_DNS}") };
+        options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
     }
 
     private Post_Producao_DTO producao = new();
@@ -44,14 +45,16 @@ public class Producao_MainPageViewModel : BindableObject
     public ICommand AddProdutoCommand => new Command<Get_Produto_DTO>(async p =>
     {
         if (p == null) return;
-        int funcionarioId = Convert.ToInt32(await SecureStorage.Default.GetAsync("IdUsuario"));
+        int usuarioId = Convert.ToInt32(await SecureStorage.Default.GetAsync("IdUsuario"));
+        string? categoria = await SecureStorage.Default.GetAsync("CategoriaUsuario");
         var newProducao = new Post_Producao_DTO
         {
             Produto = p.Id,
-            Nome = p.Nome ?? string.Empty, 
-            Imagem = p.Imagem ?? string.Empty, 
+            Nome = p.Nome ?? string.Empty,
+            Imagem = p.Imagem ?? string.Empty,
             Quantidade = 1,
-            Funcionario = funcionarioId
+            Funcionario = categoria != "Pessoa Juridica" && categoria != "Pessoa Física" ? usuarioId : 0,
+            Cliente = categoria == "Pessoa Juridica" || categoria == "Pessoa Física" ? usuarioId : 0,
         };
 
         Producoes.Add(newProducao);
@@ -79,14 +82,14 @@ public class Producao_MainPageViewModel : BindableObject
             {
                 ActivityCommand.Execute(null);
                 // Handle success response
-                await Shell.Current.DisplayAlert("Mensagem","Produçao solicitada com sucesso!","Ok");
+                await Shell.Current.DisplayAlert("Mensagem", "Produçao solicitada com sucesso!", "Ok");
                 Producoes.Clear();
             }
             else
             {
                 ActivityCommand.Execute(null);
                 // Handle error response
-               await Shell.Current.DisplayAlert("Erro",$"Error: {response.StatusCode}","Ok");
+                await Shell.Current.DisplayAlert("Erro", $"Error: {response.StatusCode}", "Ok");
             }
         }
         catch (Exception ex)
@@ -125,7 +128,7 @@ public class Producao_MainPageViewModel : BindableObject
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();
-                Produtos = JsonSerializer.Deserialize<ObservableCollection<Get_Produto_DTO>>(json, options)?? [];
+                Produtos = JsonSerializer.Deserialize<ObservableCollection<Get_Produto_DTO>>(json, options) ?? [];
             }
             else
             {
@@ -139,6 +142,10 @@ public class Producao_MainPageViewModel : BindableObject
             Console.WriteLine($"Exception: {ex.Message}");
         }
     });
+
+
+
+
 
     private bool activity = false;
     public bool Activity

@@ -14,16 +14,18 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
         if (producao.Count() == 0) return "Producao não pode ser vazia";
         if (producao.Any(p => p.Produto == 0)) return "Selecione o Produto que está sendo produzido";
         if (producao.Any(p => p.Quantidade <= 0)) return "Quantidade deve ser maior que zero";
-        if (producao.Any(p => p.Funcionario == 0)) return "Selecione o Padeiro que está produzindo";
 
+
+        
         foreach (var item in producao)
         {
             response  = await _repository.AdicionarAsync(new ProducaoModel{
                 IdProduto = item.Produto,
                 Quantidade = item.Quantidade,
                 DataProducao = DateTime.SpecifyKind(Convert.ToDateTime(DateTime.Now), DateTimeKind.Utc),
-                EstadoProducao = "Pendente",
-                IdFuncionario = item.Funcionario
+                EstadoProducao =  item.Cliente == 0 ? "Pendente" : "Pendente por falta de pagamento",
+                IdFuncionario = item.Cliente != 0 ?(int?)null : item.Funcionario,
+                IdCliente = item.Cliente == 0 ?(int?)null : item.Cliente
             });
             if(!response.Contains("sucesso", StringComparison.CurrentCultureIgnoreCase))
             {

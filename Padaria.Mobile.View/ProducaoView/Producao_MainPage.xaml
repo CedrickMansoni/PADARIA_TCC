@@ -97,6 +97,7 @@
                 <CollectionView ItemsSource="{Binding Producoes}"
                                 SelectionMode="None"
                                 WidthRequest="500"
+                                MaximumHeightRequest="400"
                                 x:Name="colecao">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="producaoPost:Post_Producao_DTO">
@@ -144,6 +145,7 @@
                     VerticalOptions="Center"
                     HorizontalOptions="End"
                     Margin="57,5"
+                    TranslationY="-9"
                     BackgroundColor="#d6b06a"
                     Command="{Binding SalvarProducoesCommand}"/>
         </Grid>

@@ -14,12 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repository/Cliente/" />
-    <Folder Include="Repository/Pedido/" />
     <Folder Include="Repository/Prateleira/" />
     <Folder Include="Repository/Venda/" />
-    <Folder Include="Service/Cliente/" />
-    <Folder Include="Service/Pedido/" />
     <Folder Include="Service/Prateleira/" />
     <Folder Include="Service/Venda/" />
   </ItemGroup>

@@ -18,8 +18,11 @@ public class ProducaoModel
     [Column("data_producao")]
     public DateTime DataProducao { get; set; }
 
-    [Column("id_padeiro")]
-    public int IdFuncionario { get; set; }
+    [Column("id_funcionario")]
+    public int? IdFuncionario { get; set; }
+
+    [Column("id_cliente")]
+    public int? IdCliente { get; set; }
 
     [Column("status")]
     public string EstadoProducao { get; set; } = string.Empty;    

@@ -1,29 +1,21 @@
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Padaria.WebApi.Models;
+namespace Padaria.Share.Pedido.DTO;
 
- [Table("t_09_pedido")]
-public class EncomendaModel
+public class Get_Pedido_DTO
 {
-    [Column("id")]
     public int Id { get; set; }
 
-    [Column("id_produto")]
     public int IdProduto { get; set; }
+    public string NomeProduto { get; set; } = string.Empty;
 
-    [Column("numero_factura")]
     public string NumeroFactura { get; set; } = string.Empty;
 
-    [Column("data_encomenda")]
     public DateTime DataEncomenda { get; set; }
 
-    [Column("quantidade")]
     public int Quantidade { get; set; }
 
-    [Column("preco_total")]
     public decimal PrecoTotal { get; set; }
 
-    [Column("estado_pedido")]
     public string EstadoPedido { get; set; } = string.Empty;
 }

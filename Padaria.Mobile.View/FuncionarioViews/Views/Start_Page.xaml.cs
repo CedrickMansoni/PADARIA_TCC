@@ -9,6 +9,7 @@ public partial class Start_Page : ContentPage
 
 	protected override void OnAppearing()
 	{
+		/*
 		base.OnAppearing();
 #if ANDROID
 		if (DeviceInfo.Idiom == DeviceIdiom.Tablet)
@@ -33,5 +34,6 @@ public partial class Start_Page : ContentPage
 			new Foundation.NSString("orientation"));
 		}
 #endif
+*/
 	}
 }

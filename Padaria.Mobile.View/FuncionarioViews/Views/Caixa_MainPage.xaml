@@ -15,7 +15,7 @@
     </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="sair"/>
+        <ToolbarItem IconImageSource="sair" Command="{Binding LogountCommand}"/>
     </ContentPage.ToolbarItems>
 
     <Grid>

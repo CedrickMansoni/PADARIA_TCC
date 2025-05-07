@@ -3,11 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Padaria.Share.Hash_Password;
 using Padaria.WebApi.Data;
+using Padaria.WebApi.Repository.Cliente;
 using Padaria.WebApi.Repository.Funcionario;
+using Padaria.WebApi.Repository.Pedido;
 using Padaria.WebApi.Repository.Producao;
 using Padaria.WebApi.Repository.Produto;
 using Padaria.WebApi.SalvarArquivos;
+using Padaria.WebApi.Service.Cliente;
 using Padaria.WebApi.Service.Funcionario;
+using Padaria.WebApi.Service.Pedido;
 using Padaria.WebApi.Service.Producao;
 using Padaria.WebApi.Service.Produto;
 using Padaria.WebApi.SMS_Service.Service;
@@ -31,6 +35,12 @@ builder.Services.AddTransient<IProdutoService, ProdutoService>();
 
 builder.Services.AddTransient<IProducaoRepository, ProducaoRepository>();
 builder.Services.AddTransient<IProducaoService, ProducaoService>();
+
+builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
+builder.Services.AddTransient<IPedidoService, PedidoService>();
+
+builder.Services.AddTransient<IClienteRepository, ClienteRepository>();
+builder.Services.AddTransient<IClienteService, ClienteService>();
 
 
 builder.Services.AddScoped<IArquivoService, ArquivoService>();
@@ -69,7 +79,7 @@ if (app.Environment.IsDevelopment())
 }
 
 string storagePath = app.Environment.IsDevelopment() ?
-"/home/ckm/Storage/Padaria" :
+"/Users/cedrickmansoni/Storage/Padaria" :
 "/home/GSA_PROJECT/Storage/Padaria";
 
 // Configurar middleware para servir arquivos de um diretório externo

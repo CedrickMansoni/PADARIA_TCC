@@ -94,8 +94,8 @@ public class Login_Pin_ViewModel : BindableObject
 
             StringContent content = new(jsonCredenciais, Encoding.UTF8, "application/json");
 
+   
             var response = await client.PostAsync("autenticar/funcionario", content);
-
             if (response.IsSuccessStatusCode)
             {
                 using var stream = await response.Content.ReadAsStreamAsync();
@@ -122,6 +122,7 @@ public class Login_Pin_ViewModel : BindableObject
                 }
                 ActivityCommand.Execute(null);
                 await SecureStorage.Default.SetAsync("IdUsuario", funcionario.Id.ToString());
+                await SecureStorage.Default.SetAsync("CategoriaUsuario", funcionario.Categoria);
             }
             else
             {
@@ -135,6 +136,7 @@ public class Login_Pin_ViewModel : BindableObject
                 }
                 ActivityCommand.Execute(null);
                 await Shell.Current.DisplayAlert("Erro de Autenticação", errorMessage, "OK");
+                
             }
             return;
         }

@@ -7,55 +7,147 @@
              Shell.BackgroundColor="#d6b06a"
              Shell.TitleColor="#fff"
              Shell.ForegroundColor="#fff"
-             Title="Padeiro - Mauro Pereira">
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.Padeiro_ViewModel;assembly=Padaria.Mobile.ViewModel"
+             x:DataType="vm:Padeiro_MainPageViewModel"
+             xmlns:data="clr-namespace:Padaria.Share.Producao.DTO;assembly=Padaria.Share"
+             xmlns:data2="clr-namespace:Padaria.Share.Produto.DTO;assembly=Padaria.Share"
+             xmlns:data3="clr-namespace:Padaria.Share.Producao.DTO;assembly=Padaria.Share"
+             Title="{Binding Funcionario.NomeFuncionario, StringFormat='Padeiro(a): {0}'}">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="sair"/>
-    </ContentPage.ToolbarItems>
+       <ContentPage.ToolbarItems>
+              <ToolbarItem IconImageSource="sair"/>
+       </ContentPage.ToolbarItems>
 
-    <Grid>
-        <Grid RowDefinitions="Auto, Auto, *"
-              ColumnSpacing="20"
-              ColumnDefinitions="*,Auto,*">
+       <ContentPage.BindingContext>
+              <vm:Padeiro_MainPageViewModel/>
+       </ContentPage.BindingContext>
 
-            <Grid Grid.Row="0"
-                  Grid.Column="0"
-                  ColumnDefinitions="*, Auto">
-                <Label Text="Pedidos internos"
-                       FontSize="30"
-                       FontFamily="MontserratBold"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       TextColor="#000"/>
-                <Label Text="(12)"
-                       FontSize="30"
-                       FontFamily="MontserratBold"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       TextColor="#000"
-                       Grid.Column="1"/>
-            </Grid>
-            <Border Grid.Column="1"
-                    Grid.RowSpan="3"/>
-            <Grid Grid.Row="0"
-                  Grid.Column="2"
-                  ColumnDefinitions="*, Auto">
-                <Label Text="Pedidos externos"
-                       FontSize="30"
-                       FontFamily="MontserratBold"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       TextColor="#000"/>
-                <Label Text="(20)"
-                       FontSize="30"
-                       FontFamily="MontserratBold"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       TextColor="#000"
-                       Grid.Column="1"/>
-            </Grid>
-             <Border Grid.Column="0"
-                    Grid.ColumnSpan="3"/>
-        </Grid>
-    </Grid>
+       <Grid ColumnDefinitions="*,Auto, 2*"
+             RowSpacing="15"
+             RowDefinitions="Auto, *,Auto, 2*">
+              <Label Text="Capacidade de Produção diaria"
+                     FontSize="22"
+                     FontFamily="MontserratBold"
+                     HorizontalOptions="Center"/>
+              <Label Text="Pedidos do dia"
+                     FontSize="22"
+                     FontFamily="MontserratBold"
+                     HorizontalOptions="Center"
+                     Grid.Column="2"/>
+              <Border Grid.Column="1"
+                      Grid.RowSpan="4"
+                      Margin="10,0"/>
+
+              <Border Grid.Column="0"
+                      Grid.Row="2"
+                      Margin="0,10"/>
+
+              <Border Grid.Row="1"
+                      Grid.Column="0"
+                      HorizontalOptions="Center"
+                      VerticalOptions="Center"
+                      Padding="5"
+                      StrokeShape="RoundRectangle 10">
+                     <CollectionView ItemsSource="{Binding Produtos}"
+                                     SelectionMode="None"
+                                     x:Name="colecaoprodutos">
+                            <CollectionView.ItemTemplate>
+                                   <DataTemplate x:DataType="data2:Get_Produto_DTO">
+                                          <Grid Margin="10">
+
+                                                 <StackLayout BackgroundColor="#000"
+                                                              HeightRequest="60"
+                                                              Opacity="0.5"
+                                                              VerticalOptions="End"/>
+                                                 <Label Text="{Binding Nome}"
+                                                        FontSize="20"
+                                                        FontFamily="MontserratRegular"
+                                                        TextColor="#fff"
+                                                        Margin="15"
+                                                        VerticalOptions="End"/>
+                                                 <Button HeightRequest="30"
+                                                         WidthRequest="90"
+                                                         VerticalOptions="End"
+                                                         HorizontalOptions="End"
+                                                         Margin="8"
+                                                         Text="Add"
+                                                         FontFamily="MontserratRegular"
+                                                         FontSize="18"
+                                                         BackgroundColor="#d6b06a"
+                                                         Command="{Binding BindingContext.AddCapacidadeProducaoCommand, Source={x:Reference Name = colecaoprodutos}}"
+                                                         CommandParameter="{Binding .}"/>
+                                          </Grid>
+                                   </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                     </CollectionView>
+              </Border>
+
+              <CollectionView Grid.Column="0"
+                              Grid.Row="3"
+                              ItemsSource="{Binding CapacidadeProducao}"
+                              SelectionMode="None">
+                     <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="data:Get_Capacidade_Producao">
+                                   <Border Padding="10"
+                                           Margin="5"
+                                           BackgroundColor="#fff"
+                                           StrokeShape="RoundRectangle 10"
+                                           Stroke="#d6b06a">
+                                          <StackLayout Orientation="Vertical">
+                                                 <Label Text="{Binding Produto, StringFormat='Produto: {0}'}"
+                                                        FontSize="18"
+                                                        FontFamily="MontserratRegular"/>
+                                                 <Label Text="{Binding QuantidadeMaxima, StringFormat='Quantidade Máxima: {0}'}"
+                                                        FontSize="18"
+                                                        FontFamily="MontserratRegular"/>
+                                                 <Label Text="{Binding QuantidadeSolicitada, StringFormat='Quantidade Solicitada: {0}'}"
+                                                        FontSize="18"
+                                                        FontFamily="MontserratRegular"/>
+                                          </StackLayout>
+                                   </Border>
+                            </DataTemplate>
+                     </CollectionView.ItemTemplate>
+                     <CollectionView.EmptyView>
+                            <Label Text="Nenhum produto disponível"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   FontSize="18"
+                                   FontFamily="MontserratRegular"/>
+                     </CollectionView.EmptyView>
+              </CollectionView>
+              <CollectionView Grid.Column="2"
+                              Grid.Row="1"
+                              Grid.RowSpan="3"
+                              ItemsSource="{Binding ProducaoPedidos}"
+                              SelectionMode="None">
+                     <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="data3:Get_Producao_DTO">
+                                   <Border Padding="10"
+                                           Margin="5"
+                                           BackgroundColor="#fff"
+                                           StrokeShape="RoundRectangle 10"
+                                           Stroke="#d6b06a">
+                                          <StackLayout Orientation="Vertical">
+                                                 <Label Text="{Binding Produto, StringFormat='Produto: {0}'}"
+                                                        FontSize="18"
+                                                        FontFamily="MontserratRegular"/>
+                                                 <Label Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}"
+                                                        FontSize="18"
+                                                        FontFamily="MontserratRegular"/>
+                                                 <Label Text="{Binding Estado, StringFormat='Estado: {0}'}"
+                                                        FontSize="18"
+                                                        FontFamily="MontserratRegular"/>
+                                          </StackLayout>
+                                   </Border>
+                            </DataTemplate>
+                     </CollectionView.ItemTemplate>
+                     <CollectionView.EmptyView>
+                            <Label Text="Nenhum pedido disponível"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   FontSize="18"
+                                   FontFamily="MontserratRegular"/>
+                     </CollectionView.EmptyView>
+              </CollectionView>
+       </Grid>
 </ContentPage>

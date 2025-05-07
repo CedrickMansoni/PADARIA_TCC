@@ -6,5 +6,5 @@ public class Post_Capacidade_Producao
 {
     public int Produto { get; set; }
     public int QuantidadeMaxima { get; set; }
-    public DateTime DataProducao { get; set; }  
+    public DateTime DataProducao { get; set; } = DateTime.Now; 
 }
