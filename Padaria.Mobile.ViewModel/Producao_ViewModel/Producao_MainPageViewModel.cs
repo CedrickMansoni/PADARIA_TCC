@@ -45,6 +45,11 @@ public class Producao_MainPageViewModel : BindableObject
     public ICommand AddProdutoCommand => new Command<Get_Produto_DTO>(async p =>
     {
         if (p == null) return;
+        if(Producoes.Any(x => x.Produto == p.Id)) return;
+        
+        int c = CapacidadeProducao.FirstOrDefault(x => x.IdProduto == p.Id)?.QuantidadeMaxima ?? 0;
+        int s = CapacidadeProducao.FirstOrDefault(x => x.IdProduto == p.Id)?.QuantidadeSolicitada ?? 0;
+       
         int usuarioId = Convert.ToInt32(await SecureStorage.Default.GetAsync("IdUsuario"));
         string? categoria = await SecureStorage.Default.GetAsync("CategoriaUsuario");
         var newProducao = new Post_Producao_DTO
@@ -55,6 +60,7 @@ public class Producao_MainPageViewModel : BindableObject
             Quantidade = 1,
             Funcionario = categoria != "Pessoa Juridica" && categoria != "Pessoa Física" ? usuarioId : 0,
             Cliente = categoria == "Pessoa Juridica" || categoria == "Pessoa Física" ? usuarioId : 0,
+            Limite = c - s
         };
 
         Producoes.Add(newProducao);
@@ -142,6 +148,29 @@ public class Producao_MainPageViewModel : BindableObject
             Console.WriteLine($"Exception: {ex.Message}");
         }
     });
+
+    private ObservableCollection<Get_Capacidade_Producao> _capacidadeProducao = [];
+    public ObservableCollection<Get_Capacidade_Producao> CapacidadeProducao
+    {
+        get => _capacidadeProducao;
+        set
+        {
+            _capacidadeProducao = value;
+            OnPropertyChanged(nameof(CapacidadeProducao));
+        }
+    }
+
+    public ICommand ListarCapacidadeProducaoCommand => new Command(async () =>
+    {
+        var response = await client.GetAsync("listar/capacidade/producao");
+        if (response.IsSuccessStatusCode)
+        {
+            using var json = await response.Content.ReadAsStreamAsync();
+            CapacidadeProducao = JsonSerializer.Deserialize<ObservableCollection<Get_Capacidade_Producao>>(json, options) ?? [];
+        }
+    });
+
+
 
 
 

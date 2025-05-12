@@ -10,4 +10,5 @@ public class Get_Capacidade_Producao
     public int QuantidadeSolicitada { get; set; }
     public int QuantidadeMaxima { get; set; }
     public DateTime Data { get; set; }  
+    public int Capacidade {get; set;}
 }

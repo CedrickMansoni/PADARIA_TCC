@@ -10,5 +10,6 @@ public class Post_Producao_DTO
     public int Quantidade { get; set; }
     public int? Funcionario { get; set; }
     public int? Cliente { get; set; }
+    public int Limite { get; set; }
 
 }

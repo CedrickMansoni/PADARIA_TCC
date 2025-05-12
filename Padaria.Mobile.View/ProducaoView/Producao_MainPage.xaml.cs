@@ -14,5 +14,7 @@ public partial class Producao_MainPage : ContentPage
         base.OnAppearing();
 		var vm = (Producao_MainPageViewModel)BindingContext;
 		vm.GetProdutosCommand.Execute(null);
+		vm.ListarCapacidadeProducaoCommand.Execute(null);
+		
     }
 }

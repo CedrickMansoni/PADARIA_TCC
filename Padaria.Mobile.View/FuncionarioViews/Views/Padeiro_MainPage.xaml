@@ -15,7 +15,7 @@
              Title="{Binding Funcionario.NomeFuncionario, StringFormat='Padeiro(a): {0}'}">
 
        <ContentPage.ToolbarItems>
-              <ToolbarItem IconImageSource="sair"/>
+              <ToolbarItem IconImageSource="sair" Command="{Binding LogountCommand}"/>
        </ContentPage.ToolbarItems>
 
        <ContentPage.BindingContext>

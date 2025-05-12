@@ -39,6 +39,7 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
                     select new Get_Producao_DTO
                     {
                         Id = producao.Id,
+                        IdProduto = produto.Id,
                         Produto = produto.Nome,
                         Quantidade = producao.Quantidade,
                         Estado = producao.EstadoProducao,

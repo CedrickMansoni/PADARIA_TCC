@@ -115,14 +115,20 @@
                                        Margin="15"
                                        VerticalOptions="End"/>
 
-                                <Entry Text="{Binding Quantidade}"
-                                       FontSize="25"
-                                       FontFamily="MontserratBold"
-                                       TextColor="#fff"
-                                       Keyboard="Numeric"
-                                       VerticalOptions="End"
-                                       HorizontalOptions="End"
-                                       Margin="15,0"/>
+                                <HorizontalStackLayout  VerticalOptions="End"
+                                                        HorizontalOptions="End">
+                                    <Entry Text="{Binding Quantidade}"
+                                           FontSize="25"
+                                           FontFamily="MontserratBold"
+                                           TextColor="#fff"
+                                           Keyboard="Numeric"/>
+                                    <Label Text="{Binding Limite, StringFormat=' / {0}'}"
+                                           FontSize="25"
+                                           FontFamily="MontserratBold"
+                                           TextColor="#fff"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="End"/>
+                                </HorizontalStackLayout>
                                 <Grid Grid.Column="1">
                                     <Image Source="remover"
                                            HeightRequest="60"

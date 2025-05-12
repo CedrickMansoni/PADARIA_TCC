@@ -50,147 +50,78 @@
               </Style>
        </ContentPage.Resources>
 
-       <Grid ColumnDefinitions="Auto,Auto,*"
-             RowDefinitions="*,Auto,Auto,Auto,*">
+       <Grid ColumnDefinitions="*,*"
+             RowDefinitions="*,*">
 
-              <ScrollView Grid.Column="0"
-                          Grid.Row="0"
-                          Grid.RowSpan="5"
-                          MaximumWidthRequest="300">
-                     <StackLayout Padding="5"
-                                  Spacing="10">
-                            <Border StrokeShape="RoundRectangle 5"
-                                    BackgroundColor="#FFF">
-                                   <Grid RowDefinitions="*,Auto"
-                                         Padding="5">
-                                          <Image Source="group"
-                                                 WidthRequest="90"
-                                                 Aspect="Fill"/>
-                                          <Label Grid.Row="1"
-                                                 Text="Funcionários"
-                                                 Style="{StaticResource lblButon}"/>
-                                          <Button Grid.RowSpan="2"
-                                                  BackgroundColor="Transparent"
-                                                  Command="{Binding GotoFuncPageCommand}"/>
-                                   </Grid>
-                            </Border>
-                            <!-- ************************************************************ -->
-                            <Border StrokeShape="RoundRectangle 5"
-                                    BackgroundColor="#FFF">
-                                   <Grid RowDefinitions="*,Auto"
-                                         Padding="5">
-                                          <Image Source="produtos"
-                                                 WidthRequest="90"
-                                                 Aspect="Fill"/>
-                                          <Label Grid.Row="1"
-                                                 Text="Produtos"
-                                                 Style="{StaticResource lblButon}"/>
-                                          <Button Grid.RowSpan="2"
-                                                  BackgroundColor="Transparent"
-                                                  Command="{Binding GotoProdutoPageCommand}"/>
-                                   </Grid>
-                            </Border>
-                            <!-- ************************************************************ -->
-                            <Border StrokeShape="RoundRectangle 5"
-                                    BackgroundColor="#FFF">
-                                   <Grid RowDefinitions="*,Auto"
-                                         Padding="5">
-                                          <Image Source="compras"
-                                                 WidthRequest="90"
-                                                 Aspect="Fill"/>
-                                          <Label Grid.Row="1"
-                                                 Text="Pedidos"
-                                                 Style="{StaticResource lblButon}"/>
-                                          <Button Grid.RowSpan="2"
-                                                  BackgroundColor="Transparent"/>
-                                   </Grid>
-                            </Border>
-                            <!-- ************************************************************ -->
-                            <Border StrokeShape="RoundRectangle 5"
-                                    BackgroundColor="#FFF">
-                                   <Grid RowDefinitions="*,Auto"
-                                         Padding="5">
-                                          <Image Source="caixa_c"
-                                                 WidthRequest="90"
-                                                 Aspect="Fill"/>
-                                          <Label Grid.Row="1"
-                                                 Text="Caixa"
-                                                 Style="{StaticResource lblButon}"/>
-                                          <Button Grid.RowSpan="2"
-                                                  BackgroundColor="Transparent"/>
-                                   </Grid>
-                            </Border>
-                            <!-- ************************************************************ -->
-                            <Border StrokeShape="RoundRectangle 5"
-                                    BackgroundColor="#FFF">
-                                   <Grid RowDefinitions="*,Auto"
-                                         Padding="5">
-                                          <Image Source="notificar"
-                                                 WidthRequest="90"
-                                                 Aspect="Fill"/>
-                                          <Label Grid.Row="1"
-                                                 Text="Notificar cliente"
-                                                 Style="{StaticResource lblButon}"/>
-                                          <Button Grid.RowSpan="2"
-                                                  BackgroundColor="Transparent"/>
-                                   </Grid>
-                            </Border>
-                     </StackLayout>
-              </ScrollView>
+              <Border StrokeShape="RoundRectangle 5"
+                      BackgroundColor="#FFF"
+                      Grid.Row="0"
+                      Grid.Column="0">
+                     <Grid RowDefinitions="*,Auto"
+                           Padding="5">
+                            <Image Source="group"
+                                   WidthRequest="90"
+                                   Aspect="Fill"/>
+                            <Label Grid.Row="1"
+                                   Text="Funcionários"
+                                   Style="{StaticResource lblButon}"/>
+                            <Button Grid.RowSpan="2"
+                                    BackgroundColor="Transparent"
+                                    Command="{Binding GotoFuncPageCommand}"/>
+                     </Grid>
+              </Border>
               <!-- ************************************************************ -->
+              <Border StrokeShape="RoundRectangle 5"
+                      BackgroundColor="#FFF"
+                       Grid.Row="0"
+                      Grid.Column="1">
+                     <Grid RowDefinitions="*,Auto"
+                           Padding="5">
+                            <Image Source="produtos"
+                                   WidthRequest="90"
+                                   Aspect="Fill"/>
+                            <Label Grid.Row="1"
+                                   Text="Produtos"
+                                   Style="{StaticResource lblButon}"/>
+                            <Button Grid.RowSpan="2"
+                                    BackgroundColor="Transparent"
+                                    Command="{Binding GotoProdutoPageCommand}"/>
+                     </Grid>
+              </Border>
               <!-- ************************************************************ -->
-              <Border Grid.Column="1"
-                      Grid.RowSpan="5"/>
+              <Border StrokeShape="RoundRectangle 5"
+                      BackgroundColor="#FFF"
+                       Grid.Row="1"
+                      Grid.Column="0">
+                     <Grid RowDefinitions="*,Auto"
+                           Padding="5">
+                            <Image Source="compras"
+                                   WidthRequest="90"
+                                   Aspect="Fill"/>
+                            <Label Grid.Row="1"
+                                   Text="Pedidos"
+                                   Style="{StaticResource lblButon}"/>
+                            <Button Grid.RowSpan="2"
+                                    BackgroundColor="Transparent"/>
+                     </Grid>
+              </Border>
+             
               <!-- ************************************************************ -->
-              <!-- ************************************************************ -->
-              <Grid Grid.Column="2"
-                    Padding="10"
-                    RowDefinitions="*,Auto,*"
-                    ColumnDefinitions="*,*,*,*">
-                     <!-- ************************************************************ -->
-                     <Border Grid.Row="1"
-                             BackgroundColor="#FCFCFC"
-                             Padding="10"
-                             StrokeThickness="0"
-                             StrokeShape="RoundRectangle 10">
-                            <Grid RowDefinitions="Auto,5,Auto,5,Auto,5,Auto,5,Auto,5,Auto,5,Auto,5,Auto">
-                                   <Label Grid.Row="0"
-                                          Text="Total vendido hoje"
-                                          VerticalOptions="Start"
-                                          Style="{StaticResource lblDashboard}"/>
-                                   <Border Grid.Row="0"
-                                           Stroke="#333"
-                                           HeightRequest="1"
-                                           VerticalOptions="End"/>
-                                   <Label Grid.Row="2"
-                                          Text="500.358,00"
-                                          FontSize="30"
-                                          Style="{StaticResource lblDashboard}"/>
-                                   <Label Grid.Row="4"
-                                          Text="Em cash"
-                                          Style="{StaticResource lblDashboard}"/>
-                                   <Label Grid.Row="6"
-                                          Text="200.400,00"
-                                          FontSize="30"
-                                          Style="{StaticResource lblDashboard}"/>
-                                   <Label Grid.Row="8"
-                                          Text="No TPA"
-                                          Style="{StaticResource lblDashboard}"/>
-                                   <Label Grid.Row="10"
-                                          Text="300.400,00"
-                                          FontSize="30"
-                                          Style="{StaticResource lblDashboard}"/>
-                                   <Label Grid.Row="12"
-                                          Text="Transferência"
-                                          Style="{StaticResource lblDashboard}"/>
-                                   <Label Grid.Row="15"
-                                          Text="80.000,00"
-                                          FontSize="30"
-                                          Style="{StaticResource lblDashboard}"/>
-                            </Grid>
-                     </Border>
-                     <!-- ************************************************************ -->
-              </Grid>
-
+              <Border StrokeShape="RoundRectangle 5"
+                      BackgroundColor="#FFF"
+                       Grid.Row="1"
+                      Grid.Column="1">
+                     <Grid RowDefinitions="*,Auto"
+                           Padding="5">
+                            <Image Source="notificar"
+                                   WidthRequest="90"
+                                   Aspect="Fill"/>
+                            <Label Grid.Row="1"
+                                   Text="Notificar cliente"
+                                   Style="{StaticResource lblButon}"/>
+                            <Button Grid.RowSpan="2"
+                                    BackgroundColor="Transparent"/>
+                     </Grid>
+              </Border>
        </Grid>
 </ContentPage>

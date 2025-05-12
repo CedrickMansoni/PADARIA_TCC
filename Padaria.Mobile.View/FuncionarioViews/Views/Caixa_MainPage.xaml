@@ -19,9 +19,8 @@
     </ContentPage.ToolbarItems>
 
     <Grid>
-
         <Grid RowDefinitions="*,Auto, *"
-              ColumnDefinitions="*, *, *"
+              ColumnDefinitions="*, *"
               ColumnSpacing="20"
               Padding="10">
 
@@ -34,7 +33,7 @@
                 <Grid>
                     <Image Source="forno"
                             VerticalOptions="Center"/>
-                    <Label Text="Produção"
+                    <Label Text="Produção - Local"
                            FontSize="32"
                            FontFamily="MontserratExtraLight"
                            HorizontalOptions="Center"
@@ -52,28 +51,9 @@
                     StrokeThickness="0"
                     BackgroundColor="#d6b06a">
                 <Grid>
-                    <Image Source="caixa"
+                    <Image Source="online"
                             VerticalOptions="Center"/>
-                    <Label Text="Caixa"
-                           FontSize="32"
-                           FontFamily="MontserratExtraLight"
-                           HorizontalOptions="Center"
-                           VerticalOptions="End"
-                           TextColor="#fff"/>
-                    <Button BackgroundColor="Transparent"/>
-                </Grid>
-            </Border>
-
-            <Border Grid.Row="1"
-                    Grid.Column="2"
-                    HeightRequest="200"
-                    StrokeShape="RoundRectangle 20"
-                    StrokeThickness="0"
-                    BackgroundColor="#d6b06a">
-                <Grid>
-                    <Image Source="relatorio"
-                            VerticalOptions="Center"/>
-                    <Label Text="Relatório"
+                    <Label Text="Produção - Deposito"
                            FontSize="32"
                            FontFamily="MontserratExtraLight"
                            HorizontalOptions="Center"
