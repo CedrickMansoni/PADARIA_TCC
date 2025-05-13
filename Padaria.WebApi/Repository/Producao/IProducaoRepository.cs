@@ -18,4 +18,5 @@ public interface IProducaoRepository
     Task<string> AdicionarAsync(ProducaoModel producao);
     Task<string> AtualizarAsync(ProducaoModel producao);
     Task<bool> RemoverAsync(int id);
+    Task<string> AdicionarSolicitacao(int id, int q);
 }

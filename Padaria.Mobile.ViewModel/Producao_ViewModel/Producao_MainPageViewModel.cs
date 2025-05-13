@@ -44,12 +44,13 @@ public class Producao_MainPageViewModel : BindableObject
 
     public ICommand AddProdutoCommand => new Command<Get_Produto_DTO>(async p =>
     {
+        ListarCapacidadeProducaoCommand.Execute(null);
         if (p == null) return;
-        if(Producoes.Any(x => x.Produto == p.Id)) return;
-        
+        if (Producoes.Any(x => x.Produto == p.Id)) return;
+
         int c = CapacidadeProducao.FirstOrDefault(x => x.IdProduto == p.Id)?.QuantidadeMaxima ?? 0;
         int s = CapacidadeProducao.FirstOrDefault(x => x.IdProduto == p.Id)?.QuantidadeSolicitada ?? 0;
-       
+
         int usuarioId = Convert.ToInt32(await SecureStorage.Default.GetAsync("IdUsuario"));
         string? categoria = await SecureStorage.Default.GetAsync("CategoriaUsuario");
         var newProducao = new Post_Producao_DTO
@@ -64,7 +65,7 @@ public class Producao_MainPageViewModel : BindableObject
         };
 
         Producoes.Add(newProducao);
-
+        ListarCapacidadeProducaoCommand.Execute(null);
     });
 
     public ICommand RemoveProdutoCommand => new Command<Post_Producao_DTO>(producao =>
@@ -80,6 +81,14 @@ public class Producao_MainPageViewModel : BindableObject
     {
         try
         {
+            foreach (var item in Producoes)
+            {
+                if (item.Quantidade > item.Limite)
+                {
+                    await Shell.Current.DisplayAlert("Erro", "Quantidade solicitada nao pode ser maior que a quantidade disponivel", "Ok");
+                    return;
+                }
+            }
             ActivityCommand.Execute(null);
             var json = JsonSerializer.Serialize(Producoes, options);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -104,6 +113,7 @@ public class Producao_MainPageViewModel : BindableObject
             // Handle exceptions
             Console.WriteLine($"Exception: {ex.Message}");
         }
+        ListarCapacidadeProducaoCommand.Execute(null);
     });
     private Get_Produto_DTO produto = new();
     public Get_Produto_DTO Produto
@@ -170,12 +180,6 @@ public class Producao_MainPageViewModel : BindableObject
         }
     });
 
-
-
-
-
-
-
     private bool activity = false;
     public bool Activity
     {
@@ -186,6 +190,38 @@ public class Producao_MainPageViewModel : BindableObject
             OnPropertyChanged(nameof(Activity));
         }
     }
+
+    public ICommand AdicionarCapacidade => new Command<Get_Producao_DTO>(async p =>
+    {
+        string input = await Shell.Current.DisplayPromptAsync(
+         "Aumentar o limite de produção",
+         "Informe a quantidade a adicionar:",
+         "Adicionar",
+         "Cancelar",
+         placeholder: "Ex: 100",
+         keyboard: Keyboard.Numeric);
+
+        if (string.IsNullOrWhiteSpace(input)) return;
+
+        var json = JsonSerializer.Serialize(new Put_Capacidade_Producao
+        {
+            Id = p.Id,
+            QuantidadeMaxima = int.Parse(input)
+        }, options);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var response = await client.PutAsync("editar/capacidade/producao", content);
+        if (response.IsSuccessStatusCode)
+        {
+            await Shell.Current.DisplayAlert("Mensagem", "Capacidade de produção actualizada com sucesso!", "Ok");
+            ListarCapacidadeProducaoCommand.Execute(null);
+        }
+        else
+        {
+            await Shell.Current.DisplayAlert("Erro", $"Error: {response.StatusCode}", "Ok");
+        }
+
+
+    });
 
     private bool enablePage = true;
     public bool EnablePage

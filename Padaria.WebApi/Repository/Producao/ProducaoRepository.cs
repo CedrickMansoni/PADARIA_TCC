@@ -91,6 +91,15 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
 
     public async Task<string> AdicionarAsync(ProducaoModel producao)
     {
+        var q = await _context.TabelaCapacidade.OrderByDescending(i => i.Id).FirstOrDefaultAsync(x => x.IdProduto == producao.IdProduto);
+        if (q is not null)
+        {
+            if (q.QuantidadeMaxima < producao.Quantidade)
+            {
+                return "A quantidade solicitada nao pode ser inferior a quantidade maxima";
+            }
+        }
+
         await _context.TabelaProducaoModel.AddAsync(producao);
         return await _context.SaveChangesAsync() > 0 ?
             "Produção adicionada com sucesso!" :
@@ -136,9 +145,7 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
         if (p == null)
             return "Capacidade de produção não encontrada.";
         p.IdProduto = capacidadeProducao.IdProduto;
-        p.QuantidadeMaxima = capacidadeProducao.QuantidadeMaxima;
-        p.Data = capacidadeProducao.Data;
-        _context.TabelaCapacidade.Update(p);
+        p.QuantidadeMaxima += capacidadeProducao.QuantidadeMaxima;
         return await _context.SaveChangesAsync() > 0 ?
             "Capacidade de produção actualizada com sucesso!" :
             "Erro ao actualizar capacidade de produção.";
@@ -165,11 +172,24 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
                     select new Get_Capacidade_Producao
                     {
                         Id = capacidade.Id,
-                        IdProduto= produto.Id,
+                        IdProduto = produto.Id,
                         Produto = produto.Nome,
                         QuantidadeMaxima = capacidade.QuantidadeMaxima,
+                        QuantidadeSolicitada = capacidade.QuantidadeSolicitada,
                         Data = capacidade.Data
                     };
         return await query.Skip(skip).Take(take).ToListAsync(c);
+    }
+
+    public async Task<string> AdicionarSolicitacao(int id, int q)
+    {
+        var p = await _context.TabelaCapacidade.FindAsync(id);
+        if (p == null)
+            return "Capacidade de produção não encontrada.";
+        p.QuantidadeMaxima -= q;
+        p.QuantidadeSolicitada += q;
+        return await _context.SaveChangesAsync() > 0 ?
+            "Capacidade de produção actualizada com sucesso!" :
+            "Erro ao actualizar capacidade de produção.";
     }
 }
