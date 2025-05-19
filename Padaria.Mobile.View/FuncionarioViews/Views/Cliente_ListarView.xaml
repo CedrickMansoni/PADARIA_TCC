@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Padaria.Mobile.View.FuncionarioViews.Views.Cliente_ListarView"
+             BackgroundColor="#fff5e1"
+             Shell.NavBarHasShadow="True"
+             Shell.BackgroundColor="#d6b06a"
+             Shell.TitleColor="#fff"
+             Shell.ForegroundColor="#fff"
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.FuncionarioViewModels;assembly=Padaria.Mobile.ViewModel"
+             x:DataType="vm:Cliente_ListarViewModel"
+             xmlns:data="clr-namespace:Padaria.Share.Cliente.DTO;assembly=Padaria.Share"
+             Title="Clientes">
+
+    <ContentPage.BindingContext>
+        <vm:Cliente_ListarViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <CollectionView x:Name="colecao"
+                        ItemsSource="{Binding Clientes}"
+                        SelectionMode="None"
+                        MaximumWidthRequest="500"
+                        Margin="50">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="data:Get_Cliente_DTO">
+                    <Border BackgroundColor="#fff"
+                        StrokeThickness="0"
+                        Margin="10"
+                        StrokeShape="RoundRectangle 10">
+                        <Grid Padding="10"
+                              RowDefinitions="Auto, Auto, Auto">
+                            <Label Text="{Binding Nome, StringFormat='Cliente    : {0}'}"
+                                   FontSize="18"
+                                   FontFamily="MontserratLight"
+                                   Grid.Row="0"/>
+                            <Label Text="{Binding Nif, StringFormat='NIF          : {0}'}"
+                                   FontSize="18"
+                                   FontFamily="MontserratLight"
+                                   Grid.Row="1"/>
+                            <Label Text="{Binding Telefone, StringFormat='Telefone : {0}'}"
+                                   FontSize="18"
+                                   FontFamily="MontserratLight"
+                                   Grid.Row="2"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <Grid>
+                    <Label Text="Nenhum cliente encontrado"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           FontSize="19"
+                           FontFamily="MontserratBlack"/>
+                </Grid>
+            </CollectionView.EmptyView>
+        </CollectionView>
+        <Grid HeightRequest="60"
+              WidthRequest="60"
+              VerticalOptions="End"
+              HorizontalOptions="End"
+              Margin="15">
+            <Image Source="add"
+                   Aspect="AspectFill"/>
+            <Button BackgroundColor="Transparent"
+                    Command="{Binding AddClienteCommand}"/>
+        </Grid>
+    </Grid>
+
+</ContentPage>

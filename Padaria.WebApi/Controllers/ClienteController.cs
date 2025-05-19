@@ -44,11 +44,11 @@ namespace Padaria.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet("/listar/cliente/{id}")]
-        public async Task<IActionResult> ListarCliente(int id)
+        [HttpGet("/listar/cliente/{telefone}")]
+        public async Task<IActionResult> ListarCliente(string telefone)
         {
-            var result = await _clienteService.ListarCliente(id);
-            return Ok(result);
+            var result = await _clienteService.ListarCliente(telefone);
+            return result is not null ? Ok(result) : BadRequest();
         }
     }
 }

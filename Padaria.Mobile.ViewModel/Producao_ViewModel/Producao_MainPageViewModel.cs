@@ -61,7 +61,7 @@ public class Producao_MainPageViewModel : BindableObject
             Quantidade = 1,
             Funcionario = categoria != "Pessoa Juridica" && categoria != "Pessoa Física" ? usuarioId : 0,
             Cliente = categoria == "Pessoa Juridica" || categoria == "Pessoa Física" ? usuarioId : 0,
-            Limite = c - s
+            Limite = c 
         };
 
         Producoes.Add(newProducao);

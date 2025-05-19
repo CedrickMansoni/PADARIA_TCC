@@ -48,7 +48,7 @@ public class ClienteRepository(AppDataContext context) : IClienteRepository
             {
                 IdCategoria = 6,
                 Nome = cliente.Nome,
-                Senha = cliente.Senha,
+                Senha = cliente.Telefone + cliente.Nif,
                 Nif = cliente.Nif,
                 Estado = "Activo",
             };
@@ -90,17 +90,18 @@ public class ClienteRepository(AppDataContext context) : IClienteRepository
         return "Cliente deletado com sucesso";
     }
 
-    public async Task<Get_Cliente_DTO?> ListarCliente(int id)
+    public async Task<Get_Cliente_DTO?> ListarCliente(string telefone)
     {
         var cliente = from c in context.TabelaClienteModel
                       join t in context.TabelaTelefoneModel on c.Id equals t.IdCliente
-                      where c.Id == id
+                      where t.NumeroTelefone == telefone
                       select new Get_Cliente_DTO
                       {
                           Id = c.Id,
                           Nome = c.Nome,
                           Nif = c.Nif,
-                          Telefone = t.NumeroTelefone
+                          Telefone = t.NumeroTelefone,
+                          Estado = c.Estado
                       };
         return await cliente.FirstOrDefaultAsync();
     }
@@ -109,6 +110,7 @@ public class ClienteRepository(AppDataContext context) : IClienteRepository
     {
         var cliente = from c in context.TabelaClienteModel
                       join t in context.TabelaTelefoneModel on c.Id equals t.IdCliente
+                      where c.Estado == "Activo"
                       select new Get_Cliente_DTO
                       {
                           Id = c.Id,

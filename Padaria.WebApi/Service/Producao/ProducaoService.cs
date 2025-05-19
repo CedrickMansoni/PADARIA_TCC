@@ -17,9 +17,10 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
         if (producao.Any(p => p.Quantidade <= 0)) return "Quantidade deve ser maior que zero";
 
 
-
+        int count = producao.Count();
         foreach (var item in producao)
         {
+            if (count == 0) break;
             response = await _repository.AdicionarAsync(new ProducaoModel
             {
                 IdProduto = item.Produto,
@@ -29,7 +30,8 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
                 IdFuncionario = item.Cliente != 0 ? (int?)null : item.Funcionario,
                 IdCliente = item.Cliente == 0 ? (int?)null : item.Cliente
             });
-            response = await _repository.AdicionarSolicitacao(item.Produto, item.Quantidade);
+            var response2 = await _repository.AdicionarSolicitacao(item.Produto, item.Quantidade);
+            count -= 1;
             if (!response.Contains("sucesso", StringComparison.CurrentCultureIgnoreCase))
             {
                 break;

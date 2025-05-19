@@ -49,15 +49,20 @@ public class Admin_MainPage_ViewModel : BindableObject
 
 	});
 
-	public ICommand GotoFuncPageCommand => new Command(async ()=> 
+	public ICommand GotoFuncPageCommand => new Command(async () =>
 	{
 		await Shell.Current.GoToAsync("Listar_Func");
 	});
 
 	//
-	public ICommand GotoProdutoPageCommand => new Command(async ()=> 
+	public ICommand GotoProdutoPageCommand => new Command(async () =>
 	{
 		await Shell.Current.GoToAsync("Produto_MainPage");
+	});
+	
+	public ICommand GotoClientPageCommand => new Command(async ()=> 
+	{
+		await Shell.Current.GoToAsync("Cliente_ListarView");
 	});
 
 }

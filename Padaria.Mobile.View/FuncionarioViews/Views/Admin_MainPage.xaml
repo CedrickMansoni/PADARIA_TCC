@@ -51,7 +51,8 @@
        </ContentPage.Resources>
 
        <Grid ColumnDefinitions="*,*"
-             RowDefinitions="*,*">
+             RowDefinitions="*,*"
+             Padding="90">
 
               <Border StrokeShape="RoundRectangle 5"
                       BackgroundColor="#FFF"
@@ -61,7 +62,7 @@
                            Padding="5">
                             <Image Source="group"
                                    WidthRequest="90"
-                                   Aspect="Fill"/>
+                                   Aspect="AspectFit"/>
                             <Label Grid.Row="1"
                                    Text="Funcionários"
                                    Style="{StaticResource lblButon}"/>
@@ -73,13 +74,13 @@
               <!-- ************************************************************ -->
               <Border StrokeShape="RoundRectangle 5"
                       BackgroundColor="#FFF"
-                       Grid.Row="0"
+                      Grid.Row="0"
                       Grid.Column="1">
                      <Grid RowDefinitions="*,Auto"
                            Padding="5">
                             <Image Source="produtos"
                                    WidthRequest="90"
-                                   Aspect="Fill"/>
+                                   Aspect="AspectFit"/>
                             <Label Grid.Row="1"
                                    Text="Produtos"
                                    Style="{StaticResource lblButon}"/>
@@ -91,13 +92,13 @@
               <!-- ************************************************************ -->
               <Border StrokeShape="RoundRectangle 5"
                       BackgroundColor="#FFF"
-                       Grid.Row="1"
+                      Grid.Row="1"
                       Grid.Column="0">
                      <Grid RowDefinitions="*,Auto"
                            Padding="5">
                             <Image Source="compras"
                                    WidthRequest="90"
-                                   Aspect="Fill"/>
+                                   Aspect="AspectFit"/>
                             <Label Grid.Row="1"
                                    Text="Pedidos"
                                    Style="{StaticResource lblButon}"/>
@@ -105,22 +106,23 @@
                                     BackgroundColor="Transparent"/>
                      </Grid>
               </Border>
-             
+
               <!-- ************************************************************ -->
               <Border StrokeShape="RoundRectangle 5"
                       BackgroundColor="#FFF"
-                       Grid.Row="1"
+                      Grid.Row="1"
                       Grid.Column="1">
                      <Grid RowDefinitions="*,Auto"
                            Padding="5">
-                            <Image Source="notificar"
+                            <Image Source="clientes"
                                    WidthRequest="90"
-                                   Aspect="Fill"/>
+                                   Aspect="AspectFit"/>
                             <Label Grid.Row="1"
-                                   Text="Notificar cliente"
+                                   Text="Clientes"
                                    Style="{StaticResource lblButon}"/>
                             <Button Grid.RowSpan="2"
-                                    BackgroundColor="Transparent"/>
+                                    BackgroundColor="Transparent"
+                                    Command="{Binding GotoClientPageCommand}"/>
                      </Grid>
               </Border>
        </Grid>

@@ -183,11 +183,11 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
 
     public async Task<string> AdicionarSolicitacao(int id, int q)
     {
-        var p = await _context.TabelaCapacidade.FindAsync(id);
+        var p = await _context.TabelaCapacidade.OrderByDescending(i => i.Id).FirstOrDefaultAsync(i => i.IdProduto ==id);
         if (p == null)
             return "Capacidade de produção não encontrada.";
-        p.QuantidadeMaxima -= q;
-        p.QuantidadeSolicitada += q;
+        p.QuantidadeMaxima = p.QuantidadeMaxima - q;
+        p.QuantidadeSolicitada = p.QuantidadeSolicitada + q;
         return await _context.SaveChangesAsync() > 0 ?
             "Capacidade de produção actualizada com sucesso!" :
             "Erro ao actualizar capacidade de produção.";

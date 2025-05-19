@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Padaria.Mobile.View.FuncionarioViews.Views.Cliente_AddView"
+             BackgroundColor="#fff5e1"
+             Shell.BackgroundColor="#d6b06a"
+             Shell.TitleColor="#fff"
+             Shell.ForegroundColor="#fff"
+             Shell.NavBarIsVisible="True"
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.FuncionarioViewModels;assembly=Padaria.Mobile.ViewModel"
+             x:DataType="vm:Cliente_AddViewModel"
+             Title="Cadastrar cliente">
+
+    <ContentPage.BindingContext>
+        <vm:Cliente_AddViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid ColumnDefinitions="*,*"
+          RowSpacing="20"
+          RowDefinitions="*,Auto, Auto, Auto, Auto,*">
+        <Image Source="logo_mf"
+               Aspect="Fill"
+               Grid.Row="0"
+               Grid.RowSpan="6"/>
+
+        <Border Grid.Row="1"
+                Grid.Column="1"
+                StrokeThickness="0"
+                BackgroundColor="#fff"
+                Padding="15, -15"
+                MaximumWidthRequest="500"
+                StrokeShape="RoundRectangle 60">
+            <Entry Placeholder="Nome completo"
+                   HeightRequest="75"
+                   FontSize="22"
+                   FontFamily="MontserratRegular"
+                   MaximumWidthRequest="500"
+                   Text="{Binding Cliente.Nome}"/>
+        </Border>
+
+        <Border Grid.Row="2"
+                Grid.Column="1"
+                StrokeThickness="0"
+                BackgroundColor="#fff"
+                Padding="15, -15"
+                MaximumWidthRequest="500"
+                StrokeShape="RoundRectangle 60">
+            <Entry Placeholder="NIF"
+                   HeightRequest="75"
+                   FontSize="22"
+                   FontFamily="MontserratRegular"
+                   MaximumWidthRequest="500"
+                   Text="{Binding Cliente.Nif}"/>
+        </Border>
+
+        <Border Grid.Row="3"
+                Grid.Column="1"
+                StrokeThickness="0"
+                BackgroundColor="#fff"
+                Padding="15, -15"
+                MaximumWidthRequest="500"
+                StrokeShape="RoundRectangle 60">
+            <Entry Placeholder="Telefone"
+                   HeightRequest="75"
+                   FontSize="22"
+                   Keyboard="Numeric"
+                   FontFamily="MontserratRegular"
+                   MaximumWidthRequest="500"
+                   Text="{Binding Cliente.Telefone}"/>
+        </Border>
+
+        <Border Grid.Column="1"
+                Grid.Row="4"
+                StrokeShape="RoundRectangle 60"
+                StrokeThickness="0"
+                BackgroundColor="#442b22"
+                Padding="0"
+                HeightRequest="55"
+                MaximumWidthRequest="500">
+            <Button Text="Salvar"
+                    BackgroundColor="Transparent"
+                    FontSize="25"
+                    FontFamily="MontserratRegular"
+                    Command="{Binding AddClienteCommand}"/>
+        </Border>
+
+    </Grid>
+</ContentPage>

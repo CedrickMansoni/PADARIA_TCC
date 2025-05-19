@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Padaria.Mobile.View.ClienteView.Login_ClientesView"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#fff5e1"
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.ClienteViewModels;assembly=Padaria.Mobile.ViewModel">
+
+    <ContentPage.BindingContext>
+        <vm:Login_ViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <Image Source="bg_image"
+               Grid.Row="0"
+               VerticalOptions="Start"/>
+        <Grid RowDefinitions="*,Auto,Auto,*"
+              VerticalOptions="Center"
+              RowSpacing="10"
+              Padding="30">
+            <Border HeightRequest="170"
+                    WidthRequest="170"
+                    Grid.Row="0"
+                    StrokeShape="RoundRectangle 55"
+                    Stroke="#fff5e1"
+                    StrokeThickness="5">
+                <Image Source="splash"
+                       Aspect="Fill"/>
+            </Border>
+            <Border BackgroundColor="#fff"
+                    Grid.Row="2"
+                    Padding="20, -15"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 60">
+                <Entry Placeholder="Telefone"
+                       Text="{Binding Telefone}"
+                       FontSize="19"
+                       HeightRequest="70"
+                       FontFamily="MontserratMedium"
+                       Keyboard="Numeric"/>
+            </Border>
+
+            <Button Text="Entrar"
+                    FontSize="19"
+                    Grid.Row="3"
+                    CornerRadius="60"
+                    BackgroundColor="#d6b06a"
+                    FontFamily="MontserratMedium"
+                    Command="{Binding LoginCommand}"/>
+
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -94,49 +94,60 @@ public class Login_Pin_ViewModel : BindableObject
 
             StringContent content = new(jsonCredenciais, Encoding.UTF8, "application/json");
 
-   
-            var response = await client.PostAsync("autenticar/funcionario", content);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                using var stream = await response.Content.ReadAsStreamAsync();
-                var funcionario = await JsonSerializer.DeserializeAsync<Get_Func_DTO>(stream, options);
-                if (funcionario is null) return;
-                string jsonFuncionario = JsonSerializer.Serialize(funcionario);
-
-                switch (funcionario.Categoria)
+                var response = await client.PostAsync("autenticar/funcionario", content);
+                if (response.IsSuccessStatusCode)
                 {
-                    case "Administrador":
-                        await Shell.Current.GoToAsync($"//Admin_MainPage?funcLogado={Uri.EscapeDataString(jsonFuncionario)}");
-                        break;
-                    case "Gerente":
-                        await Shell.Current.GoToAsync($"//Gerente_MainPage?funcLogado={Uri.EscapeDataString(jsonFuncionario)}");
-                        break;
-                    case "Caixa":
-                        await Shell.Current.GoToAsync($"//Caixa_MainPage?funcLogado={Uri.EscapeDataString(jsonFuncionario)}");
-                        break;
-                     case "Padeiro":
-                        await Shell.Current.GoToAsync($"//Padeiro_MainPage?funcLogado={Uri.EscapeDataString(jsonFuncionario)}");
-                        break;
-                    default:
-                        break;
-                }
-                ActivityCommand.Execute(null);
-                await SecureStorage.Default.SetAsync("IdUsuario", funcionario.Id.ToString());
-                await SecureStorage.Default.SetAsync("CategoriaUsuario", funcionario.Categoria);
-            }
-            else
-            {
-                // Captura a mensagem de erro do servidor
-                var errorMessage = await response.Content.ReadAsStringAsync();
+                    using var stream = await response.Content.ReadAsStreamAsync();
+                    var funcionario = await JsonSerializer.DeserializeAsync<Get_Func_DTO>(stream, options);
+                    if (funcionario is null) return;
+                    string jsonFuncionario = JsonSerializer.Serialize(funcionario);
 
-                // Exibe a mensagem para o usuário
+                    switch (funcionario.Categoria)
+                    {
+                        case "Administrador":
+                            await Shell.Current.GoToAsync($"//Admin_MainPage?funcLogado={Uri.EscapeDataString(jsonFuncionario)}");
+                            break;
+                        case "Gerente":
+                            await Shell.Current.GoToAsync($"//Gerente_MainPage?funcLogado={Uri.EscapeDataString(jsonFuncionario)}");
+                            break;
+                        case "Caixa":
+                            await Shell.Current.GoToAsync($"//Caixa_MainPage?funcLogado={Uri.EscapeDataString(jsonFuncionario)}");
+                            break;
+                        case "Padeiro":
+                            await Shell.Current.GoToAsync($"//Padeiro_MainPage?funcLogado={Uri.EscapeDataString(jsonFuncionario)}");
+                            break;
+                        default:
+                            break;
+                    }
+                    ActivityCommand.Execute(null);
+                    await SecureStorage.Default.SetAsync("IdUsuario", funcionario.Id.ToString());
+                    await SecureStorage.Default.SetAsync("CategoriaUsuario", funcionario.Categoria);
+                }
+                else
+                {
+                    // Captura a mensagem de erro do servidor
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+
+                    // Exibe a mensagem para o usuário
+                    foreach (var p in Pin)
+                    {
+                        DeletePinCommand.Execute(null);
+                    }
+                    ActivityCommand.Execute(null);
+                    await Shell.Current.DisplayAlert("Erro de Autenticação", errorMessage, "OK");
+
+                }
+            }
+            catch
+            {
+                await Shell.Current.DisplayAlert("Erro de Conexão", "Não conseguimos estabelecer conexão com o servidor", "OK");
                 foreach (var p in Pin)
                 {
                     DeletePinCommand.Execute(null);
                 }
                 ActivityCommand.Execute(null);
-                await Shell.Current.DisplayAlert("Erro de Autenticação", errorMessage, "OK");
-                
             }
             return;
         }

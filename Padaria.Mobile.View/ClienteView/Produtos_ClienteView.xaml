@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Padaria.Mobile.View.ClienteView.Produtos_ClienteView"
+             BackgroundColor="#fff5e1"
+             Title="Produtos"
+              xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.Producao_ViewModel;assembly=Padaria.Mobile.ViewModel"
+             x:DataType="vm:Producao_MainPageViewModel"
+             xmlns:produtoGet="clr-namespace:Padaria.Share.Produto.DTO;assembly=Padaria.Share"
+             xmlns:producaoPost="clr-namespace:Padaria.Share.Producao.DTO;assembly=Padaria.Share">
+   
+       <ContentPage.BindingContext>
+        <vm:Producao_MainPageViewModel/>
+    </ContentPage.BindingContext>
+
+   <Grid>
+        <Grid RowSpacing="20"
+              RowDefinitions="Auto,*, Auto,*"
+              Margin="0"
+              Padding="10"
+              IsEnabled="{Binding EnablePage}">
+
+            <Label Text="Lista de Produtos"
+                   FontAttributes="Bold"
+                   FontFamily="MontserratBold"
+                   FontSize="Large"
+                   HorizontalTextAlignment="Center"
+                   Grid.Row="0"
+                   HorizontalOptions="Center"/>
+            <Label Text="Solicitar produtos"
+                   FontAttributes="Bold"
+                   FontFamily="MontserratBold"
+                   FontSize="Large"
+                   HorizontalTextAlignment="Center"
+                   Grid.Row="2"
+                   HorizontalOptions="Center"/>
+
+            <!-- ==================================== -->
+
+            <Border Grid.Row="1"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start"
+                    Padding="5"
+                    StrokeShape="RoundRectangle 10">
+                <CollectionView ItemsSource="{Binding Produtos}"
+                                SelectionMode="None"
+                                x:Name="colecaoprodutos">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="produtoGet:Get_Produto_DTO">
+                            <Grid Margin="10">
+                                <Image Source="{Binding Imagem}"
+                                       HeightRequest="230"
+                                       Aspect="Fill"/>
+                                <StackLayout BackgroundColor="#000"
+                                             HeightRequest="60"
+                                             Opacity="0.5"
+                                             VerticalOptions="End"/>
+                                <Label Text="{Binding Nome}"
+                                       FontSize="20"
+                                       FontFamily="MontserratRegular"
+                                       TextColor="#fff"
+                                       Margin="15"
+                                       VerticalOptions="End"/>
+                                <Button HeightRequest="30"
+                                        WidthRequest="90"
+                                        VerticalOptions="End"
+                                        HorizontalOptions="End"
+                                        Margin="8"
+                                        Text="Add"
+                                        FontFamily="MontserratRegular"
+                                        FontSize="18"
+                                        BackgroundColor="#d6b06a"
+                                        Command="{Binding BindingContext.AddProdutoCommand, Source={x:Reference Name = colecaoprodutos}}"
+                                        CommandParameter="{Binding .}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Border>
+            <Border Grid.Row="3"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start"
+                    Padding="10"
+                    StrokeShape="RoundRectangle 10">
+                <CollectionView ItemsSource="{Binding Producoes}"
+                                SelectionMode="None"
+                                WidthRequest="370"
+                                MaximumHeightRequest="400"
+                                x:Name="colecao">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="producaoPost:Post_Producao_DTO">
+                            <Grid Margin="10"
+                                  ColumnDefinitions="*,Auto">
+
+                                <StackLayout BackgroundColor="#000"
+                                             HeightRequest="60"
+                                             Opacity="0.5"
+                                             VerticalOptions="End"/>
+                                <Label Text="{Binding Nome}"
+                                       FontSize="20"
+                                       FontFamily="MontserratRegular"
+                                       TextColor="#fff"
+                                       Margin="15"
+                                       VerticalOptions="End"/>
+
+                                <HorizontalStackLayout  VerticalOptions="End"
+                                                        HorizontalOptions="End">
+                                    <Entry Text="{Binding Quantidade}"
+                                           FontSize="25"
+                                           FontFamily="MontserratBold"
+                                           TextColor="#fff"
+                                           Keyboard="Numeric"/>
+                                    <Label Text="{Binding Limite, StringFormat=' / {0}'}"
+                                           FontSize="25"
+                                           FontFamily="MontserratBold"
+                                           TextColor="#fff"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="End"/>
+                                </HorizontalStackLayout>
+                                <Grid Grid.Column="1">
+                                    <Image Source="remover"
+                                           HeightRequest="40"
+                                           HorizontalOptions="Center"
+                                           Margin="5,0,0,0"/>
+                                    <Button BackgroundColor="Transparent"
+                                            Command="{Binding BindingContext.RemoveProdutoCommand, Source={x:Reference Name = colecao}}"
+                                            CommandParameter="{Binding .}"/>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Border>
+            <Button Text="Enviar"
+                    FontFamily="MontserratRegular"
+                    FontSize="19"
+                    WidthRequest="110"
+                    Grid.Row="3"
+                    VerticalOptions="End"
+                    HorizontalOptions="End"
+                    Margin="5,0"
+                    BackgroundColor="#d6b06a"
+                    Command="{Binding SalvarProducoesCommand}"/>
+        </Grid>
+        <StackLayout BackgroundColor="#454545"
+                     Opacity="0.8"
+                     IsVisible="{Binding Activity}"
+                     VerticalOptions="Fill"
+                     HorizontalOptions="Fill"/>
+
+        <ActivityIndicator IsRunning="{Binding Activity}"
+                           IsVisible="{Binding Activity}"
+                           HeightRequest="150"
+                           Color="#FFF"/>
+    </Grid>
+
+</ContentPage>

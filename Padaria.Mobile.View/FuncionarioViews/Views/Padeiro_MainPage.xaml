@@ -84,7 +84,7 @@
               </Border>
 
               <CollectionView x:Name="colecaocapacidade"
-                     Grid.Column="0"
+                              Grid.Column="0"
                               Grid.Row="3"
                               ItemsSource="{Binding CapacidadeProducao}"
                               SelectionMode="None">
@@ -111,7 +111,9 @@
                                                        HorizontalOptions="End">
                                                         <Image Source="adicionar"
                                                                HeightRequest="40"/>
-                                                        <Button BackgroundColor="Transparent" Command="{Binding bindingContext.AdicionarCapacidade, Source={x:Reference colecaocapacidade}}" CommandParameter="{Binding .}"/>
+                                                        <Button BackgroundColor="Transparent"
+                                                                Command="{Binding BindingContext.AdicionarCapacidade, Source={x:Reference Name = colecaocapacidade}}"
+                                                                CommandParameter="{Binding .}"/>
                                                  </Grid>
                                           </Grid>
                                    </Border>

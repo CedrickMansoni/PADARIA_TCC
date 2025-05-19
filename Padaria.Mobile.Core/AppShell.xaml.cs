@@ -24,10 +24,14 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute("Listar_Func", typeof(Listar_Func_Page));
 		Routing.RegisterRoute("Produto_Categoria", typeof(Produto_CategoriaPage));
 		Routing.RegisterRoute("Produto_MainPage", typeof(Produto_MainPage));
-		Routing.RegisterRoute("Produto_PostPage", typeof(Produto_PostView)); 
+		Routing.RegisterRoute("Produto_PostPage", typeof(Produto_PostView));
 		/* -------------------------------------------------------------------- */
 		Routing.RegisterRoute("Producao_MainPage", typeof(Producao_MainPage));
 		Routing.RegisterRoute("Get_Clientes_View", typeof(Get_Clientes_View));
+		/* -------------------------------------------------------------------- */
+		Routing.RegisterRoute("Cliente_AddView", typeof(Cliente_AddView));
+		Routing.RegisterRoute("Cliente_EditeView", typeof(Cliente_EditeView));
+		Routing.RegisterRoute("Cliente_ListarView", typeof(Cliente_ListarView));
 
 	}
 

@@ -3,13 +3,44 @@
     x:Class="Padaria.Mobile.Cliente.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Padaria.Mobile.Cliente"
-    Shell.FlyoutBehavior="Flyout"
+    xmlns:local="clr-namespace:Padaria.Mobile.View.ClienteView;assembly=Padaria.Mobile.View"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarBackgroundColor="#d6b06a"
+    Shell.TabBarTitleColor="#fff"
+    Shell.TabBarForegroundColor="#fff5e1"
+    Shell.TabBarDisabledColor="#454545"
     Title="Padaria.Mobile.Cliente">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Title="Login"
+        ContentTemplate="{DataTemplate local:Login_ClientesView}"
+        Route="Login_ClientesView"/>
+
+    <TabBar>
+        <Tab Title="Produtos"
+             Icon="pao.png">
+            <ShellContent
+                Title="Produtos"
+                ContentTemplate="{DataTemplate local:Produtos_ClienteView}"
+                Route="Produtos_ClienteView"/>
+        </Tab>
+        <Tab Title="Pedidos"
+                Icon="ordem.png">
+            <ShellContent
+                Title="Pedidos"
+                ContentTemplate="{DataTemplate local:Pedidos_ClientesView}"
+                Route="Pedidos_ClientesView"/>
+        </Tab>
+
+
+        <Tab Title="Finalizar compra"
+                Icon="pdf.png">
+            <ShellContent
+                Title="Finalizar compra"
+                ContentTemplate="{DataTemplate local:Compras_ClientesView}"
+                Route="Compras_ClientesView"/>
+        </Tab>
+    </TabBar>
 
 </Shell>
