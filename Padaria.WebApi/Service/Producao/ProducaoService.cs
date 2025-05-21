@@ -25,7 +25,7 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
             {
                 IdProduto = item.Produto,
                 Quantidade = item.Quantidade,
-                DataProducao = DateTime.SpecifyKind(Convert.ToDateTime(DateTime.Now), DateTimeKind.Utc),
+                DataProducao = DateTime.SpecifyKind(Convert.ToDateTime(DateTime.Now), DateTimeKind.Utc).ToString("yyyy-MM-dd"),
                 EstadoProducao = item.Cliente == 0 ? "Pendente" : "Pendente por falta de pagamento",
                 IdFuncionario = item.Cliente != 0 ? (int?)null : item.Funcionario,
                 IdCliente = item.Cliente == 0 ? (int?)null : item.Cliente
@@ -56,7 +56,7 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
         {
             IdProduto = producao.Produto,
             Quantidade = producao.Quantidade,
-            DataProducao = producao.DataProducao,
+            DataProducao = producao.DataProducao.ToString("yyyy-MM-dd"),
             EstadoProducao = producao.Estado,
             IdFuncionario = producao.Padeiro
         });
@@ -118,5 +118,15 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
     public async Task<IEnumerable<Get_Capacidade_Producao>> ListarCapacidadeProducao(int skip = 0, int take = 30, CancellationToken c = default)
     {
         return await _repository.ListarCapacidadeProducao(skip, take, c);
+    }
+
+    public async Task<IEnumerable<Get_Producao_DTO>> ListarProducaoCliente(int idCliente, int skip = 0, int take = 60, CancellationToken c = default)
+    {
+        return await _repository.ListarProducaoCliente(idCliente, skip, take, c);
+    }
+
+    public async Task<IEnumerable<Get_Producao_DTO>> ListarProducaoClientePagamento(int idCliente, int skip = 0, int take = 60, CancellationToken c = default)
+    {
+        return await _repository.ListarProducaoClientePagamento(idCliente, skip, take, c);
     }
 }

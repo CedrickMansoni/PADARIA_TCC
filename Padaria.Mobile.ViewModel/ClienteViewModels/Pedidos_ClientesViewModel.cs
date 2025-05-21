@@ -1,0 +1,118 @@
+using System;
+using System.Collections.ObjectModel;
+using System.Text.Json;
+using System.Windows.Input;
+using Padaria.Share.DNS_App;
+using Padaria.Share.Producao.DTO;
+
+namespace Padaria.Mobile.ViewModel.ClienteViewModels;
+
+public class Pedidos_ClientesViewModel : BindableObject
+{
+    HttpClient client;
+    JsonSerializerOptions options;
+    public Pedidos_ClientesViewModel()
+    {
+        client = new HttpClient() { BaseAddress = new Uri($"{My_DNS.App_DNS}") };
+        options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+        };
+    }
+
+    private ObservableCollection<Get_Producao_DTO> _pedidos;
+    public ObservableCollection<Get_Producao_DTO> Pedidos
+    {
+        get => _pedidos;
+        set
+        {
+            _pedidos = value;
+            OnPropertyChanged(nameof(Pedidos));
+        }
+    }
+
+    public ICommand ListarPedidosCommand => new Command(async () =>
+    {
+        int id = Convert.ToInt32(await SecureStorage.Default.GetAsync("IdUsuario"));
+        var response = await client.GetAsync($"listar/producao/cliente/{id}");
+        if (response.IsSuccessStatusCode)
+        {
+            using var content = await response.Content.ReadAsStreamAsync();
+            Pedidos = JsonSerializer.Deserialize<ObservableCollection<Get_Producao_DTO>>(content, options) ?? [];
+            CalcularTotalPagarCommand.Execute(false);
+        }
+    });
+
+    private decimal totalPagar;
+    public decimal TotalPagar
+    {
+        get => totalPagar;
+        set
+        {
+            totalPagar = value;
+            OnPropertyChanged(nameof(TotalPagar));
+        }
+    }
+    public ICommand CalcularTotalPagarCommand => new Command(() =>
+    {
+        if (estadoPago)
+        {
+            TotalPagar = 0;
+            return;
+        }
+        decimal total = 0;
+        foreach (var pedido in Pedidos)
+        {
+            total += pedido.PrecoTotal;
+        }
+        TotalPagar = total;
+    });
+
+    private bool estadoPago = false;
+    public bool EstadoPago
+    {
+        get => estadoPago;
+        set
+        {
+            estadoPago = value;
+            OnPropertyChanged(nameof(EstadoPago));
+        }
+    }
+    private bool estadoPendente = true;
+    public bool EstadoPendente
+    {
+        get => estadoPendente;
+        set
+        {
+            estadoPendente = value;
+            OnPropertyChanged(nameof(EstadoPendente));
+        }
+    }
+
+    public ICommand FiltrarPedidosCommand => new Command<bool>(async c =>
+    {
+        int id = Convert.ToInt32(await SecureStorage.Default.GetAsync("IdUsuario"));
+        if (!c)
+        {
+            var response = await client.GetAsync($"listar/producao/cliente/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                using var content = await response.Content.ReadAsStreamAsync();
+                Pedidos = JsonSerializer.Deserialize<ObservableCollection<Get_Producao_DTO>>(content, options) ?? [];
+                CalcularTotalPagarCommand.Execute(null);
+            }
+            return;
+        }
+        if (c)
+        {
+            var response = await client.GetAsync($"listar/producao/cliente/pagamento/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                using var content = await response.Content.ReadAsStreamAsync();
+                Pedidos = JsonSerializer.Deserialize<ObservableCollection<Get_Producao_DTO>>(content, options) ?? [];
+                CalcularTotalPagarCommand.Execute(null);
+            }
+        }
+    });
+
+}

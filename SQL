@@ -72,48 +72,8 @@ CREATE TABLE t_06_produto (
     imagem VARCHAR NOT NULL DEFAULT 'produto'
 );
 
--- Tabela de Caixa
-CREATE TABLE t_07_caixa (
-    id SERIAL PRIMARY KEY,
-    id_funcionario INTEGER REFERENCES t_02_funcionario(id),
-    data_abertura TIMESTAMP NOT NULL,
-    valor_inicial DECIMAL(10, 2) NOT NULL,
-    valor_final DECIMAL(10, 2),
-    data_fecho TIMESTAMP
-);
 
--- Tabela de Fatura
-CREATE TABLE t_08_factura (
-    numero_factura VARCHAR(20) PRIMARY KEY,
-    id_cliente INTEGER REFERENCES t_03_cliente(id),
-    valor_total DECIMAL(10, 2) NOT NULL,
-    pagamento_cash DECIMAL(10, 2) NOT NULL DEFAULT 0,
-    pagamento_cartao DECIMAL(10, 2) NOT NULL DEFAULT 0,
-    pagamento_transferencia DECIMAL(10, 2) NOT NULL DEFAULT 0,
-    estado VARCHAR(20) NOT NULL DEFAULT 'Pendente', -- Processando, Cancelado, Fechada
-    comprovativo VARCHAR NOT NULL
-);
 
--- Tabela de Encomenda 
-CREATE TABLE t_09_pedido (
-    id SERIAL PRIMARY KEY,
-    id_produto INTEGER REFERENCES t_06_produto(id),
-    numero_factura VARCHAR(20) REFERENCES t_08_factura(numero_factura),
-    data_encomenda TIMESTAMP NOT NULL,
-    quantidade INTEGER NOT NULL,
-    preco_total DECIMAL(10, 2) NOT NULL,
-    previsa_conclusao TIMESTAMP 
-);
-
--- Tabela de Venda
-CREATE TABLE t_10_venda (
-    numero_factura VARCHAR(20) REFERENCES t_08_factura(numero_factura) PRIMARY KEY,
-    id_caixa INTEGER REFERENCES t_07_caixa(id),
-    data_venda TIMESTAMP NOT NULL,
-    tipo_venda VARCHAR(20) NOT NULL DEFAULT 'Normal', -- Encomenda
-    estado VARCHAR(20) NOT NULL DEFAULT 'Finalizada', -- Cancelada
-    forma_pagamento VARCHAR(50) DEFAULT 'Cash' -- Cartão/Transferência/Misto   
-);
 
 -- Tabela de Produção
 CREATE TABLE t_11_producao (
@@ -126,13 +86,6 @@ CREATE TABLE t_11_producao (
 	FOREIGN KEY (id_padeiro) REFERENCES t_02_funcionario(id)
 );
 
--- Tabela de Estante ou prateleira
-CREATE TABLE t_12_prateleira (
-    id SERIAL PRIMARY KEY,
-    id_produto INT NOT NULL,
-    quantidade INT NOT NULL DEFAULT 0,
-    FOREIGN KEY (id_produto) REFERENCES t_06_produto(id)
-);
 
 -- Tabela de previsão de capacidade
 CREATE TABLE t_13_capacidade (
@@ -142,6 +95,18 @@ CREATE TABLE t_13_capacidade (
     quantidade_maxima INT NOT NULL DEFAULT 0,
     data_producao TIMESTAMP NOT NULL,
     FOREIGN KEY (id_produto) REFERENCES t_06_produto(id)
+);
+
+-- Tabela de comprovativos
+CREATE TABLE t_14_comprovativo (
+    id SERIAL PRIMARY KEY,
+    id_cliente INT NOT NULL,
+    id_producao INT NOT NULL,
+    data_envio TIMESTAMP NOT NULL,
+    estado varchar(50) not null DEFAULT 'Pendente',
+    comprovativo TEXT NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES t_03_cliente(id),
+    FOREIGN KEY (id_producao) REFERENCES t_11_producao(id)
 );
 
 -- Adicionar índices para otimização de consultas

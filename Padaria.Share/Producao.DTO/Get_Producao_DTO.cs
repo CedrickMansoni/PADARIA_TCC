@@ -8,6 +8,9 @@ public class Get_Producao_DTO
     public int IdProduto { get; set; }
     public string Produto { get; set; } = string.Empty;
 
+    public decimal Preco { get; set; }
+    public decimal PrecoTotal { get; set; }
+
     public int Quantidade { get; set; }
 
     public DateTime DataProducao { get; set; }

@@ -16,7 +16,7 @@ public class ProducaoModel
     public int Quantidade { get; set; }
 
     [Column("data_producao")]
-    public DateTime DataProducao { get; set; }
+    public string DataProducao { get; set; }  = string.Empty; 
 
     [Column("id_funcionario")]
     public int? IdFuncionario { get; set; }

@@ -2,11 +2,170 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Padaria.Mobile.View.ClienteView.Pedidos_ClientesView"
-             Title="Pedidos_ClientesView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#fff5e1"
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.ClienteViewModels;assembly=Padaria.Mobile.ViewModel"
+             x:DataType="vm:Pedidos_ClientesViewModel"
+             xmlns:producaoPost="clr-namespace:Padaria.Share.Producao.DTO;assembly=Padaria.Share">
+
+       <ContentPage.BindingContext>
+              <vm:Pedidos_ClientesViewModel/>
+       </ContentPage.BindingContext>
+
+       <Grid RowDefinitions="Auto,Auto,*,Auto"
+             RowSpacing="10"
+             Padding="10">
+              <Grid Grid.Row="0"
+                    ColumnSpacing="30"
+                    HorizontalOptions="Center"
+                    ColumnDefinitions="*,*">
+                     <RadioButton Content="Pendentes"
+                                  FontFamily="MontserratRegular"
+                                  FontSize="16"
+                                  Grid.Column="0"
+                                  IsChecked="{Binding EstadoPendente}"
+                                  CheckedChanged="RadioButton_CheckedChanged"/>
+                     <RadioButton Content="Pagos"
+                                  FontFamily="MontserratRegular"
+                                  FontSize="16"
+                                  Grid.Column="1"
+                                  IsChecked="{Binding EstadoPago}"
+                                  CheckedChanged="RadioButton_CheckedChanged1"/>
+
+              </Grid>
+              <Border Grid.Row="1"
+                      HeightRequest="1"/>
+              <Border Grid.Row="2"
+                      HorizontalOptions="Center"
+                      VerticalOptions="Start"
+                      Padding="10"
+                      StrokeShape="RoundRectangle 10">
+                     <CollectionView ItemsSource="{Binding Pedidos}"
+                                     SelectionMode="None"
+                                     x:Name="colecao">
+                            <CollectionView.ItemTemplate>
+                                   <DataTemplate x:DataType="producaoPost:Get_Producao_DTO">
+                                          <Grid Margin="10"
+                                                RowDefinitions="Auto, Auto,Auto, Auto, Auto, Auto"
+                                                ColumnDefinitions="*,Auto">
+
+                                                 <StackLayout BackgroundColor="#454545"
+                                                              Opacity="0.5"
+                                                              Grid.ColumnSpan="2"
+                                                              Grid.RowSpan="6"
+                                                              VerticalOptions="Fill"/>
+                                                 <Label Text="Produto"
+                                                        FontSize="20"
+                                                        FontFamily="MontserratRegular"
+                                                        TextColor="#fff"
+                                                        Margin="5"
+                                                        Grid.Row="0"
+                                                        Grid.Column="0"/>
+                                                 <Label Text="{Binding Produto}"
+                                                        FontSize="20"
+                                                        FontFamily="MontserratRegular"
+                                                        TextColor="#fff"
+                                                        Margin="5"
+                                                        Grid.Row="0"
+                                                        Grid.Column="1"/>
+                                                 <Label Text="Preco(unidade)"
+                                                        FontSize="20"
+                                                        FontFamily="MontserratRegular"
+                                                        TextColor="#fff"
+                                                        Margin="5"
+                                                        Grid.Row="1"
+                                                        Grid.Column="0"/>
+                                                 <Label Text="{Binding Preco, StringFormat='Kz {0:N2}'}"
+                                                        FontSize="20"
+                                                        FontFamily="MontserratRegular"
+                                                        TextColor="#fff"
+                                                        Margin="5"
+                                                        Grid.Row="1"
+                                                        Grid.Column="1"/>
+
+                                                 <Label Text="Quantidade"
+                                                        FontSize="20"
+                                                        FontFamily="MontserratRegular"
+                                                        TextColor="#fff"
+                                                        Margin="5"
+                                                        Grid.Row="2"
+                                                        Grid.Column="0"/>
+                                                 <Label Text="{Binding Quantidade}"
+                                                        FontSize="20"
+                                                        FontFamily="MontserratRegular"
+                                                        TextColor="#fff"
+                                                        Margin="5"
+                                                        Grid.Row="2"
+                                                        Grid.Column="1"/>
+
+                                                 <Label Text="Preco total"
+                                                        FontSize="20"
+                                                        FontFamily="MontserratRegular"
+                                                        TextColor="#fff"
+                                                        Margin="5"
+                                                        Grid.Row="3"
+                                                        Grid.Column="0"/>
+                                                 <Label Text="{Binding PrecoTotal, StringFormat='Kz {0:N2}'}"
+                                                        FontSize="20"
+                                                        FontFamily="MontserratRegular"
+                                                        TextColor="#fff"
+                                                        Margin="5"
+                                                        Grid.Row="3"
+                                                        Grid.Column="1"/>
+
+                                                 <Border HeightRequest="1"
+                                                         Grid.Row="4"
+                                                         Grid.Column="0"
+                                                         Grid.ColumnSpan="2"/>
+                                                 <Label Text="{Binding Estado, StringFormat='{0}'}"
+                                                        FontSize="20"
+                                                        FontFamily="MontserratRegular"
+                                                        TextColor="#fff"
+                                                        Margin="5"
+                                                        Grid.Row="5"
+                                                        Grid.Column="0"
+                                                        Grid.ColumnSpan="2"/>
+                                          </Grid>
+                                   </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                     </CollectionView>
+              </Border>
+              <Border Grid.Row="3"
+                      StrokeShape="RoundRectangle 15"
+                      BackgroundColor="#020701"
+                      Opacity=".5">
+                     <Grid Margin="10"
+                           RowDefinitions="Auto, Auto, Auto"
+                           ColumnDefinitions="*,*">
+                            <Label Text="Total:"
+                                   FontSize="20"
+                                   FontFamily="MontserratRegular"
+                                   TextColor="#fff"
+                                   Grid.Row="0"
+                                   Grid.Column="0"/>
+                            <Label Text="{Binding TotalPagar, StringFormat='Kz {0:N2}'}"
+                                   FontSize="20"
+                                   FontFamily="MontserratRegular"
+                                   TextColor="#fff"
+                                   Grid.Row="0"
+                                   Grid.Column="1"
+                                   HorizontalOptions="End"/>
+                            <Border Grid.ColumnSpan="2"
+                                    Grid.Row="1"/>
+                            <Label Text="Express:"
+                                   FontSize="20"
+                                   FontFamily="MontserratRegular"
+                                   TextColor="#fff"
+                                   Grid.Row="2"
+                                   Grid.Column="0"/>
+                            <Label Text="925 502 008"
+                                   FontSize="20"
+                                   FontFamily="MontserratRegular"
+                                   TextColor="#fff"
+                                   Grid.Row="2"
+                                   Grid.Column="1"
+                                   HorizontalOptions="End"/>
+                     </Grid>
+              </Border>
+       </Grid>
 </ContentPage>

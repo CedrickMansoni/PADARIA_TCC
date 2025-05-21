@@ -35,14 +35,26 @@ namespace Padaria.WebApi.Controllers
         }
 
         [HttpGet, Route("/listar/producao/estado/{estado}")]
-        public async Task<IActionResult> ListarProducaoPorEstado(string estado, DateTime data, DateTime data2,int skip = 0, int take = 30, CancellationToken c = default)
+        public async Task<IActionResult> ListarProducaoPorEstado(string estado, DateTime data, DateTime data2, int skip = 0, int take = 30, CancellationToken c = default)
         {
-            return Ok(await service.ObterPorStatusAsync(estado, data, data2,skip, take, c));
+            return Ok(await service.ObterPorStatusAsync(estado, data, data2, skip, take, c));
         }
         [HttpGet, Route("/listar/producao")]
         public async Task<IActionResult> ListarProducaoAsync(int skip = 0, int take = 30, CancellationToken c = default)
         {
             return Ok(await service.ListarProducao(skip, take, c));
+        }
+
+        [HttpGet, Route("/listar/producao/cliente/{id}")]
+        public async Task<IActionResult> ListarProducaoAsyncCliente(int id, int skip = 0, int take = 60, CancellationToken c = default)
+        {
+            return Ok(await service.ListarProducaoCliente(id, skip, take, c));
+        }
+
+        [HttpGet, Route("/listar/producao/cliente/pagamento/{id}")]
+        public async Task<IActionResult> ListarProducaoAsyncClientePagamento(int id, int skip = 0, int take = 60, CancellationToken c = default)
+        {
+            return Ok(await service.ListarProducaoClientePagamento(id, skip, take, c));
         }
 
         [HttpDelete, Route("/remover/producao/{id}")]
@@ -74,6 +86,6 @@ namespace Padaria.WebApi.Controllers
         {
             return Ok(await service.ListarCapacidadeProducao(skip, take, c));
         }
-        
+
     }
 }

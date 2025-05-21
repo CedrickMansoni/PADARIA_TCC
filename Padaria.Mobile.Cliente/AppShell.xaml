@@ -5,39 +5,37 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Padaria.Mobile.View.ClienteView;assembly=Padaria.Mobile.View"
     Shell.FlyoutBehavior="Disabled"
-    Shell.NavBarIsVisible="False"
-    Shell.TabBarBackgroundColor="#d6b06a"
-    Shell.TabBarTitleColor="#fff"
-    Shell.TabBarForegroundColor="#fff5e1"
-    Shell.TabBarDisabledColor="#454545"
-    Title="Padaria.Mobile.Cliente">
+    Shell.NavBarIsVisible="False">
 
     <ShellContent
         Title="Login"
         ContentTemplate="{DataTemplate local:Login_ClientesView}"
         Route="Login_ClientesView"/>
 
-    <TabBar>
+    <TabBar   Shell.TabBarBackgroundColor="#d6b06a"
+              Shell.TabBarForegroundColor="#fff5e1"
+              Shell.TabBarTitleColor="#fff5e1"
+              Shell.TabBarUnselectedColor="#000">
         <Tab Title="Produtos"
-             Icon="pao.png">
+             Icon="croissant.png">
             <ShellContent
                 Title="Produtos"
                 ContentTemplate="{DataTemplate local:Produtos_ClienteView}"
                 Route="Produtos_ClienteView"/>
         </Tab>
         <Tab Title="Pedidos"
-                Icon="ordem.png">
+             Icon="shopping.png">
             <ShellContent
-                Title="Pedidos"
+                Title="Pendentes"
                 ContentTemplate="{DataTemplate local:Pedidos_ClientesView}"
                 Route="Pedidos_ClientesView"/>
         </Tab>
 
 
-        <Tab Title="Finalizar compra"
-                Icon="pdf.png">
+        <Tab Title="Comprovativo"
+             Icon="file.png">
             <ShellContent
-                Title="Finalizar compra"
+                Title="Comprovativo"
                 ContentTemplate="{DataTemplate local:Compras_ClientesView}"
                 Route="Compras_ClientesView"/>
         </Tab>

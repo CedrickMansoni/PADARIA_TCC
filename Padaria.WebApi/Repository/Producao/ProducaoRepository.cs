@@ -22,7 +22,7 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
                         Produto = produto.Nome,
                         Quantidade = producao.Quantidade,
                         Estado = producao.EstadoProducao,
-                        DataProducao = producao.DataProducao,
+                        DataProducao = Convert.ToDateTime(producao.DataProducao),
                         Padeiro = padeiro.NomeCompleto
                     };
         return await query.Skip(skip).Take(take).ToListAsync(c);
@@ -34,7 +34,7 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
                     join produto in _context.TabelaProdutoModel on producao.IdProduto equals produto.Id
                     join padeiro in _context.TabelaFuncionarioModel on producao.IdFuncionario equals padeiro.Id
                     where
-                    producao.DataProducao.Date == DateTime.SpecifyKind(Convert.ToDateTime(data), DateTimeKind.Utc) &&
+                    producao.DataProducao == data.ToString("yyyy-MM-dd") &&
                     producao.EstadoProducao != "Pendente por falta de pagamento"
                     select new Get_Producao_DTO
                     {
@@ -43,7 +43,7 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
                         Produto = produto.Nome,
                         Quantidade = producao.Quantidade,
                         Estado = producao.EstadoProducao,
-                        DataProducao = producao.DataProducao,
+                        DataProducao = Convert.ToDateTime(producao.DataProducao),
                         Padeiro = padeiro.NomeCompleto
                     };
         return await query.Skip(skip).Take(take).ToListAsync(c);
@@ -55,15 +55,15 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
                     join produto in _context.TabelaProdutoModel on producao.IdProduto equals produto.Id
                     join padeiro in _context.TabelaFuncionarioModel on producao.IdFuncionario equals padeiro.Id
                     where
-                    producao.DataProducao.Date == DateTime.SpecifyKind(Convert.ToDateTime(data), DateTimeKind.Utc) &&
-                    producao.DataProducao.Date == DateTime.SpecifyKind(Convert.ToDateTime(data2), DateTimeKind.Utc)
+                    producao.DataProducao == data.ToString("yyyy-MM-dd") &&
+                    producao.DataProducao == data2.ToString("yyyy-MM-dd")
                     select new Get_Producao_DTO
                     {
                         Id = producao.Id,
                         Produto = produto.Nome,
                         Quantidade = producao.Quantidade,
                         Estado = producao.EstadoProducao,
-                        DataProducao = producao.DataProducao,
+                        DataProducao = Convert.ToDateTime(producao.DataProducao),
                         Padeiro = padeiro.NomeCompleto
                     };
         return await query.Skip(skip).Take(take).ToListAsync(c);
@@ -75,15 +75,15 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
                     join produto in _context.TabelaProdutoModel on producao.IdProduto equals produto.Id
                     join padeiro in _context.TabelaFuncionarioModel on producao.IdFuncionario equals padeiro.Id
                     where producao.EstadoProducao == status &&
-                    producao.DataProducao.Date == DateTime.SpecifyKind(Convert.ToDateTime(data), DateTimeKind.Utc) &&
-                    producao.DataProducao.Date == DateTime.SpecifyKind(Convert.ToDateTime(data2), DateTimeKind.Utc)
+                    producao.DataProducao == data.ToString("yyyy-MM-dd") &&
+                    producao.DataProducao == data2.ToString("yyyy-MM-dd")
                     select new Get_Producao_DTO
                     {
                         Id = producao.Id,
                         Produto = produto.Nome,
                         Quantidade = producao.Quantidade,
                         Estado = producao.EstadoProducao,
-                        DataProducao = producao.DataProducao,
+                        DataProducao = Convert.ToDateTime(producao.DataProducao),
                         Padeiro = padeiro.NomeCompleto
                     };
         return await query.Skip(skip).Take(take).ToListAsync(c);
@@ -183,7 +183,7 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
 
     public async Task<string> AdicionarSolicitacao(int id, int q)
     {
-        var p = await _context.TabelaCapacidade.OrderByDescending(i => i.Id).FirstOrDefaultAsync(i => i.IdProduto ==id);
+        var p = await _context.TabelaCapacidade.OrderByDescending(i => i.Id).FirstOrDefaultAsync(i => i.IdProduto == id);
         if (p == null)
             return "Capacidade de produção não encontrada.";
         p.QuantidadeMaxima = p.QuantidadeMaxima - q;
@@ -191,5 +191,59 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
         return await _context.SaveChangesAsync() > 0 ?
             "Capacidade de produção actualizada com sucesso!" :
             "Erro ao actualizar capacidade de produção.";
+    }
+
+    public async Task<IEnumerable<Get_Producao_DTO>> ListarProducaoCliente(int idCliente, int skip = 0, int take = 60, CancellationToken c = default)
+    {
+        var hoje = DateTime.SpecifyKind(Convert.ToDateTime(DateTime.UtcNow), DateTimeKind.Utc); // ou DateTime.Now.Date dependendo do fuso
+
+        var query = from producao in _context.TabelaProducaoModel
+                    join produto in _context.TabelaProdutoModel on producao.IdProduto equals produto.Id
+                    join cliente in _context.TabelaClienteModel on producao.IdCliente equals cliente.Id
+                    where cliente.Id == idCliente &&
+                    producao.DataProducao == hoje.ToString("yyyy-MM-dd") &&
+                    producao.EstadoProducao.Contains("Pendente") || producao.EstadoProducao.Contains("Em") || producao.EstadoProducao.Contains("Concluído")
+                    select new Get_Producao_DTO
+                    {
+                        Id = producao.Id,
+                        IdProduto = produto.Id,
+                        Produto = produto.Nome,
+                        Preco = produto.Preco,
+                        PrecoTotal = produto.Preco * producao.Quantidade,
+                        Quantidade = producao.Quantidade,
+                        Estado = producao.EstadoProducao,
+                        DataProducao = Convert.ToDateTime(producao.DataProducao),
+
+                    };
+        return await query.Skip(skip).Take(take).ToListAsync(c);
+    }
+
+    public async Task<IEnumerable<Get_Producao_DTO>> ListarProducaoClientePagamento(int idCliente, int skip = 0, int take = 60, CancellationToken c = default)
+    {
+        var dataAtual = DateTime.Now.Date.ToString("yyyy-MM-dd"); // ou DateTime.Now.Date dependendo do fuso
+        var query = from producao in _context.TabelaProducaoModel
+                    join produto in _context.TabelaProdutoModel on producao.IdProduto equals produto.Id
+                    join cliente in _context.TabelaClienteModel on producao.IdCliente equals cliente.Id
+
+                    where
+                    cliente.Id == idCliente &&
+                    producao.DataProducao == dataAtual &&
+                    producao.EstadoProducao != "Pendente por falta de pagamento"
+
+                    select new Get_Producao_DTO
+                    {
+                        Id = producao.Id,
+                        IdProduto = produto.Id,
+                        Produto = produto.Nome,
+                        Preco = produto.Preco,
+                        PrecoTotal = produto.Preco * producao.Quantidade,
+                        Quantidade = producao.Quantidade,
+                        Estado = producao.EstadoProducao,
+                        DataProducao = Convert.ToDateTime(producao.DataProducao),
+
+                    };
+
+        return await query.Skip(skip).Take(take).ToListAsync(c);
+
     }
 }

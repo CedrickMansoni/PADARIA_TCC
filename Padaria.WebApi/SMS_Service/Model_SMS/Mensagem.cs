@@ -6,7 +6,7 @@ namespace Padaria.WebApi.SMS_Service.Model_SMS;
 public class Mensagem
 {
     [JsonPropertyName("api_key_app")]
-    public string ApiKeyApp { get; set; } = "prdd2daddfaab1ce424ecaa405340";
+    public string ApiKeyApp { get; set; } = "prdcbd2d2f67db368f04b70e649fe";
 
     [JsonPropertyName("phone_number")]
     public string PhoneNumber { get; set; } = string.Empty;
