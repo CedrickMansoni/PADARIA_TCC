@@ -80,10 +80,13 @@ CREATE TABLE t_11_producao (
     id SERIAL PRIMARY KEY,
 	id_produto INT NOT NULL,
 	quantidade INT NOT NULL CHECK (quantidade > 0),
-    data_producao TIMESTAMP NOT NULL,
-	id_padeiro INT NOT NULL,
-    status VARCHAR(20) NOT NULL CHECK (status IN ('Em andamento', 'Concluído', 'Cancelado')),   
-	FOREIGN KEY (id_padeiro) REFERENCES t_02_funcionario(id)
+    data_producao VARCHAR(20),
+	id_funcionario INTEGER REFERENCES t_02_funcionario(id),
+    id_cliente INTEGER REFERENCES t_03_cliente(id),
+    telefone VARCHAR(20) NOT NULL UNIQUE,
+    CONSTRAINT chk_telefone_owner CHECK ((id_funcionario IS NOT NULL AND id_cliente IS NULL) OR (id_funcionario IS NULL AND id_cliente IS NOT NULL)),
+    status VARCHAR(20) NOT NULL CHECK (status IN ('Pendente por falta de pagamento','Pendente','Em andamento', 'Concluído', 'Cancelado')),   
+	FOREIGN KEY (id_funcionario) REFERENCES t_02_funcionario(id)
 );
 
 
@@ -116,8 +119,3 @@ CREATE INDEX idx_telefone_funcionario ON t_04_telefone(id_funcionario);
 CREATE INDEX idx_telefone_cliente ON t_04_telefone(id_cliente);
 CREATE INDEX idx_produto_categoria ON t_06_produto(id_categoria);
 CREATE INDEX idx_produto_funcionario ON t_06_produto(id_funcionario);
-CREATE INDEX idx_caixa_funcionario ON t_07_caixa(id_funcionario);
-CREATE INDEX idx_factura_cliente ON t_08_factura(id_cliente);
-CREATE INDEX idx_encomenda_produto ON t_09_pedido(id_produto);
-CREATE INDEX idx_encomenda_factura ON t_09_pedido(numero_factura);
-CREATE INDEX idx_venda_caixa ON t_10_venda(id_caixa);
