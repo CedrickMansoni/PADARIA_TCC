@@ -32,6 +32,8 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute("Cliente_AddView", typeof(Cliente_AddView));
 		Routing.RegisterRoute("Cliente_EditeView", typeof(Cliente_EditeView));
 		Routing.RegisterRoute("Cliente_ListarView", typeof(Cliente_ListarView));
+		/* -------------------------------------------------------------------- */
+		Routing.RegisterRoute("Estado_PedidosViewModel", typeof(Estado_PedidosViewModel));
 
 	}
 

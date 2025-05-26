@@ -52,6 +52,7 @@ public class Producao_MainPageViewModel : BindableObject
         int s = CapacidadeProducao.FirstOrDefault(x => x.IdProduto == p.Id)?.QuantidadeSolicitada ?? 0;
 
         int usuarioId = Convert.ToInt32(await SecureStorage.Default.GetAsync("IdUsuario"));
+        string? telefone = await SecureStorage.Default.GetAsync("telefoneUsuario");
         string? categoria = await SecureStorage.Default.GetAsync("CategoriaUsuario");
         var newProducao = new Post_Producao_DTO
         {
@@ -59,6 +60,7 @@ public class Producao_MainPageViewModel : BindableObject
             Nome = p.Nome ?? string.Empty,
             Imagem = p.Imagem ?? string.Empty,
             Quantidade = 1,
+            Telefone = telefone,
             Funcionario = categoria != "Pessoa Juridica" && categoria != "Pessoa Física" ? usuarioId : 0,
             Cliente = categoria == "Pessoa Juridica" || categoria == "Pessoa Física" ? usuarioId : 0,
             Limite = c 

@@ -103,7 +103,8 @@
                                    Text="Pedidos"
                                    Style="{StaticResource lblButon}"/>
                             <Button Grid.RowSpan="2"
-                                    BackgroundColor="Transparent"/>
+                                    BackgroundColor="Transparent"
+                                    Command="{Binding GotoPedidosPageCommand}"/>
                      </Grid>
               </Border>
 

@@ -58,7 +58,7 @@ public class Login_ViewModel : BindableObject
                     await Shell.Current.DisplayAlert("Erro", "Cliente não está activo", "Ok");
                     return;
                 }
-                await SecureStorage.Default.SetAsync("telefone", Telefone);
+                await SecureStorage.Default.SetAsync("telefoneUsuario", Telefone);
                 await SecureStorage.Default.SetAsync("IdUsuario", cliente_.Id.ToString());
                 await SecureStorage.Default.SetAsync("CategoriaUsuario", "Pessoa Juridica");
                 await Shell.Current.GoToAsync("//Produtos_ClienteView");

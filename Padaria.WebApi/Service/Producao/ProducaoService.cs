@@ -72,7 +72,7 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
         return await _repository.ListarProducaoPorEstadoAsync(status, data, data2, skip, take, c);
     }
 
-    public async Task<IEnumerable<Get_Producao_DTO>> ListarProducao(int skip = 0, int take = 30, CancellationToken c = default)
+    public async Task<IEnumerable<Get_Producao_DTO>> ListarProducao(int skip = 0, int take = 60, CancellationToken c = default)
     {
         return await _repository.ListarProducao(skip, take, c);
     }

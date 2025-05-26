@@ -40,7 +40,7 @@ namespace Padaria.WebApi.Controllers
             return Ok(await service.ObterPorStatusAsync(estado, data, data2, skip, take, c));
         }
         [HttpGet, Route("/listar/producao")]
-        public async Task<IActionResult> ListarProducaoAsync(int skip = 0, int take = 30, CancellationToken c = default)
+        public async Task<IActionResult> ListarProducaoAsync(int skip = 0, int take = 60, CancellationToken c = default)
         {
             return Ok(await service.ListarProducao(skip, take, c));
         }

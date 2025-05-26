@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Padaria.Mobile.View.FuncionarioViews.Views.Estado_PedidosViewModel"
+             BackgroundColor="#fff5e1"
+             Shell.NavBarHasShadow="True"
+             Shell.BackgroundColor="#d6b06a"
+             Shell.TitleColor="#fff"
+             Shell.ForegroundColor="#fff"
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.Padeiro_ViewModel;assembly=Padaria.Mobile.ViewModel"
+             x:DataType="vm:Padeiro_MainPageViewModel"
+             xmlns:data="clr-namespace:Padaria.Share.Producao.DTO;assembly=Padaria.Share"
+             xmlns:data2="clr-namespace:Padaria.Share.Produto.DTO;assembly=Padaria.Share"
+             xmlns:data3="clr-namespace:Padaria.Share.Producao.DTO;assembly=Padaria.Share"
+             Title="Pedidos">
+    <ContentPage.BindingContext>
+        <vm:Padeiro_MainPageViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid ColumnDefinitions="*,Auto, 2*"
+          RowSpacing="15"
+          RowDefinitions="Auto, *,Auto, 2*">
+        <Label Text="Capacidade de Produção diaria"
+               FontSize="22"
+               FontFamily="MontserratBold"
+               HorizontalOptions="Center"/>
+        <Label Text="Pedidos do dia"
+               FontSize="22"
+               FontFamily="MontserratBold"
+               HorizontalOptions="Center"
+               Grid.Column="2"/>
+        <Border Grid.Column="1"
+                Grid.RowSpan="4"
+                Margin="10,0"/>
+
+
+
+        
+        <CollectionView x:Name="colecaocapacidade"
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        Grid.RowSpan="3"
+                        ItemsSource="{Binding CapacidadeProducao}"
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="data:Get_Capacidade_Producao">
+                    <Border Padding="10"
+                            Margin="5"
+                            BackgroundColor="#fff"
+                            StrokeShape="RoundRectangle 10"
+                            Stroke="#d6b06a">
+                        <Grid>
+                            <StackLayout Orientation="Vertical">
+                                <Label Text="{Binding Produto, StringFormat='Produto: {0}'}"
+                                       FontSize="18"
+                                       FontFamily="MontserratRegular"/>
+                                <Label Text="{Binding QuantidadeMaxima, StringFormat='Quantidade Máxima: {0}'}"
+                                       FontSize="18"
+                                       FontFamily="MontserratRegular"/>
+                                <Label Text="{Binding QuantidadeSolicitada, StringFormat='Quantidade Solicitada: {0}'}"
+                                       FontSize="18"
+                                       FontFamily="MontserratRegular"/>
+                            </StackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <Label Text="Nenhum produto disponível"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       FontSize="18"
+                       FontFamily="MontserratRegular"/>
+            </CollectionView.EmptyView>
+        </CollectionView>
+        <CollectionView Grid.Column="2"
+                        Grid.Row="1"
+                        Grid.RowSpan="3"
+                        ItemsSource="{Binding ProducaoPedidos}"
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="data3:Get_Producao_DTO">
+                    <Border Padding="10"
+                            Margin="5"
+                            BackgroundColor="#fff"
+                            StrokeShape="RoundRectangle 10"
+                            Stroke="#d6b06a">
+                        <StackLayout Orientation="Vertical">
+                            <Label Text="{Binding Produto, StringFormat='Produto: {0}'}"
+                                   FontSize="18"
+                                   FontFamily="MontserratRegular"/>
+                            <Label Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}"
+                                   FontSize="18"
+                                   FontFamily="MontserratRegular"/>
+                            <Label Text="{Binding Estado, StringFormat='Estado: {0}'}"
+                                   FontSize="18"
+                                   FontFamily="MontserratRegular"/>
+                        </StackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <Label Text="Nenhum pedido disponível"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       FontSize="18"
+                       FontFamily="MontserratRegular"/>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </Grid>
+</ContentPage>

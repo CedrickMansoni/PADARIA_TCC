@@ -12,10 +12,11 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
 
     public async Task<IEnumerable<Get_Producao_DTO>> ListarProducao(int skip = 0, int take = 30, CancellationToken c = default)
     {
+        var hoje = DateTime.SpecifyKind(Convert.ToDateTime(DateTime.UtcNow), DateTimeKind.Utc); // ou DateTime.Now.Date dependendo do fuso
         var query = from producao in _context.TabelaProducaoModel
                     join produto in _context.TabelaProdutoModel on producao.IdProduto equals produto.Id
-                    join padeiro in _context.TabelaFuncionarioModel on producao.IdFuncionario equals padeiro.Id
-
+                    join cliente in _context.TabelaClienteModel on producao.IdCliente equals cliente.Id
+                     where producao.DataProducao == hoje.ToString("yyyy-MM-dd")
                     select new Get_Producao_DTO
                     {
                         Id = producao.Id,
@@ -23,9 +24,9 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
                         Quantidade = producao.Quantidade,
                         Estado = producao.EstadoProducao,
                         DataProducao = Convert.ToDateTime(producao.DataProducao),
-                        Padeiro = padeiro.NomeCompleto
+                        ClienteNome = cliente.Nome
                     };
-        return await query.Skip(skip).Take(take).ToListAsync(c);
+        return await query.Skip(skip).Take(take).OrderByDescending(i => i.Id).ToListAsync(c);
     }
 
     public async Task<IEnumerable<Get_Producao_DTO>> ListarProducaoDiaria(DateTime data, int skip = 0, int take = 30, CancellationToken c = default)

@@ -172,7 +172,15 @@ public class Padeiro_MainPageViewModel : BindableObject
         }
     });
 
-
+    public ICommand ListarPedidosCommand => new Command(async () =>
+{
+    var response = await client.GetAsync($"listar/producao");
+    if (response.IsSuccessStatusCode)
+    {
+        using var content = await response.Content.ReadAsStreamAsync();
+        ProducaoPedidos = await JsonSerializer.DeserializeAsync<ObservableCollection<Get_Producao_DTO>>(content, options) ?? [];
+    }
+});
 
 
 }

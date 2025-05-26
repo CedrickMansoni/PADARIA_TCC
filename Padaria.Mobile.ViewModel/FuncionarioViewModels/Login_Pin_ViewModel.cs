@@ -124,6 +124,7 @@ public class Login_Pin_ViewModel : BindableObject
                     ActivityCommand.Execute(null);
                     await SecureStorage.Default.SetAsync("IdUsuario", funcionario.Id.ToString());
                     await SecureStorage.Default.SetAsync("CategoriaUsuario", funcionario.Categoria);
+                    await SecureStorage.Default.SetAsync("telefoneUsuario", funcionario.TelefoneFuncionario);
                 }
                 else
                 {

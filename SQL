@@ -28,7 +28,7 @@ values
   ( 
     1, 
     'Admin', 
-    '8147804FAF4FDD3A65DD005662E2FA1BCC70C52EAA1E5102A90C0500F5D4151C8705D7D545F8E3C28E51DF2221BEC47F171BD79370230A1BFBFCD7A95C22BA09', 
+    '8AE3028BF6A6737A45838367FC573CC50B2CF250C6657E0F9EBC02229D1A29446170B3CF8E129E4E8E4F8DFA180322FBA07E02280DB587FBC0DD47B9ED409A2D', 
     'user', 
     'Activo'
   );
@@ -53,6 +53,8 @@ CREATE TABLE t_04_telefone (
     telefone VARCHAR(20) NOT NULL UNIQUE,
     CONSTRAINT chk_telefone_owner CHECK ((id_funcionario IS NOT NULL AND id_cliente IS NULL) OR (id_funcionario IS NULL AND id_cliente IS NOT NULL))
 );
+
+INSERT INTO t_04_telefone (id_funcionario, id_cliente, telefone) VALUES (1, NULL, '951510682'),(NULL, 1, '923000000');
 
 -- Tabela de Categoria Produto
 CREATE TABLE t_05_categoria_produto (
@@ -83,9 +85,9 @@ CREATE TABLE t_11_producao (
     data_producao VARCHAR(20),
 	id_funcionario INTEGER REFERENCES t_02_funcionario(id),
     id_cliente INTEGER REFERENCES t_03_cliente(id),
-    telefone VARCHAR(20) NOT NULL UNIQUE,
+    telefone VARCHAR(20) NOT NULL,
     CONSTRAINT chk_telefone_owner CHECK ((id_funcionario IS NOT NULL AND id_cliente IS NULL) OR (id_funcionario IS NULL AND id_cliente IS NOT NULL)),
-    status VARCHAR(20) NOT NULL CHECK (status IN ('Pendente por falta de pagamento','Pendente','Em andamento', 'Concluído', 'Cancelado')),   
+    status VARCHAR(60) NOT NULL CHECK (status IN ('Pendente por falta de pagamento','Pendente','Em andamento', 'Concluído', 'Cancelado')),   
 	FOREIGN KEY (id_funcionario) REFERENCES t_02_funcionario(id)
 );
 

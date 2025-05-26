@@ -4,16 +4,16 @@
              x:Class="Padaria.Mobile.View.ClienteView.Produtos_ClienteView"
              BackgroundColor="#fff5e1"
              Title="Produtos"
-              xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.Producao_ViewModel;assembly=Padaria.Mobile.ViewModel"
+             xmlns:vm="clr-namespace:Padaria.Mobile.ViewModel.Producao_ViewModel;assembly=Padaria.Mobile.ViewModel"
              x:DataType="vm:Producao_MainPageViewModel"
              xmlns:produtoGet="clr-namespace:Padaria.Share.Produto.DTO;assembly=Padaria.Share"
              xmlns:producaoPost="clr-namespace:Padaria.Share.Producao.DTO;assembly=Padaria.Share">
-   
-       <ContentPage.BindingContext>
+
+    <ContentPage.BindingContext>
         <vm:Producao_MainPageViewModel/>
     </ContentPage.BindingContext>
 
-   <Grid>
+    <Grid>
         <Grid RowSpacing="20"
               RowDefinitions="Auto,*, Auto,*"
               Margin="0"
@@ -37,19 +37,19 @@
 
             <!-- ==================================== -->
 
-            <Border Grid.Row="1"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Start"
-                    Padding="5"
-                    StrokeShape="RoundRectangle 10">
-                <CollectionView ItemsSource="{Binding Produtos}"
-                                SelectionMode="None"
-                                x:Name="colecaoprodutos">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="produtoGet:Get_Produto_DTO">
-                            <Grid Margin="10">
+
+            <CollectionView ItemsSource="{Binding Produtos}"
+                            SelectionMode="None"
+                            VerticalOptions="Fill"
+                            HorizontalOptions="Fill"
+                            Grid.Row="1"
+                            x:Name="colecaoprodutos">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="produtoGet:Get_Produto_DTO">
+                        <Border StrokeShape="RoundRectangle 10"
+                                Margin="10">
+                            <Grid Margin="0">
                                 <Image Source="{Binding Imagem}"
-                                       HeightRequest="230"
                                        Aspect="Fill"/>
                                 <StackLayout BackgroundColor="#000"
                                              HeightRequest="60"
@@ -73,10 +73,11 @@
                                         Command="{Binding BindingContext.AddProdutoCommand, Source={x:Reference Name = colecaoprodutos}}"
                                         CommandParameter="{Binding .}"/>
                             </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </Border>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
             <Border Grid.Row="3"
                     HorizontalOptions="Center"
                     VerticalOptions="Start"

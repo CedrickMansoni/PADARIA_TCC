@@ -59,10 +59,15 @@ public class Admin_MainPage_ViewModel : BindableObject
 	{
 		await Shell.Current.GoToAsync("Produto_MainPage");
 	});
-	
-	public ICommand GotoClientPageCommand => new Command(async ()=> 
+
+	public ICommand GotoClientPageCommand => new Command(async () =>
 	{
 		await Shell.Current.GoToAsync("Cliente_ListarView");
+	});
+
+	public ICommand GotoPedidosPageCommand => new Command(async () =>
+	{
+		await Shell.Current.GoToAsync("Estado_PedidosViewModel");
 	});
 
 }
