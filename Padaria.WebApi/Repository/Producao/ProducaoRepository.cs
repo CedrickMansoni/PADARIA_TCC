@@ -38,7 +38,6 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
     {
         var query = from producao in _context.TabelaProducaoModel
                     join produto in _context.TabelaProdutoModel on producao.IdProduto equals produto.Id
-                    join padeiro in _context.TabelaFuncionarioModel on producao.IdFuncionario equals padeiro.Id
                     where
                     producao.DataProducao == data.ToString("yyyy-MM-dd") &&
                     producao.EstadoProducao != "Pendente por falta de pagamento"
@@ -49,8 +48,7 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
                         Produto = produto.Nome,
                         Quantidade = producao.Quantidade,
                         Estado = producao.EstadoProducao,
-                        DataProducao = Convert.ToDateTime(producao.DataProducao),
-                        Padeiro = padeiro.NomeCompleto
+                        DataProducao = Convert.ToDateTime(producao.DataProducao)
                     };
         return await query.Skip(skip).Take(take).ToListAsync(c);
     }

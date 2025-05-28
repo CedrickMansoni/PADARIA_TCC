@@ -78,9 +78,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "PADARIA_APP"));
 }
 
-string storagePath = app.Environment.IsDevelopment() ?
-"/Users/cedrickmansoni/Storage/Padaria" :
-"/home/GSA_PROJECT/Storage/Padaria";
+string storagePath = "/Users/cedrickmansoni/Storage/Padaria";
 
 // Configurar middleware para servir arquivos de um diretório externo
 app.UseStaticFiles(new StaticFileOptions

@@ -198,7 +198,7 @@
                                         VerticalOptions="Start"
                                         Opacity=".2"/>
 
-                                 <Button Text="Adicionar"
+                                 <Button Text="Remover"
                                         BackgroundColor="#d6b06a"
                                         VerticalOptions="End"
                                         HorizontalOptions="End"

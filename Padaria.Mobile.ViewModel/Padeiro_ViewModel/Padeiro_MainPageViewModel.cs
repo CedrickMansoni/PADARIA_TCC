@@ -177,13 +177,15 @@ public class Padeiro_MainPageViewModel : BindableObject
 
     public ICommand ListarProducaoCommand => new Command(async () =>
     {
-        await Shell.Current.DisplayAlert("sms", "Sim 01", "Ok");
         var response = await client.GetAsync($"listar/producao/data/{DateTime.Now.ToString("yyyy-MM-dd")}");
         if (response.IsSuccessStatusCode)
         {
-            await Shell.Current.DisplayAlert("sms", "Sim 02", "Ok");
             using var content = await response.Content.ReadAsStreamAsync();
             ProducaoPedidos = await JsonSerializer.DeserializeAsync<ObservableCollection<Get_Producao_DTO>>(content, options) ?? [];
+            foreach (var item in ProducaoPedidos)
+            {
+                await Shell.Current.DisplayAlert("Valor", $"{item.Produto}\n{item.Estado}","Ok");
+            }
         }
     });
 
