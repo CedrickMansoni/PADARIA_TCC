@@ -1,9 +1,11 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 using System.Windows.Input;
 using Padaria.Share.Funcionario.DTO;
+using Padaria.Share.Pedido.DTO;
 using Padaria.Share.Producao.DTO;
 using Padaria.Share.Produto.DTO;
 
@@ -162,6 +164,17 @@ public class Padeiro_MainPageViewModel : BindableObject
         }
     }
 
+    private ObservableCollection<Get_Producao_DTO> producaoPedidosConfirmados = [];
+    public ObservableCollection<Get_Producao_DTO> ProducaoPedidosConfirmados
+    {
+        get => producaoPedidosConfirmados;
+        set
+        {
+            producaoPedidosConfirmados = value;
+            OnPropertyChanged(nameof(ProducaoPedidosConfirmados));
+        }
+    }
+
     public ICommand ListarProducaoCommand => new Command(async () =>
     {
         var response = await client.GetAsync($"listar/producao/data/{DateTime.Now.ToString("yyyy-MM-dd")}");
@@ -173,14 +186,50 @@ public class Padeiro_MainPageViewModel : BindableObject
     });
 
     public ICommand ListarPedidosCommand => new Command(async () =>
-{
-    var response = await client.GetAsync($"listar/producao");
-    if (response.IsSuccessStatusCode)
     {
-        using var content = await response.Content.ReadAsStreamAsync();
-        ProducaoPedidos = await JsonSerializer.DeserializeAsync<ObservableCollection<Get_Producao_DTO>>(content, options) ?? [];
-    }
-});
+        var response = await client.GetAsync($"listar/producao");
+        if (response.IsSuccessStatusCode)
+        {
+            using var content = await response.Content.ReadAsStreamAsync();
+            var lista = await JsonSerializer.DeserializeAsync<ObservableCollection<Get_Producao_DTO>>(content, options) ?? [];
 
+            ProducaoPedidos = new ObservableCollection<Get_Producao_DTO>(lista.Where(x => x.Estado == "Pendente por falta de pagamento"));
+            ProducaoPedidosConfirmados = new ObservableCollection<Get_Producao_DTO>(lista.Where(x => x.Estado != "Pendente por falta de pagamento"));
+        }
+    });
+
+    public ICommand RedefinirEstado => new Command<Get_Producao_DTO>(async p =>
+    {
+        // Inclua o estado atualizado no objeto
+        var estado = new Put_PedidoState_DTO
+        {
+            IdPedido = p.Id,
+            Estado = p.Estado.Contains("pagamento") ? "Pendente" : "Pendente por falta de pagamento" // Certifique-se de que este valor está correto
+        };
+
+        // Serializa o objeto com o estado atualizado
+        string jsonEstado = JsonSerializer.Serialize<Put_PedidoState_DTO>(estado, options);
+        StringContent content = new(jsonEstado, Encoding.UTF8, "application/json");
+
+        // Envia a requisição PUT para o backend
+        var response = await client.PutAsync("editar/estado/pedido", content);
+
+        // Opcional: Verifique a resposta do backend
+        if (response.IsSuccessStatusCode)
+        {
+            var successMessage = await response.Content.ReadAsStringAsync();
+            var item = ProducaoPedidos.FirstOrDefault(x => x.Id == p.Id);
+            if (item is null) return;
+            int indice = ProducaoPedidos.IndexOf(item);
+            producaoPedidos.RemoveAt(indice);
+            item.Estado = "Pendente";
+            producaoPedidosConfirmados.Add(item);
+        }
+        else
+        {
+            var successMessage = await response.Content.ReadAsStringAsync();
+            await Shell.Current.DisplayAlert("Erro", $"{successMessage}", "Ok");
+        }
+    });
 
 }

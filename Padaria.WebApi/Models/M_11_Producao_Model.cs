@@ -25,7 +25,7 @@ public class ProducaoModel
     public int? IdCliente { get; set; }
     
     [Column("telefone")]
-    public string Telefone { get; set; }  = string.Empty; 
+    public string? Telefone { get; set; }  = string.Empty; 
 
     [Column("status")]
     public string EstadoProducao { get; set; } = string.Empty;    

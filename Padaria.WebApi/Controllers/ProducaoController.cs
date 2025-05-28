@@ -28,6 +28,14 @@ namespace Padaria.WebApi.Controllers
             return StatusCode(201, response);
         }
 
+        [HttpPut, Route("/editar/estado/pedido")]
+        public async Task<IActionResult> EditarProducao(Put_PedidoState_DTO producao)
+        {
+            var response = await service.AtualizarEstadoAsync(producao);
+            if (!response.Contains("sucesso", StringComparison.CurrentCultureIgnoreCase)) return BadRequest(response);
+            return StatusCode(201, response);
+        }
+
         [HttpGet, Route("/listar/producao/data/{data}")]
         public async Task<IActionResult> ListarProducaoPorData(DateTime data, int skip = 0, int take = 30, CancellationToken c = default)
         {

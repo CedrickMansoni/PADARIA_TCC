@@ -16,6 +16,7 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
         var query = from producao in _context.TabelaProducaoModel
                     join produto in _context.TabelaProdutoModel on producao.IdProduto equals produto.Id
                     join cliente in _context.TabelaClienteModel on producao.IdCliente equals cliente.Id
+                    join telefone in _context.TabelaTelefoneModel on cliente.Id equals telefone.IdCliente 
                      where producao.DataProducao == hoje.ToString("yyyy-MM-dd")
                     select new Get_Producao_DTO
                     {
@@ -24,7 +25,11 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
                         Quantidade = producao.Quantidade,
                         Estado = producao.EstadoProducao,
                         DataProducao = Convert.ToDateTime(producao.DataProducao),
-                        ClienteNome = cliente.Nome
+                        ClienteNome = cliente.Nome,
+                        Telefone = telefone.NumeroTelefone,
+                        Preco = produto.Preco,
+                        PrecoTotal = producao.Quantidade * produto.Preco,
+                        Status = !producao.EstadoProducao.Contains("pagamento") ? false : true
                     };
         return await query.Skip(skip).Take(take).OrderByDescending(i => i.Id).ToListAsync(c);
     }
@@ -117,6 +122,17 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
         p.DataProducao = producao.DataProducao;
         p.EstadoProducao = producao.EstadoProducao;
         _context.TabelaProducaoModel.Update(p);
+        return await _context.SaveChangesAsync() > 0 ?
+            "Produção actualizada com sucesso!" :
+            "Erro ao actualizar produção.";
+    }
+
+    public async Task<string> AtualizarEstadoAsync(Put_PedidoState_DTO producao)
+    {
+        var p = await _context.TabelaProducaoModel.FindAsync(producao.IdPedido);
+        if (p == null)
+            return "Produção não encontrada.";
+        p.EstadoProducao = producao.Estado;
         return await _context.SaveChangesAsync() > 0 ?
             "Produção actualizada com sucesso!" :
             "Erro ao actualizar produção.";

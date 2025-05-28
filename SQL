@@ -87,8 +87,7 @@ CREATE TABLE t_11_producao (
     id_cliente INTEGER REFERENCES t_03_cliente(id),
     telefone VARCHAR(20) NOT NULL,
     CONSTRAINT chk_telefone_owner CHECK ((id_funcionario IS NOT NULL AND id_cliente IS NULL) OR (id_funcionario IS NULL AND id_cliente IS NOT NULL)),
-    status VARCHAR(60) NOT NULL CHECK (status IN ('Pendente por falta de pagamento','Pendente','Em andamento', 'Concluído', 'Cancelado')),   
-	FOREIGN KEY (id_funcionario) REFERENCES t_02_funcionario(id)
+    status VARCHAR(60) NOT NULL CHECK (status IN ('Pendente por falta de pagamento','Pendente','Em andamento', 'Concluído', 'Cancelado'))
 );
 
 

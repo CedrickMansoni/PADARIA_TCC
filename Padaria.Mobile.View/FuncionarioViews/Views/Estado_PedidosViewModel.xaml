@@ -13,35 +13,38 @@
              xmlns:data2="clr-namespace:Padaria.Share.Produto.DTO;assembly=Padaria.Share"
              xmlns:data3="clr-namespace:Padaria.Share.Producao.DTO;assembly=Padaria.Share"
              Title="Pedidos">
+
     <ContentPage.BindingContext>
         <vm:Padeiro_MainPageViewModel/>
     </ContentPage.BindingContext>
 
-    <Grid ColumnDefinitions="*,Auto, 2*"
-          RowSpacing="15"
-          RowDefinitions="Auto, *,Auto, 2*">
-        <Label Text="Capacidade de Produção diaria"
+    <Grid RowSpacing="15"
+          RowDefinitions="Auto, Auto,Auto, *"
+          Padding="25">
+        <Label Text="Capacidade de Produção do dia"
                FontSize="22"
                FontFamily="MontserratBold"
-               HorizontalOptions="Center"/>
-        <Label Text="Pedidos do dia"
+               HorizontalOptions="Start"
+               Grid.Row="0"/>
+        <Label Text="Pedidos pendentes por falta de pagamento"
                FontSize="22"
                FontFamily="MontserratBold"
-               HorizontalOptions="Center"
-               Grid.Column="2"/>
-        <Border Grid.Column="1"
-                Grid.RowSpan="4"
-                Margin="10,0"/>
+               HorizontalOptions="Start"
+               Grid.Row="2"/>
+        <Label Text="Pedidos com pagamento confirmado"
+               FontSize="22"
+               FontFamily="MontserratBold"
+               HorizontalOptions="End"
+               Margin="140,0"
+               Grid.Row="2"/>
 
-
-
-        
         <CollectionView x:Name="colecaocapacidade"
-                        Grid.Column="0"
                         Grid.Row="1"
-                        Grid.RowSpan="3"
                         ItemsSource="{Binding CapacidadeProducao}"
                         SelectionMode="None">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Horizontal"/>
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="data:Get_Capacidade_Producao">
                     <Border Padding="10"
@@ -73,39 +76,148 @@
                        FontFamily="MontserratRegular"/>
             </CollectionView.EmptyView>
         </CollectionView>
-        <CollectionView Grid.Column="2"
-                        Grid.Row="1"
-                        Grid.RowSpan="3"
-                        ItemsSource="{Binding ProducaoPedidos}"
-                        SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="data3:Get_Producao_DTO">
-                    <Border Padding="10"
-                            Margin="5"
-                            BackgroundColor="#fff"
-                            StrokeShape="RoundRectangle 10"
-                            Stroke="#d6b06a">
-                        <StackLayout Orientation="Vertical">
-                            <Label Text="{Binding Produto, StringFormat='Produto: {0}'}"
-                                   FontSize="18"
-                                   FontFamily="MontserratRegular"/>
-                            <Label Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}"
-                                   FontSize="18"
-                                   FontFamily="MontserratRegular"/>
-                            <Label Text="{Binding Estado, StringFormat='Estado: {0}'}"
-                                   FontSize="18"
-                                   FontFamily="MontserratRegular"/>
-                        </StackLayout>
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-            <CollectionView.EmptyView>
-                <Label Text="Nenhum pedido disponível"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       FontSize="18"
-                       FontFamily="MontserratRegular"/>
-            </CollectionView.EmptyView>
-        </CollectionView>
+        <Grid Grid.Column="2"
+              Grid.Row="3"
+              ColumnDefinitions="*,*">
+
+            <CollectionView Grid.Column="0"
+                            x:Name="pendentes"
+                            HorizontalOptions="Start"
+                            ItemsSource="{Binding ProducaoPedidos}"
+                            SelectionMode="None">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="data3:Get_Producao_DTO">
+                        <Border Margin="5"
+                                BackgroundColor="#fff"
+                                StrokeShape="RoundRectangle 10"
+                                Stroke="#d6b06a">
+                            <Grid>
+                                <StackLayout Orientation="Vertical"
+                                             Padding="10">
+                                    <Label Text="{Binding ClienteNome, StringFormat='Cliente:            {0}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                    <Label Text="{Binding Telefone, StringFormat='Telefone:         {0}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                    <Border/>
+
+                                    <Label Text="{Binding Produto, StringFormat='Produto:           {0}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                    <Label Text="{Binding Quantidade, StringFormat='Quantidade:   {0}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                    <Label Text="{Binding  Preco, StringFormat='Preco:                Kz {0:N2}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                    <Label Text="{Binding  PrecoTotal, StringFormat='Preco total:      Kz {0:N2}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                    <Label Text="{Binding Estado, StringFormat='Estado:             {0}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                </StackLayout>
+                                <Image Source="user"
+                                       HeightRequest="50"
+                                       VerticalOptions="Start"
+                                       HorizontalOptions="End"
+                                       Margin="5"/>
+                                <Border BackgroundColor="#d6b06a"
+                                        HeightRequest="65"
+                                        VerticalOptions="Start"
+                                        Opacity=".2"/>
+
+                                <Button Text="Adicionar"
+                                        BackgroundColor="#d6b06a"
+                                        VerticalOptions="End"
+                                        HorizontalOptions="End"
+                                        Margin="10"
+                                        Command="{Binding BindingContext.RedefinirEstado, Source={x:Reference pendentes}}"
+                                        CommandParameter="{Binding .}"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Label Text="Nenhum pedido disponível"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           FontSize="18"
+                           FontFamily="MontserratRegular"/>
+                </CollectionView.EmptyView>
+            </CollectionView>
+
+            <CollectionView Grid.Column="1"
+                            x:Name="producao"
+                            HorizontalOptions="Start"
+                            ItemsSource="{Binding ProducaoPedidosConfirmados}"
+                            SelectionMode="None">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="data3:Get_Producao_DTO">
+                        <Border Margin="5"
+                                BackgroundColor="#fff"
+                                StrokeShape="RoundRectangle 10"
+                                Stroke="#d6b06a">
+                            <Grid>
+                                <StackLayout Orientation="Vertical"
+                                             Padding="10">
+                                    <Label Text="{Binding ClienteNome, StringFormat='Cliente:            {0}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                    <Label Text="{Binding Telefone, StringFormat='Telefone:         {0}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                    <Border/>
+
+                                    <Label Text="{Binding Produto, StringFormat='Produto:           {0}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                    <Label Text="{Binding Quantidade, StringFormat='Quantidade:   {0}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                    <Label Text="{Binding  Preco, StringFormat='Preco:                Kz {0:N2}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                    <Label Text="{Binding  PrecoTotal, StringFormat='Preco total:      Kz {0:N2}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                    <Label Text="{Binding Estado, StringFormat='Estado:             {0}'}"
+                                           FontSize="18"
+                                           FontFamily="MontserratRegular"/>
+                                </StackLayout>
+                                <Image Source="user"
+                                       HeightRequest="50"
+                                       VerticalOptions="Start"
+                                       HorizontalOptions="End"
+                                       Margin="5"/>
+                                <Border BackgroundColor="#d6b06a"
+                                        HeightRequest="65"
+                                        VerticalOptions="Start"
+                                        Opacity=".2"/>
+
+                                 <Button Text="Adicionar"
+                                        BackgroundColor="#d6b06a"
+                                        VerticalOptions="End"
+                                        HorizontalOptions="End"
+                                        Margin="10"
+                                        Command="{Binding BindingContext.RedefinirEstado, Source={x:Reference producao}}"
+                                        CommandParameter="{Binding .}"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Label Text="Nenhum pedido disponível"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           FontSize="18"
+                           FontFamily="MontserratRegular"/>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </Grid>
+
     </Grid>
 </ContentPage>

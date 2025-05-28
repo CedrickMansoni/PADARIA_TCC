@@ -19,6 +19,7 @@ public interface IProducaoRepository
     Task<IEnumerable<Get_Producao_DTO>> ListarProducaoPorEstadoAsync(string status, DateTime data, DateTime data2,int skip = 0, int take = 30, CancellationToken c = default);
     Task<string> AdicionarAsync(ProducaoModel producao);
     Task<string> AtualizarAsync(ProducaoModel producao);
+    Task<string> AtualizarEstadoAsync(Put_PedidoState_DTO producao);
     Task<bool> RemoverAsync(int id);
     Task<string> AdicionarSolicitacao(int id, int q);
 }

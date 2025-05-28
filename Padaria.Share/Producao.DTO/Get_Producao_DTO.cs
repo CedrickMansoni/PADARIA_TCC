@@ -18,5 +18,7 @@ public class Get_Producao_DTO
     public string Padeiro { get; set; } = string.Empty;
 
     public string Estado { get; set; } = string.Empty;
+    public bool Status { get; set; } 
     public string ClienteNome { get; set; } = string.Empty;
+    public string Telefone  { get; set; } = string.Empty;
 }

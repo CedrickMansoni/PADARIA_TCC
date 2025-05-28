@@ -28,7 +28,8 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
                 DataProducao = DateTime.SpecifyKind(Convert.ToDateTime(DateTime.Now), DateTimeKind.Utc).ToString("yyyy-MM-dd"),
                 EstadoProducao = item.Cliente == 0 ? "Pendente" : "Pendente por falta de pagamento",
                 IdFuncionario = item.Cliente != 0 ? (int?)null : item.Funcionario,
-                IdCliente = item.Cliente == 0 ? (int?)null : item.Cliente
+                IdCliente = item.Cliente == 0 ? (int?)null : item.Cliente,
+                Telefone = item.Telefone
             });
             var response2 = await _repository.AdicionarSolicitacao(item.Produto, item.Quantidade);
             count -= 1;
@@ -60,6 +61,13 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
             EstadoProducao = producao.Estado,
             IdFuncionario = producao.Padeiro
         });
+    }
+
+    public async Task<string> AtualizarEstadoAsync(Put_PedidoState_DTO producao)
+    {
+        if (producao == null) return "Producao não pode ser nula";
+
+        return await _repository.AtualizarEstadoAsync(producao);
     }
 
     public async Task<IEnumerable<Get_Producao_DTO>?> ListarProducaoPorData(DateTime data, int skip = 0, int take = 30, CancellationToken c = default)
