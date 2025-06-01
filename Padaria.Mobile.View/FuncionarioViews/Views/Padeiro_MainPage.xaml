@@ -131,7 +131,8 @@
                               Grid.Row="1"
                               Grid.RowSpan="3"
                               ItemsSource="{Binding ProducaoPedidos}"
-                              SelectionMode="None">
+                              SelectionMode="None"
+                              x:Name="producao">
                      <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="data3:Get_Producao_DTO">
                                    <Border Padding="10"
@@ -139,17 +140,28 @@
                                            BackgroundColor="#fff"
                                            StrokeShape="RoundRectangle 10"
                                            Stroke="#d6b06a">
-                                          <StackLayout Orientation="Vertical">
-                                                 <Label Text="{Binding Produto, StringFormat='Produto: {0}'}"
-                                                        FontSize="18"
-                                                        FontFamily="MontserratRegular"/>
-                                                 <Label Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}"
-                                                        FontSize="18"
-                                                        FontFamily="MontserratRegular"/>
-                                                 <Label Text="{Binding Estado, StringFormat='Estado: {0}'}"
-                                                        FontSize="18"
-                                                        FontFamily="MontserratRegular"/>
-                                          </StackLayout>
+                                          <Grid>
+                                                 <StackLayout Orientation="Vertical">
+                                                        <Label Text="{Binding Produto, StringFormat='Produto: {0}'}"
+                                                               FontSize="18"
+                                                               FontFamily="MontserratRegular"/>
+                                                        <Label Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}"
+                                                               FontSize="18"
+                                                               FontFamily="MontserratRegular"/>
+                                                        <Label Text="{Binding Estado, StringFormat='Estado: {0}'}"
+                                                               FontSize="18"
+                                                               FontFamily="MontserratRegular"/>
+                                                 </StackLayout>
+                                                 <Button BackgroundColor="#d6b06a"
+                                                         Text="Editar"
+                                                         HeightRequest="50"
+                                                         WidthRequest="100"
+                                                         HorizontalOptions="End"
+                                                         FontFamily="MontserratRegular"
+                                                         FontSize="19"
+                                                         Command="{Binding BindingContext.ProducaoEstado, Source={x:Reference Name = producao }}"
+                                                         CommandParameter="{Binding .}"/>
+                                          </Grid>
                                    </Border>
                             </DataTemplate>
                      </CollectionView.ItemTemplate>

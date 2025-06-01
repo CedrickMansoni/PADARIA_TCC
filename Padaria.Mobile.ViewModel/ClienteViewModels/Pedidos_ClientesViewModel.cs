@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 using System.Windows.Input;
+using Microsoft.AspNetCore.SignalR.Client;
 using Padaria.Share.DNS_App;
 using Padaria.Share.Producao.DTO;
 
@@ -20,7 +21,7 @@ public class Pedidos_ClientesViewModel : BindableObject
         };
     }
 
-    private ObservableCollection<Get_Producao_DTO> _pedidos;
+    private ObservableCollection<Get_Producao_DTO> _pedidos = [];
     public ObservableCollection<Get_Producao_DTO> Pedidos
     {
         get => _pedidos;

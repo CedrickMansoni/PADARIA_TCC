@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Padaria.Share.Hash_Password;
+using Padaria.WebApi.Comunicacao;
 using Padaria.WebApi.Data;
 using Padaria.WebApi.Repository.Cliente;
 using Padaria.WebApi.Repository.Funcionario;
@@ -17,6 +18,8 @@ using Padaria.WebApi.Service.Produto;
 using Padaria.WebApi.SMS_Service.Service;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSignalR();
 
 // Add services to the container.
 
@@ -70,6 +73,8 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
+
+app.MapHub<ChatHub>("/chathub");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

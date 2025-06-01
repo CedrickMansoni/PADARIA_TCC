@@ -4,6 +4,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Input;
+using Microsoft.AspNetCore.SignalR.Client;
 using Padaria.Share.Funcionario.DTO;
 using Padaria.Share.Pedido.DTO;
 using Padaria.Share.Producao.DTO;
@@ -26,6 +27,7 @@ public class Padeiro_MainPageViewModel : BindableObject
         {
             PropertyNameCaseInsensitive = true
         };
+
     }
 
     private string _funcionario = string.Empty;
@@ -90,21 +92,35 @@ public class Padeiro_MainPageViewModel : BindableObject
     });
     public ICommand AddCapacidadeProducaoCommand => new Command<Get_Produto_DTO>(async produto_ =>
     {
-        string qtd = await Shell.Current.DisplayPromptAsync("Adicionar Capacidade de Produção", "Digite a quantidade máxima:", initialValue: "0");
+        int quantidade = 0;
+        string qtd = await Shell.Current.DisplayPromptAsync("Adicionar Capacidade de Produção", "Digite a quantidade máxima:", initialValue: "0", keyboard: Keyboard.Numeric);
         try
         {
-            if (string.IsNullOrEmpty(qtd) || Convert.ToInt32(qtd) == 0) return;
+            if (int.TryParse(qtd, out int quantidadeMaxima))
+            {
+                quantidade = quantidadeMaxima;
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Erro", "Digite apenas números inteiros maior que zero.", "OK");
+            }
+
         }
-        catch (Exception ex)
+        catch
         {
-            await Shell.Current.DisplayAlert("Erro", ex.Message, "OK");
+            await Shell.Current.DisplayAlert("Erro", "Digite apenas números inteiros maior que zero.", "OK");
             return;
         }
-
+        if (quantidade <= 0) { await Shell.Current.DisplayAlert("Erro", "Digite apenas números inteiros maior que zero.", "OK"); return; }
+        if (CapacidadeProducao.Any(p => p.IdProduto == produto_.Id))
+        {
+            await Shell.Current.DisplayAlert("Erro", "Este produto já faz parte da produção de hoje.", "OK");
+            return;
+        }
         var newCapacidade = new Post_Capacidade_Producao
         {
             Produto = produto_.Id,
-            QuantidadeMaxima = Convert.ToInt32(qtd),
+            QuantidadeMaxima = quantidade,
             DataProducao = DateTime.Now
         };
 
@@ -182,10 +198,6 @@ public class Padeiro_MainPageViewModel : BindableObject
         {
             using var content = await response.Content.ReadAsStreamAsync();
             ProducaoPedidos = await JsonSerializer.DeserializeAsync<ObservableCollection<Get_Producao_DTO>>(content, options) ?? [];
-            foreach (var item in ProducaoPedidos)
-            {
-                await Shell.Current.DisplayAlert("Valor", $"{item.Produto}\n{item.Estado}","Ok");
-            }
         }
     });
 
@@ -228,6 +240,50 @@ public class Padeiro_MainPageViewModel : BindableObject
             producaoPedidos.RemoveAt(indice);
             item.Estado = "Pendente";
             producaoPedidosConfirmados.Add(item);
+        }
+        else
+        {
+            var successMessage = await response.Content.ReadAsStringAsync();
+            await Shell.Current.DisplayAlert("Erro", $"{successMessage}", "Ok");
+        }
+    });
+
+
+    public ICommand ProducaoEstado => new Command<Get_Producao_DTO>(async p =>
+    {
+        string[] opcoes = { "Em andamento", "Concluído", "Cancelado" };
+
+        string opcaoEscolhida = await Shell.Current.DisplayActionSheet(
+            "Escolha um estado",  // Título
+            "Cancelar",           // Botão de cancelar
+            null,                 // Botão de destruição (pode ser null)
+            opcoes);              // Opções
+
+        if (string.IsNullOrEmpty(opcaoEscolhida)) return;
+        // Inclua o estado atualizado no objeto
+        var estado = new Put_PedidoState_DTO
+        {
+            IdPedido = p.Id,
+            Estado = opcaoEscolhida // Certifique-se de que este valor está correto
+        };
+
+        // Serializa o objeto com o estado atualizado
+        string jsonEstado = JsonSerializer.Serialize<Put_PedidoState_DTO>(estado, options);
+        StringContent content = new(jsonEstado, Encoding.UTF8, "application/json");
+
+        // Envia a requisição PUT para o backend
+        var response = await client.PutAsync("editar/estado/pedido", content);
+
+        // Opcional: Verifique a resposta do backend
+        if (response.IsSuccessStatusCode)
+        {
+            var successMessage = await response.Content.ReadAsStringAsync();
+            var item = ProducaoPedidos.FirstOrDefault(x => x.Id == p.Id);
+            if (item is null) return;
+            int indice = ProducaoPedidos.IndexOf(item);
+            producaoPedidos.RemoveAt(indice);
+            item.Estado = opcaoEscolhida;
+            ProducaoPedidos.Insert(indice,item);
         }
         else
         {
