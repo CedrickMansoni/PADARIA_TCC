@@ -1,4 +1,5 @@
 using System;
+using Padaria.Share.Cliente.DTO;
 using Padaria.Share.Producao.DTO;
 using Padaria.WebApi.Models;
 
@@ -11,6 +12,7 @@ public interface IProducaoRepository
     Task<bool> RemoverCapacidadeProducaoAsync(int id);
     Task<IEnumerable<Get_Capacidade_Producao>> ListarCapacidadeProducao(int skip = 0, int take = 30, CancellationToken c = default);
     // «««««««««««««««««««««««««««««««««««««««««««««««««««««««««««««««««
+    Task<ClienteReponse?> PegarTelefoneCliente(int idPedido);
     Task<IEnumerable<Get_Producao_DTO>> ListarProducao(int skip = 0, int take = 30, CancellationToken c = default);
     Task<IEnumerable<Get_Producao_DTO>> ListarProducaoCliente(int idCliente, int skip = 0, int take = 60, CancellationToken c = default);
     Task<IEnumerable<Get_Producao_DTO>> ListarProducaoClientePagamento(int idCliente, int skip = 0, int take = 60, CancellationToken c = default);

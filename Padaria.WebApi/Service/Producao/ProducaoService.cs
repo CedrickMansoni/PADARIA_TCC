@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Padaria.Share.Producao.DTO;
 using Padaria.WebApi.Models;
 using Padaria.WebApi.Repository.Producao;
+using Padaria.WebApi.SMS_Service.Model_SMS;
+using Padaria.WebApi.SMS_Service.Service;
 
 namespace Padaria.WebApi.Service.Producao;
 
-public class ProducaoService(IProducaoRepository repository) : IProducaoService
+public class ProducaoService(IProducaoRepository repository, ISMS_enviar enviarSMS) : IProducaoService
 {
     private readonly IProducaoRepository _repository = repository;
+    private readonly ISMS_enviar enviarSMS = enviarSMS;
     public async Task<string> AdicionarAsync(IEnumerable<Post_Producao_DTO> producao)
     {
         string response = string.Empty;
@@ -67,6 +70,46 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
     {
         if (producao == null) return "Producao não pode ser nula";
 
+        if (producao.Estado == "Concluído")
+        {
+            var cliente = await _repository.PegarTelefoneCliente(producao.IdPedido);
+            var mensagem = new Mensagem
+            {
+                PhoneNumber = cliente!.Telefone,
+                MessageBody = $"Olá, {cliente.Nome}! ✅\n\n" +
+                  $"O seu pedido está pronto para levantamento na padaria.\n\n" +
+                  $"📦 Produto: {cliente.Produto}\n" +
+                  $"🔢 Quantidade: {cliente.Quantidade}\n\n" +
+                  $"Agradecemos pela preferência! 😊"
+            };
+
+            var sms = new EnviarMensagem
+            {
+                Mensagem = mensagem
+            };
+
+            await enviarSMS.EnviarSMS(sms);
+        }
+        else if (producao.Estado == "Cancelado")
+        {
+            var cliente = await _repository.PegarTelefoneCliente(producao.IdPedido);
+            var mensagem = new Mensagem
+            {
+                PhoneNumber = cliente!.Telefone,
+                MessageBody = $"Olá, {cliente.Nome}! ⚠️\n\n" +
+                  $"Informamos que o seu pedido foi **cancelado**.\n\n" +
+                  $"📦 Produto: {cliente.Produto}\n" +
+                  $"🔢 Quantidade: {cliente.Quantidade}\n\n" +
+                  $"Em caso de dúvidas, estamos à disposição. 📞"
+            };
+
+            var sms = new EnviarMensagem
+            {
+                Mensagem = mensagem
+            };
+
+            await enviarSMS.EnviarSMS(sms);
+        }
         return await _repository.AtualizarEstadoAsync(producao);
     }
 
@@ -109,7 +152,7 @@ public class ProducaoService(IProducaoRepository repository) : IProducaoService
     {
         if (capacidadeProducao == null) return "Capacidade de produção não pode ser nula";
         if (capacidadeProducao.QuantidadeMaxima <= 0) return "Quantidade máxima deve ser maior que zero";
-        
+
 
         return await _repository.AtualizarCapacidadeProducaoAsync(new CapacidadeProducaoModel
         {

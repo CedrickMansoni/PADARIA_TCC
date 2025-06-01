@@ -1,5 +1,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
+using Padaria.Share.Cliente.DTO;
 using Padaria.Share.Producao.DTO;
 using Padaria.WebApi.Data;
 using Padaria.WebApi.Models;
@@ -16,8 +17,8 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
         var query = from producao in _context.TabelaProducaoModel
                     join produto in _context.TabelaProdutoModel on producao.IdProduto equals produto.Id
                     join cliente in _context.TabelaClienteModel on producao.IdCliente equals cliente.Id
-                    join telefone in _context.TabelaTelefoneModel on cliente.Id equals telefone.IdCliente 
-                     where producao.DataProducao == hoje.ToString("yyyy-MM-dd")
+                    join telefone in _context.TabelaTelefoneModel on cliente.Id equals telefone.IdCliente
+                    where (producao.DataProducao == hoje.ToString("yyyy-MM-dd")) && (producao.EstadoProducao != "Concluído" || producao.EstadoProducao != "Cancelado")
                     select new Get_Producao_DTO
                     {
                         Id = producao.Id,
@@ -39,8 +40,9 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
         var query = from producao in _context.TabelaProducaoModel
                     join produto in _context.TabelaProdutoModel on producao.IdProduto equals produto.Id
                     where
-                    producao.DataProducao == data.ToString("yyyy-MM-dd") &&
-                    producao.EstadoProducao != "Pendente por falta de pagamento"
+                    (producao.DataProducao == data.ToString("yyyy-MM-dd")) &&
+                    (producao.EstadoProducao != "Pendente por falta de pagamento") &&
+                    (producao.EstadoProducao != "Concluído" || producao.EstadoProducao != "Cancelado")
                     select new Get_Producao_DTO
                     {
                         Id = producao.Id,
@@ -260,5 +262,21 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
 
         return await query.Skip(skip).Take(take).ToListAsync(c);
 
+    }
+
+    public async Task<ClienteReponse?> PegarTelefoneCliente(int idPedido)
+    {
+        var pedido = from producao in _context.TabelaProducaoModel
+                     join cliente in _context.TabelaClienteModel on producao.IdCliente equals cliente.Id
+                     join produto in _context.TabelaProdutoModel on producao.IdProduto equals produto.Id
+                     where producao.Id == idPedido
+                     select new ClienteReponse
+                     {
+                         Nome = cliente.Nome,
+                         Produto = produto.Nome,
+                         Quantidade = producao.Quantidade,
+                         Telefone = producao.Telefone!
+                     };
+        return await pedido.FirstOrDefaultAsync();
     }
 }
