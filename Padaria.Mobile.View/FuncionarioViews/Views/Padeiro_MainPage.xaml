@@ -130,7 +130,7 @@
               <CollectionView Grid.Column="2"
                               Grid.Row="1"
                               Grid.RowSpan="3"
-                              ItemsSource="{Binding ProducaoPedidos}"
+                              ItemsSource="{Binding ProducaoPadaria}"
                               SelectionMode="None"
                               x:Name="producao">
                      <CollectionView.ItemTemplate>

@@ -4,7 +4,6 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Input;
-using Microsoft.AspNetCore.SignalR.Client;
 using Padaria.Share.Funcionario.DTO;
 using Padaria.Share.Pedido.DTO;
 using Padaria.Share.Producao.DTO;
@@ -17,6 +16,7 @@ public class Padeiro_MainPageViewModel : BindableObject
 {
     HttpClient client;
     JsonSerializerOptions options;
+    private Timer _timer;
     public Padeiro_MainPageViewModel()
     {
         client = new HttpClient()
@@ -28,6 +28,37 @@ public class Padeiro_MainPageViewModel : BindableObject
             PropertyNameCaseInsensitive = true
         };
 
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            _timer = new Timer(_ =>
+            {
+                MainThread.InvokeOnMainThreadAsync(() =>
+                {
+                    Hora = DateTime.Now.ToString("T");
+                    if (Convert.ToDateTime(hora).Second == 10 ||
+                        Convert.ToDateTime(hora).Second == 20 ||
+                        Convert.ToDateTime(hora).Second == 30 ||
+                        Convert.ToDateTime(hora).Second == 40 ||
+                        Convert.ToDateTime(hora).Second == 50)
+                    {
+                        ListarCapacidadeProducaoCommand.Execute(null);
+                        ListarPedidosCommand.Execute(null);
+                        ListarProducaoCommand.Execute(null);
+                    }
+                });
+            }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+        });
+    }
+
+    private string hora = string.Empty;
+    public string Hora
+    {
+        get => hora;
+        set
+        {
+            hora = value;
+            OnPropertyChanged(nameof(Hora));
+        }
     }
 
     private string _funcionario = string.Empty;
@@ -87,7 +118,22 @@ public class Padeiro_MainPageViewModel : BindableObject
         if (response.IsSuccessStatusCode)
         {
             using var json = await response.Content.ReadAsStreamAsync();
-            CapacidadeProducao = JsonSerializer.Deserialize<ObservableCollection<Get_Capacidade_Producao>>(json, options) ?? [];
+            var l = JsonSerializer.Deserialize<ObservableCollection<Get_Capacidade_Producao>>(json, options) ?? [];
+            if (CapacidadeProducao.Count == 0)
+            {
+                CapacidadeProducao = l;
+                return;
+            }
+            foreach (var item in CapacidadeProducao)
+            {
+                var i = l.FirstOrDefault(x => x.Id == item.Id);
+                if (i is not null) l.Remove(i);
+            }
+            if (l.Count == 0) return;
+            foreach (var item in l)
+            {
+                CapacidadeProducao.Add(item);
+            }
         }
     });
     public ICommand AddCapacidadeProducaoCommand => new Command<Get_Produto_DTO>(async produto_ =>
@@ -137,8 +183,8 @@ public class Padeiro_MainPageViewModel : BindableObject
     });
 
 
-    private ObservableCollection<Get_Produto_DTO>? produtos = [];
-    public ObservableCollection<Get_Produto_DTO>? Produtos
+    private ObservableCollection<Get_Produto_DTO> produtos = [];
+    public ObservableCollection<Get_Produto_DTO> Produtos
     {
         get => produtos;
         set
@@ -154,7 +200,22 @@ public class Padeiro_MainPageViewModel : BindableObject
        if (response.IsSuccessStatusCode)
        {
            var content = await response.Content.ReadAsStringAsync();
-           Produtos = JsonSerializer.Deserialize<ObservableCollection<Get_Produto_DTO>>(content, options);
+           var l = JsonSerializer.Deserialize<ObservableCollection<Get_Produto_DTO>>(content, options) ?? [];
+           if (Produtos.Count == 0)
+           {
+               Produtos = l;
+               return;
+           }
+           foreach (var item in Produtos)
+           {
+               var i = l.FirstOrDefault(x => x.Id == item.Id);
+               if (i is not null) l.Remove(i);
+           }
+           if (l.Count == 0) return;
+           foreach (var item in l)
+           {
+               Produtos.Add(item);
+           }
        }
    });
 
@@ -180,6 +241,17 @@ public class Padeiro_MainPageViewModel : BindableObject
         }
     }
 
+    private ObservableCollection<Get_Producao_DTO> producaoPadaria = [];
+    public ObservableCollection<Get_Producao_DTO> ProducaoPadaria
+    {
+        get => producaoPadaria;
+        set
+        {
+            producaoPadaria = value;
+            OnPropertyChanged(nameof(ProducaoPadaria));
+        }
+    }
+
     private ObservableCollection<Get_Producao_DTO> producaoPedidosConfirmados = [];
     public ObservableCollection<Get_Producao_DTO> ProducaoPedidosConfirmados
     {
@@ -197,7 +269,28 @@ public class Padeiro_MainPageViewModel : BindableObject
         if (response.IsSuccessStatusCode)
         {
             using var content = await response.Content.ReadAsStreamAsync();
-            ProducaoPedidos = await JsonSerializer.DeserializeAsync<ObservableCollection<Get_Producao_DTO>>(content, options) ?? [];
+            var l = await JsonSerializer.DeserializeAsync<ObservableCollection<Get_Producao_DTO>>(content, options) ?? [];
+
+            if (ProducaoPadaria.Count == 0)
+            {
+                ProducaoPadaria = l;
+                return;
+            }
+            foreach (var item in ProducaoPadaria)
+            {
+                var i = l.FirstOrDefault(x => x.Id == item.Id);
+
+                if (i is not null)
+                {
+                    item.Estado = i.Estado;
+                    l.Remove(i);
+                }
+            }
+            if (l.Count == 0) return;
+            foreach (var item in l)
+            {
+                ProducaoPadaria.Add(item);
+            }
         }
     });
 
@@ -209,8 +302,47 @@ public class Padeiro_MainPageViewModel : BindableObject
             using var content = await response.Content.ReadAsStreamAsync();
             var lista = await JsonSerializer.DeserializeAsync<ObservableCollection<Get_Producao_DTO>>(content, options) ?? [];
 
-            ProducaoPedidos = new ObservableCollection<Get_Producao_DTO>(lista.Where(x => x.Estado == "Pendente por falta de pagamento"));
-            ProducaoPedidosConfirmados = new ObservableCollection<Get_Producao_DTO>(lista.Where(x => x.Estado != "Pendente por falta de pagamento"));
+            var l = new ObservableCollection<Get_Producao_DTO>(lista.Where(x => x.Estado == "Pendente por falta de pagamento"));
+            if (ProducaoPedidos.Count == 0)
+            {
+                ProducaoPedidos = l;
+                return;
+            }
+            foreach (var item in ProducaoPedidos)
+            {
+                var i = l.FirstOrDefault(x => x.Id == item.Id);
+                if (i is not null)
+                {
+                    item.Estado = i.Estado;
+                    l.Remove(i);
+                }
+            }
+            if (l.Count == 0) return;
+            foreach (var item in l)
+            {
+                ProducaoPedidos.Add(item);
+            }
+
+            l = new ObservableCollection<Get_Producao_DTO>(lista.Where(x => x.Estado != "Pendente por falta de pagamento"));
+            if (ProducaoPedidosConfirmados.Count == 0)
+            {
+                ProducaoPedidosConfirmados = l;
+                return;
+            }
+            foreach (var item in ProducaoPedidosConfirmados)
+            {
+                var i = l.FirstOrDefault(x => x.Id == item.Id);
+                if (i is not null)
+                {
+                    item.Estado = i.Estado;
+                    l.Remove(i);
+                }
+            }
+            if (l.Count == 0) return;
+            foreach (var item in l)
+            {
+                ProducaoPedidosConfirmados.Add(item);
+            }
         }
     });
 
@@ -283,7 +415,7 @@ public class Padeiro_MainPageViewModel : BindableObject
             int indice = ProducaoPedidos.IndexOf(item);
             producaoPedidos.RemoveAt(indice);
             item.Estado = opcaoEscolhida;
-            ProducaoPedidos.Insert(indice,item);
+            ProducaoPedidos.Insert(indice, item);
         }
         else
         {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 using System.Windows.Input;
-using Microsoft.AspNetCore.SignalR.Client;
 using Padaria.Share.DNS_App;
 using Padaria.Share.Producao.DTO;
 
@@ -19,6 +18,38 @@ public class Pedidos_ClientesViewModel : BindableObject
         {
             PropertyNameCaseInsensitive = true,
         };
+
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            _timer = new Timer(_ =>
+            {
+                MainThread.InvokeOnMainThreadAsync(() =>
+                {
+                    Hora = DateTime.Now.ToString("T");
+                    if (Convert.ToDateTime(hora).Second == 10 ||
+                        Convert.ToDateTime(hora).Second == 20 ||
+                        Convert.ToDateTime(hora).Second == 30 ||
+                        Convert.ToDateTime(hora).Second == 40 ||
+                        Convert.ToDateTime(hora).Second == 50)
+                    {
+                        ListarPedidosCommand.Execute(null);
+                        FiltrarPedidosCommand.Execute(null);
+                    }
+                });
+            }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+        });
+    }
+
+    private Timer _timer;
+    private string hora = string.Empty;
+    public string Hora
+    {
+        get => hora;
+        set
+        {
+            hora = value;
+            OnPropertyChanged(nameof(Hora));
+        }
     }
 
     private ObservableCollection<Get_Producao_DTO> _pedidos = [];
@@ -39,7 +70,9 @@ public class Pedidos_ClientesViewModel : BindableObject
         if (response.IsSuccessStatusCode)
         {
             using var content = await response.Content.ReadAsStreamAsync();
-            Pedidos = JsonSerializer.Deserialize<ObservableCollection<Get_Producao_DTO>>(content, options) ?? [];
+            var l = JsonSerializer.Deserialize<ObservableCollection<Get_Producao_DTO>>(content, options) ?? [];
+            Pedidos = new ObservableCollection<Get_Producao_DTO>(l.Where(x => x.Estado != "Pendente por falta de pagamento"));
+
             CalcularTotalPagarCommand.Execute(false);
         }
     });

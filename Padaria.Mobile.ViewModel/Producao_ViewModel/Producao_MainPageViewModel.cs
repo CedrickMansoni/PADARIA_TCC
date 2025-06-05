@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Input;
-using Microsoft.AspNetCore.SignalR.Client;
 using Padaria.Share.Cliente.DTO;
 using Padaria.Share.DNS_App;
 using Padaria.Share.Producao.DTO;
@@ -20,7 +19,7 @@ public class Producao_MainPageViewModel : BindableObject
         client = new HttpClient() { BaseAddress = new Uri($"{My_DNS.App_DNS}") };
         options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-       
+
     }
 
     private Post_Producao_DTO producao = new();

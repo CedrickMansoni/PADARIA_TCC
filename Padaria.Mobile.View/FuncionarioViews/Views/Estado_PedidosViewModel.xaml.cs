@@ -16,7 +16,6 @@ public partial class Estado_PedidosViewModel : ContentPage
 		var vm = (Padeiro_MainPageViewModel)BindingContext;
 		vm.ListarPedidosCommand.Execute(null);
 		vm.ListarCapacidadeProducaoCommand.Execute(null);
-    }
+	}
 
-	
 }

@@ -37,12 +37,13 @@ public class ProducaoRepository(AppDataContext context) : IProducaoRepository
 
     public async Task<IEnumerable<Get_Producao_DTO>> ListarProducaoDiaria(DateTime data, int skip = 0, int take = 30, CancellationToken c = default)
     {
+        string d = data.ToString("yyyy-MM-dd");
         var query = from producao in _context.TabelaProducaoModel
                     join produto in _context.TabelaProdutoModel on producao.IdProduto equals produto.Id
                     where
-                    (producao.DataProducao == data.ToString("yyyy-MM-dd")) &&
-                    (producao.EstadoProducao != "Pendente por falta de pagamento") &&
-                    (producao.EstadoProducao != "Concluído" || producao.EstadoProducao != "Cancelado")
+                    (producao.DataProducao == d) &&
+                    (producao.EstadoProducao != "Pendente por falta de pagamento" &&
+                    producao.EstadoProducao != "Concluído" && producao.EstadoProducao != "Cancelado")
                     select new Get_Producao_DTO
                     {
                         Id = producao.Id,
