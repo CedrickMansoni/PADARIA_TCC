@@ -9,9 +9,10 @@ namespace Padaria.WebApi.Service.Produto;
 public class ProdutoService(IProdutoRepository repository, ICategoriaService service, IConfiguration configuration, IArquivoService arquivoService) : IProdutoService
 {
     private readonly IConfiguration _configuration = configuration;
+    private readonly IArquivoService arquivoService = arquivoService;
     private readonly IProdutoRepository _repository = repository;
     private readonly ICategoriaService _service = service;
-    private readonly IArquivoService arquivoService = arquivoService;
+    
     public async Task<string> AtualizarProdutoAsync(Post_Produto_DTO produto)
     {
         if (produto.Id == 0) return "Id do produto não pode ser 0";

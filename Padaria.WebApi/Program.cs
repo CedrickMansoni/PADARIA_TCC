@@ -4,12 +4,14 @@ using Microsoft.Extensions.FileProviders;
 using Padaria.Share.Hash_Password; 
 using Padaria.WebApi.Data;
 using Padaria.WebApi.Repository.Cliente;
+using Padaria.WebApi.Repository.Comprovativo;
 using Padaria.WebApi.Repository.Funcionario;
 using Padaria.WebApi.Repository.Pedido;
 using Padaria.WebApi.Repository.Producao;
 using Padaria.WebApi.Repository.Produto;
 using Padaria.WebApi.SalvarArquivos;
 using Padaria.WebApi.Service.Cliente;
+using Padaria.WebApi.Service.Comprovativo;
 using Padaria.WebApi.Service.Funcionario;
 using Padaria.WebApi.Service.Pedido;
 using Padaria.WebApi.Service.Producao;
@@ -42,7 +44,10 @@ builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
 builder.Services.AddTransient<IPedidoService, PedidoService>();
 
 builder.Services.AddTransient<IClienteRepository, ClienteRepository>();
-builder.Services.AddTransient<IClienteService, ClienteService>();
+builder.Services.AddTransient<IClienteService, ClienteService>(); // 
+
+builder.Services.AddTransient<IComprovativoRepository, ComprovativoRepository>();
+builder.Services.AddTransient<IComprovativoService, ComprovativoService>();
 
 
 builder.Services.AddScoped<IArquivoService, ArquivoService>();

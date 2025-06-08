@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Input;
@@ -8,6 +9,7 @@ using Padaria.Share.Funcionario.DTO;
 using Padaria.Share.Pedido.DTO;
 using Padaria.Share.Producao.DTO;
 using Padaria.Share.Produto.DTO;
+using Microsoft.Maui.Storage;
 
 namespace Padaria.Mobile.ViewModel.Padeiro_ViewModel;
 // Adicionamos a propriedade para receber o parâmetro via Shell
@@ -423,5 +425,47 @@ public class Padeiro_MainPageViewModel : BindableObject
             await Shell.Current.DisplayAlert("Erro", $"{successMessage}", "Ok");
         }
     });
+
+    public ICommand DownloandComprovativoCommand => new Command<Get_Producao_DTO>(async p =>
+    {
+        try
+        {
+            var response = await client.GetAsync($"download/{p.Id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return;
+            }
+
+            var nomeArquivo = GetFileNameFromContentDisposition(response.Content.Headers);
+            var bytes = await response.Content.ReadAsByteArrayAsync();
+            var caminho = Path.Combine(FileSystem.AppDataDirectory, nomeArquivo);
+
+            File.WriteAllBytes(caminho, bytes);
+
+            var StatusMensagem = $"Comprovativo salvo em: {caminho}";
+            await Shell.Current.DisplayAlert("...", $"{StatusMensagem}", "Ok");
+
+
+        }
+        catch (Exception ex)
+        {
+            var StatusMensagem = $"Erro: {ex.Message}";
+            await Shell.Current.DisplayAlert("Erro", $"Erro: {ex.Message}", "Ok");
+            await Shell.Current.DisplayAlert("...", $"{StatusMensagem}", "Ok");
+        }
+    });
+
+    private string GetFileNameFromContentDisposition(HttpContentHeaders headers)
+    {
+        if (headers.ContentDisposition != null && !string.IsNullOrWhiteSpace(headers.ContentDisposition.FileName))
+            return headers.ContentDisposition.FileName.Trim('"');
+
+        return $"comprovativo_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+    }
+
+
+
+
 
 }

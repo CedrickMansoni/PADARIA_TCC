@@ -15,7 +15,7 @@
 
     <Grid>
         <Grid RowSpacing="20"
-              RowDefinitions="Auto,*, Auto,*"
+              RowDefinitions="Auto,1.5*, Auto,*"
               Margin="0"
               Padding="10"
               IsEnabled="{Binding EnablePage}">
@@ -27,7 +27,7 @@
                    HorizontalTextAlignment="Center"
                    Grid.Row="0"
                    HorizontalOptions="Center"/>
-            <Label Text="Solicitar produtos"
+            <Label Text="Solicitar produto"
                    FontAttributes="Bold"
                    FontFamily="MontserratBold"
                    FontSize="Large"
@@ -50,7 +50,7 @@
                                 Margin="10">
                             <Grid Margin="0">
                                 <Image Source="{Binding Imagem}"
-                                       Aspect="Fill"/>
+                                       Aspect="AspectFill"/>
                                 <StackLayout BackgroundColor="#000"
                                              HeightRequest="60"
                                              Opacity="0.5"

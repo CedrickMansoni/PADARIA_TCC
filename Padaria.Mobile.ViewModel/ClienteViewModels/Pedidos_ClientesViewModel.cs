@@ -9,8 +9,8 @@ namespace Padaria.Mobile.ViewModel.ClienteViewModels;
 
 public class Pedidos_ClientesViewModel : BindableObject
 {
-    HttpClient client;
-    JsonSerializerOptions options;
+    readonly HttpClient client;
+    readonly JsonSerializerOptions options;
     public Pedidos_ClientesViewModel()
     {
         client = new HttpClient() { BaseAddress = new Uri($"{My_DNS.App_DNS}") };
@@ -39,6 +39,8 @@ public class Pedidos_ClientesViewModel : BindableObject
             }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
         });
     }
+
+    private bool estadoPedido = false;
 
     private Timer _timer;
     private string hora = string.Empty;
@@ -123,10 +125,10 @@ public class Pedidos_ClientesViewModel : BindableObject
         }
     }
 
-    public ICommand FiltrarPedidosCommand => new Command<bool>(async c =>
+    public ICommand FiltrarPedidosCommand => new Command(async () =>
     {
         int id = Convert.ToInt32(await SecureStorage.Default.GetAsync("IdUsuario"));
-        if (!c)
+        if (EstadoPendente)
         {
             var response = await client.GetAsync($"listar/producao/cliente/{id}");
             if (response.IsSuccessStatusCode)
@@ -137,7 +139,7 @@ public class Pedidos_ClientesViewModel : BindableObject
             }
             return;
         }
-        if (c)
+        if (estadoPago)
         {
             var response = await client.GetAsync($"listar/producao/cliente/pagamento/{id}");
             if (response.IsSuccessStatusCode)

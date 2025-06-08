@@ -130,13 +130,20 @@
                                                                 VerticalOptions="Start"
                                                                 Opacity=".2"/>
 
-                                                        <Button Text="Adicionar"
-                                                                BackgroundColor="#d6b06a"
-                                                                VerticalOptions="End"
-                                                                HorizontalOptions="End"
-                                                                Margin="10"
-                                                                Command="{Binding BindingContext.RedefinirEstado, Source={x:Reference pendentes}}"
-                                                                CommandParameter="{Binding .}"/>
+                                                        <VerticalStackLayout  VerticalOptions="End"
+                                                                              HorizontalOptions="End">
+                                                               <Button Text="Comprovativo"
+                                                                       BackgroundColor="#202020"
+                                                                       Margin="10"
+                                                                       Command="{Binding BindingContext.DownloandComprovativoCommand, Source={x:Reference pendentes}}"
+                                                                       CommandParameter="{Binding .}"/>
+
+                                                               <Button Text="Adicionar"
+                                                                       BackgroundColor="#d6b06a"
+                                                                       Margin="10"
+                                                                       Command="{Binding BindingContext.RedefinirEstado, Source={x:Reference pendentes}}"
+                                                                       CommandParameter="{Binding .}"/>
+                                                        </VerticalStackLayout>
                                                  </Grid>
                                           </Border>
                                    </DataTemplate>

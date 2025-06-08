@@ -64,6 +64,7 @@ public class Comprovativos_ClienteViewModel : BindableObject
        if (doc is null) return;
 
        CaminhoComprovativo = doc.FullPath;
+       Comprovativo.Comprovativo = doc.FileName;
        if (string.IsNullOrEmpty(CaminhoComprovativo)) { Img = "upload"; }
        if (CaminhoComprovativo.Contains(".pdf")) { Img = "image_pdf"; return; } else { Img = "image_png"; }
    });
@@ -84,22 +85,23 @@ public class Comprovativos_ClienteViewModel : BindableObject
              await Shell.Current.DisplayAlert("Erro", "Selecione o comprovativo!", "OK");
              return;
          }
-
+         var telefoneCliente = await SecureStorage.Default.GetAsync("telefoneUsuario");
          var formData = new MultipartFormDataContent
          {
             { new StringContent(Comprovativo.IdCliente.ToString()), "idCliente" },
+            { new StringContent(telefoneCliente!.ToString()), "telefone" },
             { new StringContent(Comprovativo.Comprovativo), "comprovativo" }
          };
 
-         AdicionarArquivoAoFormData(formData, CaminhoComprovativo, "imagem");
+         AdicionarArquivoAoFormData(formData, CaminhoComprovativo, "comprovativo");
 
          var response = await client.PostAsync("salvar/comprovativo", formData);
          if (response.IsSuccessStatusCode)
          {
              ActivityCommand.Execute(null);
+             Img = "upload";
+             CaminhoComprovativo = string.Empty;
              await Shell.Current.DisplayAlert("Sucesso", "Comprovativo enviado com sucesso!", "OK");
-
-             //await Shell.Current.GoToAsync("..");
          }
          else
          {

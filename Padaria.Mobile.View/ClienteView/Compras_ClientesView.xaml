@@ -27,7 +27,8 @@
                     BackgroundColor="#d6b06a"
                     Text="Enviar Arquivo"
                     FontFamily="MontserratRegular"
-                    FontSize="20"/>
+                    FontSize="20"
+                    Command="{Binding EnviarComprovativoCommand}"/>
         </Grid>
     </Grid>
 </ContentPage>
